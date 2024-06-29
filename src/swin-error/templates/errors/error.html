@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load static %} 
+
+{% block head_title %}
+{{ title }}
+{% endblock head_title%}
+
+{% block body_content_cover %}
+    {% include "body/content_cover_semi.html" with cover_image="image/aurora.jpg" cover_title="Error" %}
+{% endblock body_content_cover%}
+
+{% block body_content_main %}
+    <section class="grid_item_full grid">
+        <h1 class="grid_item_full">
+            {{ title }}
+        </h1>
+        <p class="grid_item_full">
+            {{ header }}
+        </p>
+        <p class="grid_item_full">
+            {{ message }}
+        </p>
+        <p class="grid_item_full">
+            {{ redirect }}
+        </p>
+    </section>
+{% endblock body_content_main %}
