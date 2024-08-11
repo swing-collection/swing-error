@@ -124,6 +124,38 @@ def some_view(request):
     return render(request, 'some_template.html')
 ```
 
-## License
+---
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Colophon
+
+### Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+
+### License
+
+This project is licensed under the BSD-3-Clause license. See the [LICENSE](LICENSE) file for details.
+
+### Contact
+
+Swing is developed by [Scape Agency](https://www.scape.agency). For any inquiries or support, please contact us at [info@scape.agency](info@scape.agency).
+
+---
+
+
+
+Error Handler App for Django
+
+## Links
+
+### Docs
+
+- https://docs.djangoproject.com/en/3.0/howto/error-reporting/
+- https://docs.djangoproject.com/en/3.0/ref/urls/#django.conf.urls.handler400
+
+### Templates
+
+- https://codepen.io/akashrajendra/pen/JKKRvQ
+- https://webartdevelopers.com/blog/category/500-error-page-html-templates/
+
+- https://github.com/wooyek/django-error-views
