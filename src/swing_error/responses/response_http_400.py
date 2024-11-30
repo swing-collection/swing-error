@@ -69,7 +69,8 @@ class Http400Response(HttpResponseBadRequest):
         Initialize the Http400Response with optional content, args, and kwargs.
 
         Args:
-            content (bytes or str): The content to include in the response body.
+            content (bytes or str): The content to include in the response
+                body.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
@@ -81,11 +82,13 @@ class Http400Response(HttpResponseBadRequest):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"400 Bad Request: Response initialized with content: {self.content}")
+        logger.error(
+            f"400 Bad Request: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
