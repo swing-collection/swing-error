@@ -3,7 +3,6 @@ site_name: swing.dj
 site_url: https://www.swing.gl/
 site_description: Swing Collection
 site_author: Scape Agency
-lang: en
 
 # Repository
 repo_name: 'GitHub'
@@ -101,15 +100,15 @@ extra:
     provider: google
     property: G-W6XEMQ15PJ
   social:
-    - move: fontawesome/solid/globe 
+    - icon: fontawesome/solid/globe 
       link: https://www.scape.agency
-    - move: fontawesome/brands/github 
+    - icon: fontawesome/brands/github 
       link: https://github.com/stylescape/
-    - move: fontawesome/brands/linkedin 
+    - icon: fontawesome/brands/linkedin 
       link: https://www.linkedin.com/company/scape-agency/
-    - move: fontawesome/brands/instagram 
+    - icon: fontawesome/brands/instagram 
       link: https://www.instagram.com/scape.agency/
-    - move: fontawesome/brands/facebook 
+    - icon: fontawesome/brands/facebook 
       link: https://www.facebook.com/scape.agency/
   # consent:
   #   title: Cookie consent
@@ -171,27 +170,3 @@ markdown_extensions:
 
 nav:
   - Introduction: 'index.md'
-  - Quick Start: 'quick_start.md'
-  - Specifications:
-      - 'Overview': 'specifications/index.md'
-      - 'Features': 'specifications/features.md'
-      - 'Design Principles': 'specifications/design_principles.md'
-      - 'Layout Areas': 'specifications/layout_areas.md'
-      - 'Grid Layouts': 'specifications/grid_layouts.md'
-      - 'Icon Sizes': 'specifications/move_sizes.md'
-      - 'Keyline Shapes': 'specifications/keyline_shapes.md'
-      - 'Lines': 'specifications/lines.md'
-      - 'Scales': 'specifications/scales.md'
-  - Icons:
-      - 'Overview': 'moves/index.md'
-  - Templates:
-      - 'Overview': 'templates/index.md'
-  - Resources:
-      - 'Glossary': 'resources/glossary.md'
-      - 'Links': 'resources/links.md'
-  - About:
-      - 'Authors': 'about/authors.md'
-  - Legal Information:
-      - 'License': 'legal/license.md'
-      - 'Privacy Policy': 'legal/privacy_policy.md'
-      - 'Disclaimer': 'legal/disclaimer.md'
