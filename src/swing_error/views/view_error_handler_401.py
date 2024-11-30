@@ -108,6 +108,7 @@ class Handler401View(TemplateView):
     Attributes:
         template_name (str): The path to the template to be rendered.
         logger (logging.Logger): Logger instance for logging errors.
+
     """
 
     template_name: str = "errors/401.html"
@@ -122,14 +123,18 @@ class Handler401View(TemplateView):
 
         Returns:
             Dict[str, Any]: Context data for the template.
+
         """
+
         context = super().get_context_data(**kwargs)
+
         context.update({
             "title": "Unauthorized",
             "header": "401 Error",
             "message": "Authorization is required to access this page.",
             "redirect": GENERIC,
         })
+
         return context
 
     def get(
@@ -148,9 +153,12 @@ class Handler401View(TemplateView):
 
         Returns:
             HttpResponse: The HTTP response with status code 401.
+
         """
         self.log_error(request)
+
         context = self.get_context_data(**kwargs)
+
         return HttpResponse(self.render_to_string(context), status=401)
 
     def log_error(self, request: HttpRequest) -> None:
@@ -159,6 +167,7 @@ class Handler401View(TemplateView):
 
         Args:
             request (HttpRequest): The request object.
+
         """
 
         self.logger.error(f"401 Unauthorized at {request.path}")
