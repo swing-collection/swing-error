@@ -75,11 +75,13 @@ class Http403Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"403 Forbidden: Response initialized with content: {self.content}")
+        logger.error(
+            f"403 Forbidden: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
