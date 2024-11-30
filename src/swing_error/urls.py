@@ -13,8 +13,8 @@ custom error handlers for various HTTP status codes.
 
 Usage:
 ------
-Include the custom error handlers in your project's URL configuration to handle
-specific errors with custom responses.
+Include the custom error handlers in your project's URL configuration to
+handle specific errors with custom responses.
 
 Links:
 ------
@@ -32,7 +32,17 @@ Links:
 
 # Import | Libraries
 from django.urls import path
-from django.conf.urls import handler400, handler401, handler403, handler404, handler405, handler408, handler410, handler429, handler500
+from django.conf.urls import (
+    handler400,
+    handler401,
+    handler403,
+    handler404,
+    handler405,
+    handler408,
+    handler410,
+    handler429,
+    handler500,
+)
 
 # Import | Local Modules
 from .views import (
