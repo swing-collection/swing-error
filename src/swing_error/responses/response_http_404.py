@@ -75,11 +75,13 @@ class Http404Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"404 Not Found: Response initialized with content: {self.content}")
+        logger.error(
+            f"404 Not Found: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
