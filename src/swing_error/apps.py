@@ -7,14 +7,9 @@
 
 """
 Provides Errors Config Class
-===========================
+============================
+
 ...
-
-Todo:
------
-
-Links:
-------
 
 """
 
@@ -40,7 +35,7 @@ from django.utils.translation import gettext_lazy as _
 class ErrorsConfig(AppConfig):
     """
     Errors Config Class
-    ==================
+    ===================
     """
 
     # Full Python path to the application
@@ -59,9 +54,6 @@ class ErrorsConfig(AppConfig):
 
     # The implicit primary key type to add to models within this app.
     default_auto_field = "django.db.models.BigAutoField"
-
-
-
 
 
     # def ready(self):
