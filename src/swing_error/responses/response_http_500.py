@@ -8,8 +8,8 @@
 Provides HTTP 500 Response Class
 ================================
 
-This module defines a custom HTTP 500 Internal Server Error response class for handling
-HTTP 500 errors in a Django application. It inherits from Django's
+This module defines a custom HTTP 500 Internal Server Error response class for
+handling HTTP 500 errors in a Django application. It inherits from Django's
 HttpResponse class.
 
 Usage:
@@ -58,12 +58,18 @@ class Http500Response(HttpResponse):
 
     status_code = 500
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b'',
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize the Http500Response with optional content, args, and kwargs.
 
         Args:
-            content (bytes or str): The content to include in the response body.
+            content (bytes or str): The content to include in the
+                response body.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
@@ -75,11 +81,13 @@ class Http500Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"500 Internal Server Error: Response initialized with content: {self.content}")
+        logger.error(
+            f"500 Internal Server Error: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
