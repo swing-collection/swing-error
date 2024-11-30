@@ -8,8 +8,8 @@
 Provides HTTP 408 Response Class
 ================================
 
-This module defines a custom HTTP 408 Request Timeout response class for handling
-HTTP 408 errors in a Django application. It inherits from Django's
+This module defines a custom HTTP 408 Request Timeout response class for
+handling HTTP 408 errors in a Django application. It inherits from Django's
 HttpResponse class.
 
 Usage:
@@ -58,7 +58,12 @@ class Http408Response(HttpResponse):
 
     status_code = 408
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b'',
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize the Http408Response with optional content, args, and kwargs.
 
@@ -75,11 +80,13 @@ class Http408Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"408 Request Timeout: Response initialized with content: {self.content}")
+        logger.error(f
+            "408 Request Timeout: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
