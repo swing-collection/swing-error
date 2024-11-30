@@ -7,6 +7,7 @@ Demo Settings for Swing Hello App
 This is a basic settings configuration used to run the Swing Hello app 
 in isolation. It includes minimal setup for a SQLite database, templates, 
 and installed apps.
+
 """
 
 import os
