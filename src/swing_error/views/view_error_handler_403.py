@@ -14,9 +14,9 @@ HTTP 403 Forbidden errors in a Django application. It renders a custom
 template with error details and sets the appropriate 403 status code in the
 response. Additionally, it logs error details for debugging purposes.
 
-By default, this is handled by `django.views.defaults.permission_denied()`. If you
-implement a custom view, be sure it accepts `request` and `exception` arguments
-and returns an `HttpResponseForbidden`.
+By default, this is handled by `django.views.defaults.permission_denied()`. If
+you implement a custom view, be sure it accepts `request` and `exception`
+arguments and returns an `HttpResponseForbidden`.
 
 Usage:
 ------
