@@ -1,4 +1,0 @@
-include LICENSE
-include README.md
-recursive-include src/swing_error/static *
-recursive-include src/swing_error/templates *
