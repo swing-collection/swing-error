@@ -12,7 +12,7 @@ Provides Demo URL Patterns
 Defines URL patterns for the demo project. This includes:
 
 - Admin panel routes for managing the application.
-- Routes for the `swing_hello` app, including a default route.
+- Routes for the `swing_error` app, including a default route.
 
 """
 
@@ -36,6 +36,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # Admin site URL
-    path("hello/", include("swing_hello.urls")),  # Include the URLs from the swing_hello app
-    path("", include("swing_hello.urls")),  # Include the URLs from the swing_hello app
+    path("error/", include("swing_error.urls")),  # Include the URLs from the swing_error app
+    path("", include("swing_error.urls")),  # Include the URLs from the swing_error app
 ]
