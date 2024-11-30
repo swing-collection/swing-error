@@ -159,3 +159,4 @@ Error Handler App for Django
 - https://webartdevelopers.com/blog/category/500-error-page-html-templates/
 
 - https://github.com/wooyek/django-error-views
+
