@@ -75,11 +75,13 @@ class Http401Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"401 Unauthorized: Response initialized with content: {self.content}")
+        logger.error(
+            f"401 Unauthorized: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
