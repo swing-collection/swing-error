@@ -58,12 +58,18 @@ class Http410Response(HttpResponse):
 
     status_code = 410
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b'',
+        *args: Any,
+        **kwargs: Any
+    ) -> None:
         """
         Initialize the Http410Response with optional content, args, and kwargs.
 
         Args:
-            content (bytes or str): The content to include in the response body.
+            content (bytes or str): The content to include in the
+                response body.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
@@ -75,11 +81,13 @@ class Http410Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"410 Gone: Response initialized with content: {self.content}")
+        logger.error(
+            f"410 Gone: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
