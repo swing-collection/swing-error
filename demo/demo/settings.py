@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # Local apps
-    "swing_hello",  # Reusable app under development]
+    "swing_error",  # Reusable app under development]
 ]
 
 
