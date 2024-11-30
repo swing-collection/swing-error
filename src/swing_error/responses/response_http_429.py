@@ -8,8 +8,8 @@
 Provides HTTP 429 Response Class
 ================================
 
-This module defines a custom HTTP 429 Too Many Requests response class for handling
-HTTP 429 errors in a Django application. It inherits from Django's
+This module defines a custom HTTP 429 Too Many Requests response class for
+handling HTTP 429 errors in a Django application. It inherits from Django's
 HttpResponse class.
 
 Usage:
@@ -58,12 +58,18 @@ class Http429Response(HttpResponse):
 
     status_code = 429
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b'',
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize the Http429Response with optional content, args, and kwargs.
 
         Args:
-            content (bytes or str): The content to include in the response body.
+            content (bytes or str): The content to include in the
+                response body.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
@@ -75,11 +81,13 @@ class Http429Response(HttpResponse):
         Log the error details for debugging purposes.
         """
         logger = logging.getLogger(__name__)
-        logger.error(f"429 Too Many Requests: Response initialized with content: {self.content}")
+        logger.error(
+            f"429 Too Many Requests: Response initialized with content: {self.content}"
+        )
 
 
 # =============================================================================
-# Module Exports
+# Exports
 # =============================================================================
 
 __all__ = [
