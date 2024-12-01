@@ -91,3 +91,18 @@ handler400 = "..views.handler400"  # Error Handler - Bad Request
 handler403 = "..views.handler403"  # Error Handler - HTTP Forbidden
 handler404 = "..views.handler404"  # Error Handler - Page not Found
 handler500 = "..views.handler500"  # Error Handler - Server Error
+
+
+
+
+
+
+
+
+from django.conf.urls import handler404, handler500, handler403, handler400
+from error_handler.handlers import handle_404, handle_500, handle_permission_denied, handle_bad_request
+
+handler404 = handle_404
+handler500 = handle_500
+handler403 = handle_permission_denied
+handler400 = handle_bad_request
