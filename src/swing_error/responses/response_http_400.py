@@ -10,8 +10,8 @@ Provides HTTP 400 Response Class
 ================================
 
 This module defines a custom HTTP 400 Bad Request response class for handling
-HTTP 400 errors in a Django application. It inherits from Django's
-HttpResponseBadRequest class.
+HTTP 400 errors in a Django application. It extends the BaseErrorResponse
+class for structured error handling and logging.
 
 Usage:
 ------
@@ -32,58 +32,59 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, Dict
 
 # Import | Libraries
 from django.http import HttpResponseBadRequest
 
 # Import | Local Modules
-# None
+from swing_error.responses.response_error_base import BaseErrorResponse
 
 
 # =============================================================================
 # Class
 # =============================================================================
 
-class Http400Response(HttpResponseBadRequest):
+class Http400Response(BaseErrorResponse):
     """
     HTTP 400 Response Class
     =======================
 
     Custom HTTP 400 Bad Request response class.
-    Inherits from Django's HttpResponseBadRequest.
+    Extends the BaseErrorResponse for structured handling and logging.
 
     Attributes:
         status_code (int): HTTP status code for the response.
     """
 
-    status_code = 400
-
     def __init__(
         self,
-        content: Union[bytes, str] = b'',
         *args: Any,
-        **kwargs: Any
+        message: str = "Bad Request",
+        details: Optional[Union[str, Dict[str, Any]]] = None,
+        request: Optional[Any] = None,
+        **kwargs: Any,
     ) -> None:
         """
-        Initialize the Http400Response with optional content, args, and kwargs.
+        Initialize the Http400Response with optional message, details, and
+        request.
 
         Args:
-            content (bytes or str): The content to include in the response
-                body.
-            *args: Additional positional arguments.
-            **kwargs: Additional keyword arguments.
+            *args: Additional positional arguments for the BaseErrorResponse.
+            message (str): A brief description of the error (default: "Bad Request").
+            details (Optional[Union[str, Dict[str, Any]]]): Additional error details
+                (default: None).
+            request (Optional[Any]): The HTTP request object for logging context
+                (default: None).
+            **kwargs: Additional keyword arguments for the BaseErrorResponse.
         """
-        super().__init__(content, *args, **kwargs)
-        self.log_error()
-
-    def log_error(self) -> None:
-        """
-        Log the error details for debugging purposes.
-        """
-        logger = logging.getLogger(__name__)
-        logger.error(
-            f"400 Bad Request: Response initialized with content: {self.content}"
+        super().__init__(
+            400,
+            message,
+            details,
+            request,
+            *args,
+            **kwargs,
         )
 
 
