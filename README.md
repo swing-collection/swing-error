@@ -160,3 +160,19 @@ Error Handler App for Django
 
 - https://github.com/wooyek/django-error-views
 
+
+
+
+
+error_handler/
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── handlers.py       # Error handling logic
+    ├── middleware.py     # Middleware for global error capture
+    ├── models.py
+    ├── templates/        # Custom error pages (if HTML responses)
+    │   └── error.html
+    ├── tests.py
+    ├── urls.py           # Routes for testing error responses
+    └── views.py          # Optional views for error simulation
