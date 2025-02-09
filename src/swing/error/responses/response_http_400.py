@@ -32,18 +32,18 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Optional, Union, Dict
-
-# Import | Libraries
-from django.http import HttpResponseBadRequest
+from typing import Any, Dict, List, Optional, Union
 
 # Import | Local Modules
-from swing_error.responses.response_error_base import BaseErrorResponse
+from ..responses.response_error_base import BaseErrorResponse
+
+# Import | Libraries
 
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class Http400Response(BaseErrorResponse):
     """
@@ -79,10 +79,10 @@ class Http400Response(BaseErrorResponse):
             **kwargs: Additional keyword arguments for the BaseErrorResponse.
         """
         super().__init__(
-            400,
-            message,
-            details,
-            request,
+            status_code=400,
+            message=message,
+            details=details,
+            error_code=request,
             *args,
             **kwargs,
         )
@@ -92,6 +92,6 @@ class Http400Response(BaseErrorResponse):
 # Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "Http400Response",
 ]
