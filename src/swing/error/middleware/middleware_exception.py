@@ -32,10 +32,10 @@ MIDDLEWARE = [
 
 # Import | Standard Library
 import logging
-from typing import Callable, Any
+from typing import Any, Callable, List
 
 # Import | Libraries
-from django.http import JsonResponse, HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Import | Local Modules
@@ -45,18 +45,18 @@ from ..responses import (
     Http403Response,
     Http404Response,
     Http500Response,
-    # Add additional responses as needed
 )
 
 # =============================================================================
 # Logger
 # =============================================================================
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(name=__name__)
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class ExceptionMiddleware:
     """
@@ -81,8 +81,10 @@ class ExceptionMiddleware:
         """
         self.get_response = get_response
 
-
-    def __call__(self, request: HttpRequest) -> HttpResponse:
+    def __call__(
+        self,
+        request: HttpRequest,
+    ) -> HttpResponse:
         """
         Handle the incoming request and capture unhandled exceptions.
 
@@ -95,32 +97,49 @@ class ExceptionMiddleware:
         """
 
         try:
-            response = self.get_response(request)
+            response: HttpResponse = self.get_response(request)
 
             # Handle specific status codes dynamically
             if response.status_code == 400:
-                return self.handle_custom_response(Http400Response, request)
+                return self.handle_custom_response(
+                    response_class=Http400Response,
+                    request=request,
+                )
             elif response.status_code == 401:
-                return self.handle_custom_response(Http401Response, request)
+                return self.handle_custom_response(
+                    response_class=Http401Response,
+                    request=request,
+                )
             elif response.status_code == 403:
-                return self.handle_custom_response(Http403Response, request)
+                return self.handle_custom_response(
+                    response_class=Http403Response,
+                    request=request,
+                )
             elif response.status_code == 404:
-                return self.handle_custom_response(Http404Response, request)
+                return self.handle_custom_response(
+                    response_class=Http404Response,
+                    request=request,
+                )
             elif response.status_code == 500:
-                return self.handle_custom_response(Http500Response, request)
+                return self.handle_custom_response(
+                    response_class=Http500Response,
+                    request=request,
+                )
             # Add additional status codes (405, 408, 410, 429) here
 
             return response
 
         except Exception as e:
             # Handle unexpected exceptions
-            return self.handle_exception(e, request)
-
+            return self.handle_exception(
+                exception=e,
+                request=request,
+            )
 
     def handle_custom_response(
         self,
         response_class: Callable[[HttpRequest], HttpResponse],
-        request: HttpRequest
+        request: HttpRequest,
     ) -> HttpResponse:
         """
         Generate a custom response for specific status codes.
@@ -134,15 +153,15 @@ class ExceptionMiddleware:
             HttpResponse: The custom response for the status code.
         """
         logger.warning(
-            f"Custom response for {response_class.status_code}: Path={request.path}"
+            msg=f"Custom response for {response_class.status_code}: Path={request.path}"
         )
         return response_class(request=request)
 
     def handle_exception(
-            self,
-            exception: Exception,
-            request: HttpRequest,
-        ) -> JsonResponse:
+        self,
+        exception: Exception,
+        request: HttpRequest,
+    ) -> JsonResponse:
         """
         Handle unhandled exceptions and return a structured JSON response.
 
@@ -161,14 +180,23 @@ class ExceptionMiddleware:
             f"  Path: {request.path}\n"
             f"  Method: {request.method}\n"
             f"  Exception: {str(exception)}",
-            exc_info=True
+            exc_info=True,
         )
 
         # Return a JSON response with error details
         return JsonResponse(
-            {
+            data={
                 "error": "Server Error",
-                "message": "An unexpected error occurred. Please try again later."
+                "message": "An unexpected error occurred. Please try again later.",
             },
-            status=500
+            status=500,
         )
+
+
+# =============================================================================
+# Exports
+# =============================================================================
+
+__all__: List[str] = [
+    "ExceptionMiddleware",
+]
