@@ -15,8 +15,8 @@ template with error details and sets the appropriate 400 status code in the
 response. Additionally, it logs error details for debugging purposes.
 
 By default, this is handled by `django.views.defaults.bad_request()`. If you
-implement a custom view, be sure it accepts `request` and `exception` arguments
-and returns an `HttpResponseBadRequest`.
+implement a custom view, be sure it accepts `request` and `exception`
+arguments and returns an `HttpResponseBadRequest`.
 
 Usage:
 ------
@@ -40,18 +40,19 @@ Links:
 # =============================================================================
 
 # Import | Standard Library
-
-# Import | Libraries
+from typing import List
 
 # Import | Local Modules
-from swing_error.views.view_error_handler_base import BaseErrorView
-from swing_error.responses.response_http_400 import Http400Response
+from ..responses.response_http_400 import Http400Response
+from ..views.view_error_handler_base import BaseErrorView
 
+# Import | Libraries
 
 
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class Handler400View(BaseErrorView):
     """
@@ -61,6 +62,7 @@ class Handler400View(BaseErrorView):
     Handles HTTP 400 Bad Request errors by rendering a custom template
     and using the Http400Response class.
     """
+
     error_type: str = "400"
     response_class: Http400Response
 
@@ -69,9 +71,11 @@ class Handler400View(BaseErrorView):
 # Exports
 # =============================================================================
 
-HANDLER400 = "swing_error.views.view_error_handler_400.Handler400View.as_view()"
+HANDLER400 = (
+    "swing_error.views.view_error_handler_400.Handler400View.as_view()"
+)
 
-__all__ = [
+__all__: List[str] = [
     "Handler400View",
     "HANDLER400",
 ]
