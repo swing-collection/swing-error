@@ -31,18 +31,18 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Union
+from typing import Any, List, Union
 
 # Import | Libraries
 from django.http import HttpResponse
 
 # Import | Local Modules
-# None
 
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class Http410Response(HttpResponse):
     """
@@ -60,9 +60,9 @@ class Http410Response(HttpResponse):
 
     def __init__(
         self,
-        content: Union[bytes, str] = b'',
+        content: Union[bytes, str] = b"",
         *args: Any,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """
         Initialize the Http410Response with optional content, args, and kwargs.
@@ -73,16 +73,16 @@ class Http410Response(HttpResponse):
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
-        super().__init__(content, *args, **kwargs)
+        super().__init__(content=content, *args, **kwargs)
         self.log_error()
 
     def log_error(self) -> None:
         """
         Log the error details for debugging purposes.
         """
-        logger = logging.getLogger(__name__)
+        logger: logging.Logger = logging.getLogger(name=__name__)
         logger.error(
-            f"410 Gone: Response initialized with content: {self.content}"
+            msg=f"410 Gone: Response initialized with content: {self.content}"
         )
 
 
@@ -90,6 +90,6 @@ class Http410Response(HttpResponse):
 # Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "Http410Response",
 ]
