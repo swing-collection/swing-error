@@ -39,14 +39,16 @@ Links:
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-from typing import Any, Dict
 import logging
+
+# Import | Standard Library
+from typing import Any, Dict, List
+
+from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import render
 
 # Import | Libraries
 from django.views.generic import TemplateView
-from django.http import HttpRequest, HttpResponseNotAllowed
-from django.shortcuts import render
 
 # Import | Local Modules
 # None
@@ -63,10 +65,11 @@ GENERIC: str = "Please return to our home page"
 # Functions
 # =============================================================================
 
+
 def handler_405_view(
     request: HttpRequest,
-    exception: Any, 
-    template_name: str = "errors/405.html"
+    exception: Any,
+    template_name: str = "errors/405.html",
 ) -> HttpResponseNotAllowed:
     """
     405 Error Handler View Function
@@ -82,12 +85,16 @@ def handler_405_view(
     Returns:
         HttpResponseNotAllowed: The HTTP response with status code 405.
     """
-    response = render(request, template_name, {
-        "title": "Method Not Allowed",
-        "header": "405 Error",
-        "message": "The method is not allowed for the requested URL.",
-        "redirect": GENERIC,
-    })
+    response: HttpResponse = render(
+        request=request,
+        template_name=template_name,
+        context={
+            "title": "Method Not Allowed",
+            "header": "405 Error",
+            "message": "The method is not allowed for the requested URL.",
+            "redirect": GENERIC,
+        },
+    )
     response.status_code = 405
     return response
 
@@ -96,6 +103,7 @@ def handler_405_view(
 # Classes
 # =============================================================================
 
+
 class Handler405View(TemplateView):
     """
     405 Error Handler View Class
@@ -103,8 +111,8 @@ class Handler405View(TemplateView):
 
     A class-based view to handle HTTP 405 Method Not Allowed errors.
 
-    This view renders a custom template with error details and sets the 
-    appropriate 405 status code in the response. Additionally, it logs 
+    This view renders a custom template with error details and sets the
+    appropriate 405 status code in the response. Additionally, it logs
     error details for debugging purposes.
 
     Attributes:
@@ -113,7 +121,7 @@ class Handler405View(TemplateView):
     """
 
     template_name: str = "errors/405.html"
-    logger: logging.Logger = logging.getLogger(__name__)
+    logger: logging.Logger = logging.getLogger(name=__name__)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """
@@ -125,20 +133,22 @@ class Handler405View(TemplateView):
         Returns:
             Dict[str, Any]: Context data for the template.
         """
-        context = super().get_context_data(**kwargs)
-        context.update({
-            "title": "Method Not Allowed",
-            "header": "405 Error",
-            "message": "The method is not allowed for the requested URL.",
-            "redirect": GENERIC,
-        })
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Method Not Allowed",
+                "header": "405 Error",
+                "message": "The method is not allowed for the requested URL.",
+                "redirect": GENERIC,
+            }
+        )
         return context
 
     def get(
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponseNotAllowed:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -151,18 +161,23 @@ class Handler405View(TemplateView):
         Returns:
             HttpResponseNotAllowed: The HTTP response with status code 405.
         """
-        self.log_error(request)
-        context = self.get_context_data(**kwargs)
-        return HttpResponseNotAllowed(self.render_to_string(context))
+        self.log_error(request=request)
+        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        return HttpResponseNotAllowed(
+            permitted_methods=self.render_to_string(context)
+        )
 
-    def log_error(self, request: HttpRequest) -> None:
+    def log_error(
+        self,
+        request: HttpRequest,
+    ) -> None:
         """
         Log the error details for debugging purposes.
 
         Args:
             request (HttpRequest): The request object.
         """
-        self.logger.error(f"405 Method Not Allowed at {request.path}")
+        self.logger.error(msg=f"405 Method Not Allowed at {request.path}")
 
 
 # =============================================================================
@@ -171,7 +186,7 @@ class Handler405View(TemplateView):
 
 HANDLER405 = "myapp.views.Handler405View.as_view()"
 
-__all__ = [
+__all__: List[str] = [
     "handler_405_view",
     "Handler405View",
     "HANDLER405",
