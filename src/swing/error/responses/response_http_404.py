@@ -31,7 +31,7 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Union
+from typing import Any, List, Union
 
 # Import | Libraries
 from django.http import HttpResponse
@@ -43,6 +43,7 @@ from django.http import HttpResponse
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class Http404Response(HttpResponse):
     """
@@ -58,7 +59,12 @@ class Http404Response(HttpResponse):
 
     status_code = 404
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b"",
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize the Http404Response with optional content, args, and kwargs.
 
@@ -74,9 +80,9 @@ class Http404Response(HttpResponse):
         """
         Log the error details for debugging purposes.
         """
-        logger = logging.getLogger(__name__)
+        logger: logging.Logger = logging.getLogger(name=__name__)
         logger.error(
-            f"404 Not Found: Response initialized with content: {self.content}"
+            msg=f"404 Not Found: Response initialized with content: {self.content}"
         )
 
 
@@ -84,6 +90,6 @@ class Http404Response(HttpResponse):
 # Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "Http404Response",
 ]
