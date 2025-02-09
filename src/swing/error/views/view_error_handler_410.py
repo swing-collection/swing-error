@@ -14,9 +14,9 @@ HTTP 410 Gone errors in a Django application. It renders a custom
 template with error details and sets the appropriate 410 status code in the
 response. Additionally, it logs error details for debugging purposes.
 
-By default, this is handled by `django.views.defaults.permission_denied()`. If you
-implement a custom view, be sure it accepts `request` and `exception` arguments
-and returns an `HttpResponseGone`.
+By default, this is handled by `django.views.defaults.permission_denied()`. If
+you implement a custom view, be sure it accepts `request` and `exception`
+arguments and returns an `HttpResponseGone`.
 
 Usage:
 ------
@@ -38,14 +38,16 @@ Links:
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-from typing import Any, Dict
 import logging
+
+# Import | Standard Library
+from typing import Any, Dict, List
+
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 
 # Import | Libraries
 from django.views.generic import TemplateView
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
 
 # Import | Local Modules
 # None
@@ -62,6 +64,7 @@ GENERIC: str = "Please return to our home page"
 # Custom Response Class
 # =============================================================================
 
+
 class HttpResponseGone(HttpResponse):
     status_code = 410
 
@@ -70,10 +73,11 @@ class HttpResponseGone(HttpResponse):
 # Functions
 # =============================================================================
 
+
 def handler_410_view(
     request: HttpRequest,
-    exception: Any, 
-    template_name: str = "errors/410.html"
+    exception: Any,
+    template_name: str = "errors/410.html",
 ) -> HttpResponseGone:
     """
     410 Error Handler View Function
@@ -89,12 +93,16 @@ def handler_410_view(
     Returns:
         HttpResponseGone: The HTTP response with status code 410.
     """
-    response = render(request, template_name, {
-        "title": "Gone",
-        "header": "410 Error",
-        "message": "The requested resource is no longer available on this server.",
-        "redirect": GENERIC,
-    })
+    response: HttpResponse = render(
+        request=request,
+        template_name=template_name,
+        context={
+            "title": "Gone",
+            "header": "410 Error",
+            "message": "The requested resource is no longer available on this server.",
+            "redirect": GENERIC,
+        },
+    )
     response.status_code = 410
     return response
 
@@ -103,6 +111,7 @@ def handler_410_view(
 # Classes
 # =============================================================================
 
+
 class Handler410View(TemplateView):
     """
     410 Error Handler View Class
@@ -110,8 +119,8 @@ class Handler410View(TemplateView):
 
     A class-based view to handle HTTP 410 Gone errors.
 
-    This view renders a custom template with error details and sets the 
-    appropriate 410 status code in the response. Additionally, it logs 
+    This view renders a custom template with error details and sets the
+    appropriate 410 status code in the response. Additionally, it logs
     error details for debugging purposes.
 
     Attributes:
@@ -120,9 +129,12 @@ class Handler410View(TemplateView):
     """
 
     template_name: str = "errors/410.html"
-    logger: logging.Logger = logging.getLogger(__name__)
+    logger: logging.Logger = logging.getLogger(name=__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> Dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -132,20 +144,22 @@ class Handler410View(TemplateView):
         Returns:
             Dict[str, Any]: Context data for the template.
         """
-        context = super().get_context_data(**kwargs)
-        context.update({
-            "title": "Gone",
-            "header": "410 Error",
-            "message": "The requested resource is no longer available on this server.",
-            "redirect": GENERIC,
-        })
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Gone",
+                "header": "410 Error",
+                "message": "The requested resource is no longer available on this server.",
+                "redirect": GENERIC,
+            }
+        )
         return context
 
     def get(
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponseGone:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -158,18 +172,21 @@ class Handler410View(TemplateView):
         Returns:
             HttpResponseGone: The HTTP response with status code 410.
         """
-        self.log_error(request)
-        context = self.get_context_data(**kwargs)
-        return HttpResponseGone(self.render_to_string(context))
+        self.log_error(request=request)
+        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        return HttpResponseGone(content=self.render_to_string(context))
 
-    def log_error(self, request: HttpRequest) -> None:
+    def log_error(
+        self,
+        request: HttpRequest,
+    ) -> None:
         """
         Log the error details for debugging purposes.
 
         Args:
             request (HttpRequest): The request object.
         """
-        self.logger.error(f"410 Gone at {request.path}")
+        self.logger.error(msg=f"410 Gone at {request.path}")
 
 
 # =============================================================================
@@ -178,7 +195,7 @@ class Handler410View(TemplateView):
 
 HANDLER410 = "myapp.views.Handler410View.as_view()"
 
-__all__ = [
+__all__: List[str] = [
     "handler_410_view",
     "Handler410View",
     "HANDLER410",
