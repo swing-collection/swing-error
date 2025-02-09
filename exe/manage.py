@@ -40,8 +40,8 @@ from pathlib import Path
 # =============================================================================
 
 # Define project directories
-DEMO_DIR = Path(__file__).resolve().parent  # Location of manage.py
-BASE_DIR = DEMO_DIR.parent  # Root of the project
+DEMO_DIR: Path = Path(__file__).resolve().parent  # Location of manage.py
+BASE_DIR: Path = DEMO_DIR.parent  # Root of the project
 
 # Add `src` directory to the Python path
 sys.path.append(str(BASE_DIR / "src"))
@@ -51,7 +51,8 @@ sys.path.append(str(BASE_DIR / "src"))
 # Functions
 # =============================================================================
 
-def main():
+
+def main() -> None:
     """
     Run Django administrative tasks.
 
@@ -61,7 +62,10 @@ def main():
     """
 
     # Set the default settings module for the project
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demo.settings")
+    os.environ.setdefault(
+        key="DJANGO_SETTINGS_MODULE",
+        value="demo.settings",
+    )
 
     try:
         # Import and execute Django's management utility
@@ -76,7 +80,7 @@ def main():
         ) from exc
 
     # Execute the command-line arguments
-    execute_from_command_line(sys.argv)
+    execute_from_command_line(argv=sys.argv)
 
 
 # =============================================================================

@@ -31,6 +31,7 @@ and `ALLOWED_HOSTS` appropriately for deployment.
 
 # Import | Standard Library
 from pathlib import Path
+from typing import Dict, List
 
 # Import | Libraries
 
@@ -42,7 +43,7 @@ from pathlib import Path
 # =============================================================================
 
 # Base directory of the project
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 # Security: Use a strong secret key in production
 SECRET_KEY = "django-insecure-change-this-in-production"
@@ -59,7 +60,7 @@ ALLOWED_HOSTS = []
 # Installed Applications
 # =============================================================================
 
-INSTALLED_APPS = [
+INSTALLED_APPS: List[str] = [
     # Default Django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,9 +68,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Local apps
-    "swing_error",  # Reusable app under development]
+    "swing.error",  # Reusable app under development]
 ]
 
 
@@ -77,7 +77,7 @@ INSTALLED_APPS = [
 # Middleware
 # =============================================================================
 
-MIDDLEWARE = [
+MIDDLEWARE: List[str] = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -136,12 +136,11 @@ DATABASES = {
 }
 
 
-
 # =============================================================================
 # Password Validation
 # =============================================================================
 
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS: List[Dict[str, str]] = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
@@ -167,13 +166,12 @@ USE_I18N = True  # Enable translations
 USE_TZ = True  # Use timezone-aware datetimes
 
 
-
 # =============================================================================
 # Static Files
 # =============================================================================
 
 STATIC_URL = "/static/"  # URL to serve static files
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Additional static files
+STATICFILES_DIRS: List[Path] = [BASE_DIR / "static"]  # Additional static files
 
 
 # =============================================================================

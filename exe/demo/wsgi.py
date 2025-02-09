@@ -28,6 +28,7 @@ https://docs.djangoproject.com/en/stable/howto/deployment/wsgi/
 import os
 
 # Import | Libraries
+from django.core.handlers.wsgi import WSGIHandler
 from django.core.wsgi import get_wsgi_application
 
 # Import | Local Modules
@@ -38,7 +39,10 @@ from django.core.wsgi import get_wsgi_application
 # =============================================================================
 
 # Set the default Django settings module
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demo.settings")
+os.environ.setdefault(
+    key="DJANGO_SETTINGS_MODULE",
+    value="demo.settings",
+)
 
 # Create the WSGI application callable
-application = get_wsgi_application()
+application: WSGIHandler = get_wsgi_application()
