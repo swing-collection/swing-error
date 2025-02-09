@@ -38,14 +38,15 @@ Links:
 # Imports
 # =============================================================================
 
+
 # Import | Standard Library
-from typing import Any, Dict
 import logging
+from typing import Any, Dict, List
 
 # Import | Libraries
-from django.views.generic import TemplateView
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 # Import | Local Modules
 # None
@@ -62,10 +63,11 @@ GENERIC: str = "Please return to our home page"
 # Functions
 # =============================================================================
 
+
 def handler_401_view(
     request: HttpRequest,
-    exception: Any, 
-    template_name: str = "errors/401.html"
+    exception: Any,
+    template_name: str = "errors/401.html",
 ) -> HttpResponse:
     """
     401 Error Handler View Function
@@ -81,12 +83,16 @@ def handler_401_view(
     Returns:
         HttpResponse: The HTTP response with status code 401.
     """
-    response = render(request, template_name, {
-        "title": "Unauthorized",
-        "header": "401 Error",
-        "message": "Authorization is required to access this page.",
-        "redirect": GENERIC,
-    })
+    response: HttpResponse = render(
+        request=request,
+        template_name=template_name,
+        context={
+            "title": "Unauthorized",
+            "header": "401 Error",
+            "message": "Authorization is required to access this page.",
+            "redirect": GENERIC,
+        },
+    )
     response.status_code = 401
     return response
 
@@ -95,6 +101,7 @@ def handler_401_view(
 # Classes
 # =============================================================================
 
+
 class Handler401View(TemplateView):
     """
     401 Error Handler View Class
@@ -102,8 +109,8 @@ class Handler401View(TemplateView):
 
     A class-based view to handle HTTP 401 Unauthorized errors.
 
-    This view renders a custom template with error details and sets the 
-    appropriate 401 status code in the response. Additionally, it logs 
+    This view renders a custom template with error details and sets the
+    appropriate 401 status code in the response. Additionally, it logs
     error details for debugging purposes.
 
     Attributes:
@@ -113,9 +120,12 @@ class Handler401View(TemplateView):
     """
 
     template_name: str = "errors/401.html"
-    logger: logging.Logger = logging.getLogger(__name__)
+    logger: logging.Logger = logging.getLogger(name=__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> Dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -127,14 +137,16 @@ class Handler401View(TemplateView):
 
         """
 
-        context = super().get_context_data(**kwargs)
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
 
-        context.update({
-            "title": "Unauthorized",
-            "header": "401 Error",
-            "message": "Authorization is required to access this page.",
-            "redirect": GENERIC,
-        })
+        context.update(
+            {
+                "title": "Unauthorized",
+                "header": "401 Error",
+                "message": "Authorization is required to access this page.",
+                "redirect": GENERIC,
+            }
+        )
 
         return context
 
@@ -142,7 +154,7 @@ class Handler401View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -156,13 +168,16 @@ class Handler401View(TemplateView):
             HttpResponse: The HTTP response with status code 401.
 
         """
-        self.log_error(request)
+        self.log_error(request=request)
 
-        context = self.get_context_data(**kwargs)
+        context: Dict[str, Any] = self.get_context_data(**kwargs)
 
-        return HttpResponse(self.render_to_string(context), status=401)
+        return HttpResponse(content=self.render_to_string(context), status=401)
 
-    def log_error(self, request: HttpRequest) -> None:
+    def log_error(
+        self,
+        request: HttpRequest,
+    ) -> None:
         """
         Log the error details for debugging purposes.
 
@@ -171,7 +186,9 @@ class Handler401View(TemplateView):
 
         """
 
-        self.logger.error(f"401 Unauthorized at {request.path}")
+        self.logger.error(
+            msg=f"401 Unauthorized at {request.path}",
+        )
 
 
 # =============================================================================
@@ -180,7 +197,7 @@ class Handler401View(TemplateView):
 
 HANDLER401 = "myapp.views.Handler401View.as_view()"
 
-__all__ = [
+__all__: List[str] = [
     "handler_401_view",
     "Handler401View",
     "HANDLER401",
