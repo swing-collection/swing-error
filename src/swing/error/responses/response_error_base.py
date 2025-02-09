@@ -45,10 +45,10 @@ Links:
 # Import | Standard Library
 import json
 import logging
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 # Import | Libraries
-from django.http import JsonResponse, HttpRequest
+from django.http import HttpRequest, JsonResponse
 
 # Import | Local Modules
 # None
@@ -59,12 +59,13 @@ from django.http import JsonResponse, HttpRequest
 # =============================================================================
 
 # Configure logger
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(name=__name__)
 
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class BaseErrorResponse(JsonResponse):
     """
@@ -109,31 +110,36 @@ class BaseErrorResponse(JsonResponse):
                 logging context (default: None).
             *args: Additional positional arguments for JsonResponse.
             **kwargs: Additional keyword arguments for JsonResponse.
+
         """
 
         # Prepare the structured content for the error response.
         # `to_dict` method formats the message, details, and optional error
         # code into a consistent dictionary structure for the response body.
-        content = self.to_dict(message, details, error_code)
+        content: Dict[str, Any] = self.to_dict(
+            message=message,
+            details=details,
+            error_code=error_code,
+        )
 
         # Initialize the JsonResponse with the structured content and status
         # code. Additional arguments (`args` and `kwargs`) can be passed to
         # customize the response further (e.g., custom headers).
         super().__init__(
-            content,
+            data=content,
             status=status_code,
             *args,
-            **kwargs
+            **kwargs,
         )
 
         # Log the error with all relevant context, including the status code,
         # message, details, and request information (if available).
         # This ensures the error is captured in logs for debugging purposes.
         self.log_error(
-            status_code,
-            message,
-            details,
-            request,
+            status_code=status_code,
+            message=message,
+            details=details,
+            request=request,
         )
 
     @staticmethod
@@ -163,7 +169,7 @@ class BaseErrorResponse(JsonResponse):
         # details provided."
         response = {
             "error": message,
-            "details": details or "No additional details provided."
+            "details": details or "No additional details provided.",
         }
 
         # Optionally include an application-specific error code if `error_code`
@@ -196,9 +202,8 @@ class BaseErrorResponse(JsonResponse):
         # Construct the base log message with the HTTP status code and error
         # message. Includes the error `details` (if provided) to give more
         # context about the issue.
-        log_message = (
-            f"HTTP {status_code}: {message}\n"
-            f"Details: {details}\n"
+        log_message: str = (
+            f"HTTP {status_code}: {message}\n" f"Details: {details}\n"
         )
 
         # If a request object is available, include additional contextual
@@ -216,8 +221,19 @@ class BaseErrorResponse(JsonResponse):
             # purposes. Uses `errors='replace'` to avoid decoding errors for
             # non-UTF-8 content.
             if request.body:
-                log_message += f"Body: {request.body.decode(errors='replace')}\n"
+                log_message += (
+                    f"Body: {request.body.decode(errors='replace')}\n"
+                )
 
         # Log the constructed message as an error, ensuring the stack trace
         # and details are captured in the application's logs for debugging.
-        logger.error(log_message)
+        logger.error(msg=log_message)
+
+
+# =============================================================================
+# Exports
+# =============================================================================
+
+__all__: List[str] = [
+    "BaseErrorResponse",
+]
