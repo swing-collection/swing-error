@@ -10,9 +10,9 @@ Provides 500 Error Handler View Module
 ======================================
 
 This module contains a function-based and a class-based view for handling
-HTTP 500 Internal Server Error errors in a Django application. It renders a custom
-template with error details and sets the appropriate 500 status code in the
-response. Additionally, it logs error details for debugging purposes.
+HTTP 500 Internal Server Error errors in a Django application. It renders a
+custom template with error details and sets the appropriate 500 status code
+in the response. Additionally, it logs error details for debugging purposes.
 
 By default, this is handled by `django.views.defaults.server_error()`. If you
 implement a custom view, be sure it accepts `request` arguments
@@ -39,14 +39,16 @@ Links:
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-from typing import Any, Dict
 import logging
+
+# Import | Standard Library
+from typing import Any, Dict, List
+
+from django.http import HttpRequest, HttpResponse, HttpResponseServerError
+from django.shortcuts import render
 
 # Import | Libraries
 from django.views.generic import TemplateView
-from django.http import HttpRequest, HttpResponseServerError
-from django.shortcuts import render
 
 # Import | Local Modules
 # None
@@ -63,9 +65,10 @@ GENERIC: str = "Please return to our home page"
 # Functions
 # =============================================================================
 
+
 def handler_500_view(
-    request: HttpRequest, 
-    template_name: str = "errors/500.html"
+    request: HttpRequest,
+    template_name: str = "errors/500.html",
 ) -> HttpResponseServerError:
     """
     500 Error Handler View Function
@@ -80,12 +83,16 @@ def handler_500_view(
     Returns:
         HttpResponseServerError: The HTTP response with status code 500.
     """
-    response = render(request, template_name, {
-        "title": "Internal Server Error",
-        "header": "500 Error",
-        "message": "An unexpected error occurred on the server.",
-        "redirect": GENERIC,
-    })
+    response: HttpResponse = render(
+        request=request,
+        template_name=template_name,
+        context={
+            "title": "Internal Server Error",
+            "header": "500 Error",
+            "message": "An unexpected error occurred on the server.",
+            "redirect": GENERIC,
+        },
+    )
     response.status_code = 500
     return response
 
@@ -94,6 +101,7 @@ def handler_500_view(
 # Classes
 # =============================================================================
 
+
 class Handler500View(TemplateView):
     """
     500 Error Handler View Class
@@ -101,8 +109,8 @@ class Handler500View(TemplateView):
 
     A class-based view to handle HTTP 500 Internal Server Error errors.
 
-    This view renders a custom template with error details and sets the 
-    appropriate 500 status code in the response. Additionally, it logs 
+    This view renders a custom template with error details and sets the
+    appropriate 500 status code in the response. Additionally, it logs
     error details for debugging purposes.
 
     Attributes:
@@ -113,7 +121,10 @@ class Handler500View(TemplateView):
     template_name: str = "errors/500.html"
     logger: logging.Logger = logging.getLogger(__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> Dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -123,20 +134,22 @@ class Handler500View(TemplateView):
         Returns:
             Dict[str, Any]: Context data for the template.
         """
-        context = super().get_context_data(**kwargs)
-        context.update({
-            "title": "Internal Server Error",
-            "header": "500 Error",
-            "message": "An unexpected error occurred on the server.",
-            "redirect": GENERIC,
-        })
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Internal Server Error",
+                "header": "500 Error",
+                "message": "An unexpected error occurred on the server.",
+                "redirect": GENERIC,
+            }
+        )
         return context
 
     def get(
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponseServerError:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -149,9 +162,9 @@ class Handler500View(TemplateView):
         Returns:
             HttpResponseServerError: The HTTP response with status code 500.
         """
-        self.log_error(request)
-        context = self.get_context_data(**kwargs)
-        return HttpResponseServerError(self.render_to_string(context))
+        self.log_error(request=request)
+        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        return HttpResponseServerError(content=self.render_to_string(context))
 
     def log_error(self, request: HttpRequest) -> None:
         """
@@ -169,7 +182,7 @@ class Handler500View(TemplateView):
 
 HANDLER500 = "myapp.views.Handler500View.as_view()"
 
-__all__ = [
+__all__: List[str] = [
     "handler_500_view",
     "Handler500View",
     "HANDLER500",
