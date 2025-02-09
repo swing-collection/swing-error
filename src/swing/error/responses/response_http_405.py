@@ -8,8 +8,8 @@
 Provides HTTP 405 Response Class
 ================================
 
-This module defines a custom HTTP 405 Method Not Allowed response class for handling
-HTTP 405 errors in a Django application. It inherits from Django's
+This module defines a custom HTTP 405 Method Not Allowed response class for
+handling HTTP 405 errors in a Django application. It inherits from Django's
 HttpResponse class.
 
 Usage:
@@ -31,18 +31,18 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Union
+from typing import Any, List, Union
 
 # Import | Libraries
 from django.http import HttpResponse
 
 # Import | Local Modules
-# None
 
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class Http405Response(HttpResponse):
     """
@@ -58,7 +58,12 @@ class Http405Response(HttpResponse):
 
     status_code = 405
 
-    def __init__(self, content: Union[bytes, str] = b'', *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        content: Union[bytes, str] = b"",
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize the Http405Response with optional content, args, and kwargs.
 
@@ -67,16 +72,16 @@ class Http405Response(HttpResponse):
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
-        super().__init__(content, *args, **kwargs)
+        super().__init__(content=content, *args, **kwargs)
         self.log_error()
 
     def log_error(self) -> None:
         """
         Log the error details for debugging purposes.
         """
-        logger = logging.getLogger(__name__)
+        logger: logging.Logger = logging.getLogger(name=__name__)
         logger.error(
-            f"405 Method Not Allowed: Response initialized with content: {self.content}"
+            msg=f"405 Method Not Allowed: Response initialized with content: {self.content}"
         )
 
 
@@ -84,6 +89,6 @@ class Http405Response(HttpResponse):
 # Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "Http405Response",
 ]
