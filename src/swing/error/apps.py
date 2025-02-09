@@ -6,10 +6,9 @@
 # =============================================================================
 
 """
-Provides Errors Config Class
-============================
+Provides Swing Error Config Class
+=================================
 
-...
 
 """
 
@@ -32,20 +31,21 @@ from django.utils.translation import gettext_lazy as _
 # Classes
 # =============================================================================
 
-class ErrorsConfig(AppConfig):
+
+class SwingErrorConfig(AppConfig):
     """
-    Errors Config Class
-    ===================
+    Swing Error Config Class
+    ========================
     """
 
     # Full Python path to the application
-    name = "website.errors"
+    name = "swing.error"
 
     # Short name for the application
-    label = "errors"
+    label = "swing_error"
 
     # Human-readable name for the application
-    verbose_name = _("Website Errors")
+    verbose_name: str = _(message="Swing Errors")
 
     # Filesystem path to the application directory,
     # path = "/usr/lib/pythonX.Y/dist-packages/django/contrib/admin"
@@ -53,16 +53,15 @@ class ErrorsConfig(AppConfig):
     # default = True
 
     # The implicit primary key type to add to models within this app.
-    default_auto_field = "django.db.models.BigAutoField"
-
+    default_auto_field: str = "django.db.models.BigAutoField"
 
     # def ready(self):
     #     """
     #     Apps Config Ready Function
     #     """
 
-        # Implicitly connect signal handlers decorated with @receiver.
-        # from .. import signals
+    # Implicitly connect signal handlers decorated with @receiver.
+    # from .. import signals
 
-        # Explicitly connect a signal handler.
-        # request_finished.connect(signals.my_callback)
+    # Explicitly connect a signal handler.
+    # request_finished.connect(signals.my_callback)
