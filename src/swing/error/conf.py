@@ -36,7 +36,12 @@ DEFAULT_ERROR_SETTINGS = {
     # Add additional error-specific configurations as needed
 }
 
-def get_error_config(error_type: str, key: str, default=None):
+
+def get_error_config(
+    error_type: str,
+    key: str,
+    default=None,
+):
     """
     Retrieve error handler configuration for a specific error type
     from Django settings with fallback to defaults.
@@ -52,5 +57,10 @@ def get_error_config(error_type: str, key: str, default=None):
     return (
         getattr(settings, "ERROR_HANDLER_CONFIG", {})
         .get(error_type, {})
-        .get(key, DEFAULT_ERROR_SETTINGS.get(error_type, DEFAULT_ERROR_SETTINGS["base"]).get(key, default))
+        .get(
+            key,
+            DEFAULT_ERROR_SETTINGS.get(
+                error_type, DEFAULT_ERROR_SETTINGS["base"]
+            ).get(key, default),
+        )
     )
