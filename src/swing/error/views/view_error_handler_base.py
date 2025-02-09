@@ -24,22 +24,25 @@ Links:
 # Imports
 # =============================================================================
 
+import logging
+
 # Import | Standard Library
 from typing import Any, Dict
-import logging
+
+from django.http import HttpRequest
 
 # Import | Libraries
 from django.views.generic import TemplateView
-from django.http import HttpRequest
+
+from ..conf import get_error_config
 
 # Import | Local Modules
-from swing_error.responses.response_http_400 import Http400Response
-from swing_error.conf import get_error_config
-
+from ..responses.response_http_400 import Http400Response
 
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class BaseErrorView(TemplateView):
     """
@@ -63,7 +66,7 @@ class BaseErrorView(TemplateView):
     """
 
     error_type: str = "base"  # Override in subclasses for specific errors
-    logger: logging.Logger = logging.getLogger(__name__)
+    logger: logging.Logger = logging.getLogger(name=__name__)
 
     @property
     def status_code(self) -> int:
@@ -74,9 +77,9 @@ class BaseErrorView(TemplateView):
             int: The HTTP status code.
         """
         return get_error_config(
-            self.error_type,
-            "status_code",
-            500,
+            error_type=self.error_type,
+            key="status_code",
+            default=500,
         )
 
     @property
@@ -85,9 +88,9 @@ class BaseErrorView(TemplateView):
         Retrieve the template name from the configuration.
         """
         return get_error_config(
-            self.error_type,
-            "template_name",
-            "errors/default.html",
+            error_type=self.error_type,
+            key="template_name",
+            default="errors/default.html",
         )
 
     @property
@@ -99,9 +102,9 @@ class BaseErrorView(TemplateView):
             str: The default error message.
         """
         return get_error_config(
-            self.error_type,
-            "default_message",
-            "An error occurred",
+            error_type=self.error_type,
+            key="default_message",
+            default="An error occurred",
         )
 
     @property
@@ -113,18 +116,20 @@ class BaseErrorView(TemplateView):
             Dict[str, Any]: A dictionary with error details.
         """
         return get_error_config(
-            self.error_type,
-            "default_details",
-            {},
+            error_type=self.error_type,
+            key="default_details",
+            default={},
         )
 
     @property
     def default_context(self) -> Dict[str, Any]:
-        """Retrieve the default context for rendering the template."""
+        """
+        Retrieve the default context for rendering the template.
+        """
         return get_error_config(
-            self.error_type,
-            "default_details",
-            {
+            error_type=self.error_type,
+            key="default_details",
+            default={
                 "title": "Error",
                 "header": "An Error Occurred",
                 "message": "Something went wrong.",
@@ -141,12 +146,15 @@ class BaseErrorView(TemplateView):
             bool: Whether to log the error details.
         """
         return get_error_config(
-            self.error_type,
-            "log_errors",
-            True,
+            error_type=self.error_type,
+            key="log_errors",
+            default=True,
         )
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> Dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -156,7 +164,7 @@ class BaseErrorView(TemplateView):
         Returns:
             Dict[str, Any]: Context data for the template.
         """
-        context = super().get_context_data(**kwargs)
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
         context.update(self.default_context)
         return context
 
@@ -177,7 +185,7 @@ class BaseErrorView(TemplateView):
             Http400Response: A structured error response.
         """
         if self.log_errors:
-            self.log_error(request)
+            self.log_error(request=request)
 
         return Http400Response(
             message=self.default_message,
@@ -185,7 +193,10 @@ class BaseErrorView(TemplateView):
             request=request,
         )
 
-    def log_error(self, request: HttpRequest) -> None:
+    def log_error(
+        self,
+        request: HttpRequest,
+    ) -> None:
         """
         Log the error details for debugging purposes.
 
