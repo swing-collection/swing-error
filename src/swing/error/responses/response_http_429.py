@@ -31,7 +31,7 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Union
+from typing import Any, List, Union
 
 # Import | Libraries
 from django.http import HttpResponse
@@ -43,6 +43,7 @@ from django.http import HttpResponse
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class Http429Response(HttpResponse):
     """
@@ -60,7 +61,7 @@ class Http429Response(HttpResponse):
 
     def __init__(
         self,
-        content: Union[bytes, str] = b'',
+        content: Union[bytes, str] = b"",
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -73,16 +74,20 @@ class Http429Response(HttpResponse):
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
         """
-        super().__init__(content, *args, **kwargs)
+        super().__init__(
+            content=content,
+            *args,
+            **kwargs,
+        )
         self.log_error()
 
     def log_error(self) -> None:
         """
         Log the error details for debugging purposes.
         """
-        logger = logging.getLogger(__name__)
+        logger: logging.Logger = logging.getLogger(name=__name__)
         logger.error(
-            f"429 Too Many Requests: Response initialized with content: {self.content}"
+            msg=f"429 Too Many Requests: Response initialized with content: {self.content}"
         )
 
 
@@ -90,6 +95,6 @@ class Http429Response(HttpResponse):
 # Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "Http429Response",
 ]
