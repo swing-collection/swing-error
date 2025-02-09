@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-,:!=\\[\\]()\"/]+|(?!\\b)(?=[A-Z][a-z])|\\.(?!\\d)|&[lg]t;","pipeline":["stopWordFilter"]},"docs":[{"location":"quick_start/","title":"Quick Start","text":""},{"location":"quick_start/#installation","title":"Installation","text":""}]}
