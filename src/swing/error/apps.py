@@ -45,7 +45,7 @@ class SwingErrorConfig(AppConfig):
     label = "swing_error"
 
     # Human-readable name for the application
-    verbose_name: str = _(message="Swing Errors")
+    verbose_name: str = _("Swing Errors")
 
     # Filesystem path to the application directory,
     # path = "/usr/lib/pythonX.Y/dist-packages/django/contrib/admin"
