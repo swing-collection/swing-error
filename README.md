@@ -150,8 +150,8 @@ Error Handler App for Django
 
 ### Docs
 
-- https://docs.djangoproject.com/en/3.0/howto/error-reporting/
-- https://docs.djangoproject.com/en/3.0/ref/urls/#django.conf.urls.handler400
+- https://docs.djangoproject.com/en/stable/howto/error-reporting/
+- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
 
 ### Templates
 
