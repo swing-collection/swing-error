@@ -29,7 +29,7 @@ Ensure you have a template at the specified `template_name` location.
 
 Links:
 ------
-- https://docs.djangoproject.com/en/5.0/ref/request-response/#django.http.HttpResponseGone
+- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseGone
 
 """  # noqa E501
 

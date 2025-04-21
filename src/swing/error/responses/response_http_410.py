@@ -19,8 +19,8 @@ additional functionality if needed.
 
 Links:
 ------
-- https://docs.djangoproject.com/en/5.0/ref/urls/#django.conf.urls.handler410
-- https://docs.djangoproject.com/en/5.0/ref/request-response/#django.http.HttpResponse
+- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler410
+- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponse
 
 """  # noqa E501
 

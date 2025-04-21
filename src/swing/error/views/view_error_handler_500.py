@@ -29,8 +29,8 @@ Ensure you have a template at the specified `template_name` location.
 
 Links:
 ------
-- https://docs.djangoproject.com/en/5.0/ref/urls/#django.conf.urls.handler500
-- https://docs.djangoproject.com/en/5.0/ref/request-response/#django.http.HttpResponseServerError
+- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler500
+- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseServerError
 
 """  # noqa E501
 

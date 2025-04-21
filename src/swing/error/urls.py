@@ -18,8 +18,8 @@ handle specific errors with custom responses.
 
 Links:
 ------
-- https://docs.djangoproject.com/en/5.0/topics/http/urls/
-- https://docs.djangoproject.com/en/5.0/topics/http/views/#customizing-error-views
+- https://docs.djangoproject.com/en/stable/topics/http/urls/
+- https://docs.djangoproject.com/en/stable/topics/http/views/#customizing-error-views
 
 """  # noqa E501
 

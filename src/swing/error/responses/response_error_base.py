@@ -32,8 +32,8 @@ def handle_error(request):
 
 Links:
 ------
-- https://docs.djangoproject.com/en/5.0/ref/urls/#django.conf.urls.handler400
-- https://docs.djangoproject.com/en/5.0/ref/request-response/#django.http.HttpResponseBadRequest
+- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
+- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseBadRequest
 
 """  # noqa E501
 
