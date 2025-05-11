@@ -40,7 +40,7 @@ packages = [{ include = "swing", from = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.12, <3.13"
-django = "5.2"
+django = "5.2.1"
 
 
 # =============================================================================
