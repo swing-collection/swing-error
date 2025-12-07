@@ -48,7 +48,7 @@ django = "5.2.8"
 # =============================================================================
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"        # Framework for testing
+pytest = ">=8.3.4,<10.0.0"        # Framework for testing
 pytest-django = "^4.5.2"
 pytest-cov = "^6.1.1"    # Code coverage for tests
 black = "^25.1.0"        # Code formatter
