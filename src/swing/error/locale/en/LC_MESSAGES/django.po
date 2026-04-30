@@ -1,0 +1,134 @@
+# Swing Error - English Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+# Translators:
+# Swing Collection Team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. HTTP 400 Bad Request
+#: conf.py
+msgid "Bad Request"
+msgstr "Bad Request"
+
+msgid "Sorry, your request could not be processed."
+msgstr "Sorry, your request could not be processed."
+
+#. HTTP 401 Unauthorized
+#: conf.py
+msgid "Unauthorized"
+msgstr "Unauthorized"
+
+msgid "Authentication is required to access this resource."
+msgstr "Authentication is required to access this resource."
+
+msgid "Please log in to continue."
+msgstr "Please log in to continue."
+
+#. HTTP 403 Forbidden
+#: conf.py
+msgid "Forbidden"
+msgstr "Forbidden"
+
+msgid "You do not have permission to access this resource."
+msgstr "You do not have permission to access this resource."
+
+#. HTTP 404 Not Found
+#: conf.py
+msgid "Page Not Found"
+msgstr "Page Not Found"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "Sorry, the page you are looking for does not exist."
+
+msgid "Return to the homepage."
+msgstr "Return to the homepage."
+
+#. HTTP 405 Method Not Allowed
+#: conf.py
+msgid "Method Not Allowed"
+msgstr "Method Not Allowed"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "The requested method is not allowed for this resource."
+
+#. HTTP 408 Request Timeout
+#: conf.py
+msgid "Request Timeout"
+msgstr "Request Timeout"
+
+msgid "The server timed out waiting for your request."
+msgstr "The server timed out waiting for your request."
+
+msgid "Please try again."
+msgstr "Please try again."
+
+#. HTTP 410 Gone
+#: conf.py
+msgid "Gone"
+msgstr "Gone"
+
+msgid "The requested resource is no longer available."
+msgstr "The requested resource is no longer available."
+
+#. HTTP 429 Too Many Requests
+#: conf.py
+msgid "Too Many Requests"
+msgstr "Too Many Requests"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "You have sent too many requests. Please wait before trying again."
+
+msgid "Please wait and try again later."
+msgstr "Please wait and try again later."
+
+#. HTTP 500 Internal Server Error
+#: conf.py
+msgid "Internal Server Error"
+msgstr "Internal Server Error"
+
+msgid "An unexpected error occurred on the server."
+msgstr "An unexpected error occurred on the server."
+
+#. Common messages
+#: conf.py templates/swing_error/base_error.html
+msgid "Please return to the homepage."
+msgstr "Please return to the homepage."
+
+msgid "An error occurred"
+msgstr "An error occurred"
+
+msgid "Something went wrong."
+msgstr "Something went wrong."
+
+msgid "Error"
+msgstr "Error"
+
+msgid "An Error Occurred"
+msgstr "An Error Occurred"
+
+#. Template strings
+#: templates/swing_error/base_error.html
+msgid "Go Back"
+msgstr "Go Back"
+
+msgid "Return Home"
+msgstr "Return Home"
+
+#. Error details
+#: responses/response_error_base.py
+msgid "No additional details provided."
+msgstr "No additional details provided."

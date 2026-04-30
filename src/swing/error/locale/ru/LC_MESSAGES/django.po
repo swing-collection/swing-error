@@ -1,0 +1,119 @@
+# Swing Error - Russian Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. HTTP 400 Bad Request
+msgid "Bad Request"
+msgstr "Неверный запрос"
+
+msgid "Sorry, your request could not be processed."
+msgstr "К сожалению, ваш запрос не может быть обработан."
+
+#. HTTP 401 Unauthorized
+msgid "Unauthorized"
+msgstr "Не авторизован"
+
+msgid "Authentication is required to access this resource."
+msgstr "Для доступа к этому ресурсу требуется аутентификация."
+
+msgid "Please log in to continue."
+msgstr "Пожалуйста, войдите в систему для продолжения."
+
+#. HTTP 403 Forbidden
+msgid "Forbidden"
+msgstr "Доступ запрещён"
+
+msgid "You do not have permission to access this resource."
+msgstr "У вас нет разрешения на доступ к этому ресурсу."
+
+#. HTTP 404 Not Found
+msgid "Page Not Found"
+msgstr "Страница не найдена"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "К сожалению, страница, которую вы ищете, не существует."
+
+msgid "Return to the homepage."
+msgstr "Вернуться на главную страницу."
+
+#. HTTP 405 Method Not Allowed
+msgid "Method Not Allowed"
+msgstr "Метод не разрешён"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "Запрошенный метод не разрешён для этого ресурса."
+
+#. HTTP 408 Request Timeout
+msgid "Request Timeout"
+msgstr "Время ожидания запроса истекло"
+
+msgid "The server timed out waiting for your request."
+msgstr "Время ожидания сервера истекло при обработке вашего запроса."
+
+msgid "Please try again."
+msgstr "Пожалуйста, попробуйте снова."
+
+#. HTTP 410 Gone
+msgid "Gone"
+msgstr "Удалено"
+
+msgid "The requested resource is no longer available."
+msgstr "Запрошенный ресурс больше недоступен."
+
+#. HTTP 429 Too Many Requests
+msgid "Too Many Requests"
+msgstr "Слишком много запросов"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "Вы отправили слишком много запросов. Пожалуйста, подождите перед повторной попыткой."
+
+msgid "Please wait and try again later."
+msgstr "Пожалуйста, подождите и попробуйте позже."
+
+#. HTTP 500 Internal Server Error
+msgid "Internal Server Error"
+msgstr "Внутренняя ошибка сервера"
+
+msgid "An unexpected error occurred on the server."
+msgstr "На сервере произошла непредвиденная ошибка."
+
+#. Common messages
+msgid "Please return to the homepage."
+msgstr "Пожалуйста, вернитесь на главную страницу."
+
+msgid "An error occurred"
+msgstr "Произошла ошибка"
+
+msgid "Something went wrong."
+msgstr "Что-то пошло не так."
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "An Error Occurred"
+msgstr "Произошла ошибка"
+
+#. Template strings
+msgid "Go Back"
+msgstr "Назад"
+
+msgid "Return Home"
+msgstr "На главную"
+
+#. Error details
+msgid "No additional details provided."
+msgstr "Дополнительные сведения отсутствуют."

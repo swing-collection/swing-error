@@ -1,0 +1,134 @@
+# Swing Error - Dutch Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+# Translators:
+# Swing Collection Team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: Dutch\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. HTTP 400 Bad Request
+#: conf.py
+msgid "Bad Request"
+msgstr "Ongeldig verzoek"
+
+msgid "Sorry, your request could not be processed."
+msgstr "Sorry, uw verzoek kon niet worden verwerkt."
+
+#. HTTP 401 Unauthorized
+#: conf.py
+msgid "Unauthorized"
+msgstr "Niet geautoriseerd"
+
+msgid "Authentication is required to access this resource."
+msgstr "Authenticatie is vereist om toegang te krijgen tot deze bron."
+
+msgid "Please log in to continue."
+msgstr "Log in om door te gaan."
+
+#. HTTP 403 Forbidden
+#: conf.py
+msgid "Forbidden"
+msgstr "Verboden"
+
+msgid "You do not have permission to access this resource."
+msgstr "U heeft geen toestemming om toegang te krijgen tot deze bron."
+
+#. HTTP 404 Not Found
+#: conf.py
+msgid "Page Not Found"
+msgstr "Pagina niet gevonden"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "Sorry, de pagina die u zoekt bestaat niet."
+
+msgid "Return to the homepage."
+msgstr "Terug naar de startpagina."
+
+#. HTTP 405 Method Not Allowed
+#: conf.py
+msgid "Method Not Allowed"
+msgstr "Methode niet toegestaan"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "De gevraagde methode is niet toegestaan voor deze bron."
+
+#. HTTP 408 Request Timeout
+#: conf.py
+msgid "Request Timeout"
+msgstr "Verzoek time-out"
+
+msgid "The server timed out waiting for your request."
+msgstr "De server heeft een time-out gehad tijdens het wachten op uw verzoek."
+
+msgid "Please try again."
+msgstr "Probeer het opnieuw."
+
+#. HTTP 410 Gone
+#: conf.py
+msgid "Gone"
+msgstr "Verwijderd"
+
+msgid "The requested resource is no longer available."
+msgstr "De gevraagde bron is niet langer beschikbaar."
+
+#. HTTP 429 Too Many Requests
+#: conf.py
+msgid "Too Many Requests"
+msgstr "Te veel verzoeken"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "U heeft te veel verzoeken verzonden. Wacht alstublieft voordat u het opnieuw probeert."
+
+msgid "Please wait and try again later."
+msgstr "Wacht alstublieft en probeer het later opnieuw."
+
+#. HTTP 500 Internal Server Error
+#: conf.py
+msgid "Internal Server Error"
+msgstr "Interne serverfout"
+
+msgid "An unexpected error occurred on the server."
+msgstr "Er is een onverwachte fout opgetreden op de server."
+
+#. Common messages
+#: conf.py templates/swing_error/base_error.html
+msgid "Please return to the homepage."
+msgstr "Ga alstublieft terug naar de startpagina."
+
+msgid "An error occurred"
+msgstr "Er is een fout opgetreden"
+
+msgid "Something went wrong."
+msgstr "Er is iets misgegaan."
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "An Error Occurred"
+msgstr "Er is een fout opgetreden"
+
+#. Template strings
+#: templates/swing_error/base_error.html
+msgid "Go Back"
+msgstr "Ga terug"
+
+msgid "Return Home"
+msgstr "Terug naar start"
+
+#. Error details
+#: responses/response_error_base.py
+msgid "No additional details provided."
+msgstr "Geen aanvullende details beschikbaar."

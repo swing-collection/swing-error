@@ -1,0 +1,119 @@
+# Swing Error - Portuguese Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: Portuguese\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. HTTP 400 Bad Request
+msgid "Bad Request"
+msgstr "Requisição inválida"
+
+msgid "Sorry, your request could not be processed."
+msgstr "Desculpe, sua requisição não pôde ser processada."
+
+#. HTTP 401 Unauthorized
+msgid "Unauthorized"
+msgstr "Não autorizado"
+
+msgid "Authentication is required to access this resource."
+msgstr "Autenticação é necessária para acessar este recurso."
+
+msgid "Please log in to continue."
+msgstr "Por favor, faça login para continuar."
+
+#. HTTP 403 Forbidden
+msgid "Forbidden"
+msgstr "Proibido"
+
+msgid "You do not have permission to access this resource."
+msgstr "Você não tem permissão para acessar este recurso."
+
+#. HTTP 404 Not Found
+msgid "Page Not Found"
+msgstr "Página não encontrada"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "Desculpe, a página que você procura não existe."
+
+msgid "Return to the homepage."
+msgstr "Voltar para a página inicial."
+
+#. HTTP 405 Method Not Allowed
+msgid "Method Not Allowed"
+msgstr "Método não permitido"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "O método solicitado não é permitido para este recurso."
+
+#. HTTP 408 Request Timeout
+msgid "Request Timeout"
+msgstr "Tempo limite da requisição"
+
+msgid "The server timed out waiting for your request."
+msgstr "O servidor atingiu o tempo limite aguardando sua requisição."
+
+msgid "Please try again."
+msgstr "Por favor, tente novamente."
+
+#. HTTP 410 Gone
+msgid "Gone"
+msgstr "Indisponível"
+
+msgid "The requested resource is no longer available."
+msgstr "O recurso solicitado não está mais disponível."
+
+#. HTTP 429 Too Many Requests
+msgid "Too Many Requests"
+msgstr "Muitas requisições"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "Você enviou muitas requisições. Por favor, aguarde antes de tentar novamente."
+
+msgid "Please wait and try again later."
+msgstr "Por favor, aguarde e tente novamente mais tarde."
+
+#. HTTP 500 Internal Server Error
+msgid "Internal Server Error"
+msgstr "Erro interno do servidor"
+
+msgid "An unexpected error occurred on the server."
+msgstr "Ocorreu um erro inesperado no servidor."
+
+#. Common messages
+msgid "Please return to the homepage."
+msgstr "Por favor, volte para a página inicial."
+
+msgid "An error occurred"
+msgstr "Ocorreu um erro"
+
+msgid "Something went wrong."
+msgstr "Algo deu errado."
+
+msgid "Error"
+msgstr "Erro"
+
+msgid "An Error Occurred"
+msgstr "Ocorreu um erro"
+
+#. Template strings
+msgid "Go Back"
+msgstr "Voltar"
+
+msgid "Return Home"
+msgstr "Ir para início"
+
+#. Error details
+msgid "No additional details provided."
+msgstr "Nenhum detalhe adicional fornecido."

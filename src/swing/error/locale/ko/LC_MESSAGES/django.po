@@ -1,0 +1,119 @@
+# Swing Error - Korean Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. HTTP 400 Bad Request
+msgid "Bad Request"
+msgstr "잘못된 요청"
+
+msgid "Sorry, your request could not be processed."
+msgstr "죄송합니다, 요청을 처리할 수 없습니다."
+
+#. HTTP 401 Unauthorized
+msgid "Unauthorized"
+msgstr "권한 없음"
+
+msgid "Authentication is required to access this resource."
+msgstr "이 리소스에 접근하려면 인증이 필요합니다."
+
+msgid "Please log in to continue."
+msgstr "계속하려면 로그인하세요."
+
+#. HTTP 403 Forbidden
+msgid "Forbidden"
+msgstr "접근 금지"
+
+msgid "You do not have permission to access this resource."
+msgstr "이 리소스에 접근할 권한이 없습니다."
+
+#. HTTP 404 Not Found
+msgid "Page Not Found"
+msgstr "페이지를 찾을 수 없습니다"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "죄송합니다, 찾으시는 페이지가 존재하지 않습니다."
+
+msgid "Return to the homepage."
+msgstr "홈페이지로 돌아가기."
+
+#. HTTP 405 Method Not Allowed
+msgid "Method Not Allowed"
+msgstr "허용되지 않은 메소드"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "이 리소스에는 요청한 메소드가 허용되지 않습니다."
+
+#. HTTP 408 Request Timeout
+msgid "Request Timeout"
+msgstr "요청 시간 초과"
+
+msgid "The server timed out waiting for your request."
+msgstr "서버가 요청을 기다리다가 시간이 초과되었습니다."
+
+msgid "Please try again."
+msgstr "다시 시도해 주세요."
+
+#. HTTP 410 Gone
+msgid "Gone"
+msgstr "삭제됨"
+
+msgid "The requested resource is no longer available."
+msgstr "요청한 리소스를 더 이상 사용할 수 없습니다."
+
+#. HTTP 429 Too Many Requests
+msgid "Too Many Requests"
+msgstr "요청이 너무 많습니다"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "요청을 너무 많이 보냈습니다. 잠시 후 다시 시도해 주세요."
+
+msgid "Please wait and try again later."
+msgstr "잠시 기다린 후 다시 시도해 주세요."
+
+#. HTTP 500 Internal Server Error
+msgid "Internal Server Error"
+msgstr "서버 내부 오류"
+
+msgid "An unexpected error occurred on the server."
+msgstr "서버에서 예기치 않은 오류가 발생했습니다."
+
+#. Common messages
+msgid "Please return to the homepage."
+msgstr "홈페이지로 돌아가 주세요."
+
+msgid "An error occurred"
+msgstr "오류가 발생했습니다"
+
+msgid "Something went wrong."
+msgstr "문제가 발생했습니다."
+
+msgid "Error"
+msgstr "오류"
+
+msgid "An Error Occurred"
+msgstr "오류가 발생했습니다"
+
+#. Template strings
+msgid "Go Back"
+msgstr "뒤로 가기"
+
+msgid "Return Home"
+msgstr "홈으로"
+
+#. Error details
+msgid "No additional details provided."
+msgstr "추가 세부 정보가 없습니다."

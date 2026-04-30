@@ -1,0 +1,119 @@
+# Swing Error - Chinese (Simplified) Translations
+# Copyright (C) 2024 Swing Collection
+# This file is distributed under the same license as the swing-error package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: swing-error 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Swing Collection Team\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. HTTP 400 Bad Request
+msgid "Bad Request"
+msgstr "错误请求"
+
+msgid "Sorry, your request could not be processed."
+msgstr "抱歉，您的请求无法处理。"
+
+#. HTTP 401 Unauthorized
+msgid "Unauthorized"
+msgstr "未授权"
+
+msgid "Authentication is required to access this resource."
+msgstr "访问此资源需要身份验证。"
+
+msgid "Please log in to continue."
+msgstr "请登录以继续。"
+
+#. HTTP 403 Forbidden
+msgid "Forbidden"
+msgstr "禁止访问"
+
+msgid "You do not have permission to access this resource."
+msgstr "您没有权限访问此资源。"
+
+#. HTTP 404 Not Found
+msgid "Page Not Found"
+msgstr "页面未找到"
+
+msgid "Sorry, the page you are looking for does not exist."
+msgstr "抱歉，您要查找的页面不存在。"
+
+msgid "Return to the homepage."
+msgstr "返回首页。"
+
+#. HTTP 405 Method Not Allowed
+msgid "Method Not Allowed"
+msgstr "方法不允许"
+
+msgid "The requested method is not allowed for this resource."
+msgstr "此资源不允许使用请求的方法。"
+
+#. HTTP 408 Request Timeout
+msgid "Request Timeout"
+msgstr "请求超时"
+
+msgid "The server timed out waiting for your request."
+msgstr "服务器等待您的请求超时。"
+
+msgid "Please try again."
+msgstr "请重试。"
+
+#. HTTP 410 Gone
+msgid "Gone"
+msgstr "已删除"
+
+msgid "The requested resource is no longer available."
+msgstr "请求的资源不再可用。"
+
+#. HTTP 429 Too Many Requests
+msgid "Too Many Requests"
+msgstr "请求过多"
+
+msgid "You have sent too many requests. Please wait before trying again."
+msgstr "您发送了太多请求。请稍候再试。"
+
+msgid "Please wait and try again later."
+msgstr "请稍候再试。"
+
+#. HTTP 500 Internal Server Error
+msgid "Internal Server Error"
+msgstr "服务器内部错误"
+
+msgid "An unexpected error occurred on the server."
+msgstr "服务器发生意外错误。"
+
+#. Common messages
+msgid "Please return to the homepage."
+msgstr "请返回首页。"
+
+msgid "An error occurred"
+msgstr "发生错误"
+
+msgid "Something went wrong."
+msgstr "出了点问题。"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "An Error Occurred"
+msgstr "发生错误"
+
+#. Template strings
+msgid "Go Back"
+msgstr "返回"
+
+msgid "Return Home"
+msgstr "返回首页"
+
+#. Error details
+msgid "No additional details provided."
+msgstr "没有提供额外详情。"
