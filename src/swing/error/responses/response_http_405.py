@@ -9,8 +9,8 @@ Provides HTTP 405 Response Class
 ================================
 
 This module defines a custom HTTP 405 Method Not Allowed response class for
-handling HTTP 405 errors in a Django application. It inherits from Django's
-HttpResponse class.
+handling HTTP 405 errors in a Django application. It extends the BaseErrorResponse
+class for structured error handling and logging.
 
 Usage:
 ------
@@ -22,7 +22,7 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler405
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponse
 
-"""  # noqa E501
+"""
 
 
 # =============================================================================
@@ -30,13 +30,10 @@ Links:
 # =============================================================================
 
 # Import | Standard Library
-import logging
-from typing import Any, List, Union
-
-# Import | Libraries
-from django.http import HttpResponse
+from typing import Any
 
 # Import | Local Modules
+from .response_error_base import BaseErrorResponse
 
 
 # =============================================================================
@@ -44,13 +41,13 @@ from django.http import HttpResponse
 # =============================================================================
 
 
-class Http405Response(HttpResponse):
+class Http405Response(BaseErrorResponse):
     """
     HTTP 405 Response Class
     =======================
 
     Custom HTTP 405 Method Not Allowed response class.
-    Inherits from Django's HttpResponse.
+    Extends the BaseErrorResponse for structured handling and logging.
 
     Attributes:
         status_code (int): HTTP status code for the response.
@@ -60,28 +57,33 @@ class Http405Response(HttpResponse):
 
     def __init__(
         self,
-        content: Union[bytes, str] = b"",
         *args: Any,
+        message: str = "Method Not Allowed",
+        details: str | dict[str, Any] | None = None,
+        request: Any | None = None,
         **kwargs: Any,
     ) -> None:
         """
-        Initialize the Http405Response with optional content, args, and kwargs.
+        Initialize the Http405Response with optional message, details, and
+        request.
 
         Args:
-            content (bytes or str): The content to include in the response body.
-            *args: Additional positional arguments.
-            **kwargs: Additional keyword arguments.
+            *args: Additional positional arguments for the BaseErrorResponse.
+            message (str): A brief description of the error
+                (default: "Method Not Allowed").
+            details (str | dict[str, Any] | None): Additional error details
+                (default: None).
+            request (Any | None): The HTTP request object for logging context
+                (default: None).
+            **kwargs: Additional keyword arguments for the BaseErrorResponse.
         """
-        super().__init__(content=content, *args, **kwargs)
-        self.log_error()
-
-    def log_error(self) -> None:
-        """
-        Log the error details for debugging purposes.
-        """
-        logger: logging.Logger = logging.getLogger(name=__name__)
-        logger.error(
-            msg=f"405 Method Not Allowed: Response initialized with content: {self.content}"
+        super().__init__(
+            status_code=405,
+            message=message,
+            details=details,
+            request=request,
+            *args,
+            **kwargs,
         )
 
 
@@ -89,6 +91,6 @@ class Http405Response(HttpResponse):
 # Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "Http405Response",
 ]

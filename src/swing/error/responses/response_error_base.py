@@ -10,8 +10,8 @@ Provides Base Error Response Class
 ==================================
 
 This module provides a base class for HTTP error responses, offering
-structured JSON formatting, logging, and extensibility for custom error
-handling in Django applications.
+structured JSON formatting, logging, CORS support, error tracking integration,
+and extensibility for custom error handling in Django applications.
 
 Usage:
 ------
@@ -35,24 +35,21 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseBadRequest
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
 # Import | Standard Library
-import json
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
-# Import | Libraries
 from django.http import HttpRequest, JsonResponse
 
+# Import | Local
 # Import | Local Modules
-# None
-
+from ..conf import add_cors_headers, capture_error, get_debug_info
 
 # =============================================================================
 # Logger
@@ -73,16 +70,23 @@ class BaseErrorResponse(JsonResponse):
     =========================
 
     A base class for HTTP error responses, providing structured JSON
-    formatting, logging, and extensibility.
+    formatting, logging, CORS headers, error tracking, and extensibility.
 
     Attributes:
         status_code (int): HTTP status code for the response.
         message (str): Short description of the error.
-        details (Optional[Union[str, Dict[str, Any]]]): Additional details
+        details (str | dict[str, Any] | None): Additional details
             about the error.
-        error_code (Optional[str]): Optional application-specific error code.
-        request (Optional[HttpRequest]): The HTTP request object, used for
-            logging.
+        error_code (str | None): Optional application-specific error code.
+        request (HttpRequest | None): The HTTP request object, used for
+            logging and CORS.
+
+    Features:
+        - Structured JSON error responses
+        - Automatic CORS headers (when enabled in settings)
+        - Sentry/error tracking integration (when enabled)
+        - Debug mode with stack traces and request info
+        - Comprehensive logging
 
     """
 
@@ -90,9 +94,11 @@ class BaseErrorResponse(JsonResponse):
         self,
         status_code: int,
         message: str,
-        details: Optional[Union[str, Dict[str, Any], list]] = None,
-        error_code: Optional[str] = None,
-        request: Optional[HttpRequest] = None,
+        details: str | dict[str, Any] | list | None = None,
+        error_code: str | None = None,
+        request: HttpRequest | None = None,
+        exception: Exception | None = None,
+        include_debug: bool = True,
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -102,24 +108,34 @@ class BaseErrorResponse(JsonResponse):
         Args:
             status_code (int): The HTTP status code for the error response.
             message (str): A brief message describing the error.
-            details (Optional[Union[str, Dict[str, Any], list]]): Additional
+            details (str | dict[str, Any] | list | None): Additional
                 error details (default: None).
-            error_code (Optional[str]): Optional application-specific error
+            error_code (str | None): Optional application-specific error
                 code (default: None).
-            request (Optional[HttpRequest]): The HTTP request object for
+            request (HttpRequest | None): The HTTP request object for
                 logging context (default: None).
+            exception (Exception | None): The exception that caused this
+                error (default: None). Used for error tracking and debug info.
+            include_debug (bool): Whether to include debug info when in
+                DEBUG mode (default: True).
             *args: Additional positional arguments for JsonResponse.
             **kwargs: Additional keyword arguments for JsonResponse.
 
         """
 
+        # Get debug information if applicable
+        debug_info: dict[str, Any] = {}
+        if include_debug:
+            debug_info = get_debug_info(exception=exception, request=request)
+
         # Prepare the structured content for the error response.
         # `to_dict` method formats the message, details, and optional error
         # code into a consistent dictionary structure for the response body.
-        content: Dict[str, Any] = self.to_dict(
+        content: dict[str, Any] = self.to_dict(
             message=message,
             details=details,
             error_code=error_code,
+            debug_info=debug_info,
         )
 
         # Initialize the JsonResponse with the structured content and status
@@ -132,6 +148,13 @@ class BaseErrorResponse(JsonResponse):
             **kwargs,
         )
 
+        # Add CORS headers if enabled
+        add_cors_headers(response=self, request=request)
+
+        # Add error code header if provided
+        if error_code:
+            self["X-Error-Code"] = error_code
+
         # Log the error with all relevant context, including the status code,
         # message, details, and request information (if available).
         # This ensures the error is captured in logs for debugging purposes.
@@ -142,24 +165,40 @@ class BaseErrorResponse(JsonResponse):
             request=request,
         )
 
+        # Send to error tracking (Sentry, etc.) if configured
+        if exception or status_code >= 500:
+            capture_error(
+                exception=exception,
+                message=f"HTTP {status_code}: {message}",
+                request=request,
+                extra_context={
+                    "status_code": status_code,
+                    "error_code": error_code,
+                    "details": details,
+                },
+            )
+
     @staticmethod
     def to_dict(
         message: str,
-        details: Optional[Union[str, Dict[str, Any], list]],
-        error_code: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        details: str | dict[str, Any] | list | None,
+        error_code: str | None = None,
+        debug_info: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         """
         Convert the error response into a structured dictionary.
 
         Args:
             message (str): A brief message describing the error.
-            details (Optional[Union[str, Dict[str, Any], list]]): Additional
+            details (str | dict[str, Any] | list | None): Additional
                 error details.
-            error_code (Optional[str]): Optional application-specific error
+            error_code (str | None): Optional application-specific error
                 code.
+            debug_info (dict[str, Any] | None): Debug information to include
+                (only in DEBUG mode).
 
         Returns:
-            Dict[str, Any]: A structured dictionary for the error response.
+            dict[str, Any]: A structured dictionary for the error response.
         """
 
         # Create a structured response dictionary for the error response.
@@ -167,7 +206,7 @@ class BaseErrorResponse(JsonResponse):
         # The `details` offer additional context or information about the
         # error. If `details` is not provided, it defaults to "No additional
         # details provided."
-        response = {
+        response: dict[str, Any] = {
             "error": message,
             "details": details or "No additional details provided.",
         }
@@ -178,6 +217,10 @@ class BaseErrorResponse(JsonResponse):
         if error_code:
             response["code"] = error_code
 
+        # Include debug information if provided (only in DEBUG mode)
+        if debug_info:
+            response["debug"] = debug_info
+
         # Return the structured dictionary, which will be used as the content
         # for the JSON response.
         return response
@@ -186,8 +229,8 @@ class BaseErrorResponse(JsonResponse):
         self,
         status_code: int,
         message: str,
-        details: Optional[Union[str, Dict[str, Any], list]],
-        request: Optional[HttpRequest],
+        details: str | dict[str, Any] | list | None,
+        request: HttpRequest | None,
     ) -> None:
         """
         Log the error details with contextual information.
@@ -195,8 +238,8 @@ class BaseErrorResponse(JsonResponse):
         Args:
             status_code (int): The HTTP status code.
             message (str): Short description of the error.
-            details (Optional[Union[str, Dict[str, Any], list]]): Additional error details.
-            request (Optional[HttpRequest]): The HTTP request object for contextual logging.
+            details (str | dict[str, Any] | list | None): Additional error details.
+            request (HttpRequest | None): The HTTP request object for contextual logging.
         """
 
         # Construct the base log message with the HTTP status code and error
@@ -234,6 +277,6 @@ class BaseErrorResponse(JsonResponse):
 # Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "BaseErrorResponse",
 ]

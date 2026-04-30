@@ -23,7 +23,7 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseBadRequest
 
-"""  # noqa E501
+"""
 
 
 # =============================================================================
@@ -32,7 +32,7 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 # Import | Local Modules
 from ..responses.response_error_base import BaseErrorResponse
@@ -61,8 +61,8 @@ class Http400Response(BaseErrorResponse):
         self,
         *args: Any,
         message: str = "Bad Request",
-        details: Optional[Union[str, Dict[str, Any]]] = None,
-        request: Optional[Any] = None,
+        details: str | dict[str, Any] | None = None,
+        request: Any | None = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -72,9 +72,9 @@ class Http400Response(BaseErrorResponse):
         Args:
             *args: Additional positional arguments for the BaseErrorResponse.
             message (str): A brief description of the error (default: "Bad Request").
-            details (Optional[Union[str, Dict[str, Any]]]): Additional error details
+            details (str | dict[str, Any] | None): Additional error details
                 (default: None).
-            request (Optional[Any]): The HTTP request object for logging context
+            request (Any | None): The HTTP request object for logging context
                 (default: None).
             **kwargs: Additional keyword arguments for the BaseErrorResponse.
         """
@@ -92,6 +92,6 @@ class Http400Response(BaseErrorResponse):
 # Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "Http400Response",
 ]
