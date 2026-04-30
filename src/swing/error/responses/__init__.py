@@ -44,6 +44,7 @@ handler.
 # =============================================================================
 
 # Import | Local Modules
+from .response_error_base import BaseErrorResponse
 from .response_http_400 import Http400Response
 from .response_http_401 import Http401Response
 from .response_http_403 import Http403Response
@@ -55,6 +56,7 @@ from .response_http_429 import Http429Response
 from .response_http_500 import Http500Response
 
 __all__ = [
+    "BaseErrorResponse",
     "Http400Response",
     "Http401Response",
     "Http403Response",

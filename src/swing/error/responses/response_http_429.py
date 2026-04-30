@@ -29,6 +29,8 @@ Links:
 # =============================================================================
 
 from typing import Any
+
+from .detect_retry_after import detect_retry_after
 from .response_error_base import BaseErrorResponse
 
 # =============================================================================
@@ -75,9 +77,12 @@ class Http429Response(BaseErrorResponse):
             exception (Exception | None): The exception that caused this error.
             retry_after (int | None): Seconds to wait before retrying.
             **kwargs: Additional arguments for BaseErrorResponse.
-        """ 
+        """
         # Handle retry_after separately since it's a header, not part of kwargs
-        self.retry_after = retry_after
+        self.retry_after = retry_after or detect_retry_after(
+            exception=exception,
+            request=request,
+        )
         super().__init__(
             status_code=status_code or self.status_code,
             message=message or self.default_message,
@@ -87,8 +92,8 @@ class Http429Response(BaseErrorResponse):
             **kwargs,
         )
         # Set Retry-After header if provided
-        if retry_after:
-            self["Retry-After"] = str(retry_after)
+        if self.retry_after is not None:
+            self["Retry-After"] = str(self.retry_after)
 
 
 # =============================================================================

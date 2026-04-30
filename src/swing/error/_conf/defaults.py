@@ -48,6 +48,12 @@ DEFAULT_DEBUG_CONFIG: dict[str, Any] = {
     "include_sql_queries": False,
 }
 
+DEFAULT_SECURITY_HEADERS_CONFIG: dict[str, str] = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "same-origin",
+}
+
 DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     "base": {
         "status_code": 500,

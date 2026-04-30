@@ -57,3 +57,12 @@ class TestExceptionMiddleware(SimpleTestCase):
         middleware = ExceptionMiddleware(lambda request: Http500Response())
         response = middleware(self.factory.get("/"))
         assert response.status_code == 500
+
+    async def test_async_middleware_entrypoint(self) -> None:
+        async def get_response(request):
+            del request
+            return Http401Response()
+
+        middleware = ExceptionMiddleware(get_response)
+        response = await middleware.__acall__(self.factory.get("/"))
+        assert response.status_code == 401

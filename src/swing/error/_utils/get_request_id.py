@@ -11,6 +11,6 @@ def get_request_id(request: HttpRequest) -> str:
         "HTTP_X_TRACE_ID",
     ]:
         if request_id := request.META.get(header):
-            return request_id
+            return str(request_id)
 
     return generate_request_id()

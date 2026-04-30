@@ -67,11 +67,13 @@ Debug Mode Configuration:
 
 # Import | Local
 from ._conf.add_cors_headers import add_cors_headers
+from ._conf.add_security_headers import add_security_headers
 from ._conf.capture_error import capture_error
 from ._conf.defaults import (
     DEFAULT_CORS_CONFIG,
     DEFAULT_DEBUG_CONFIG,
     DEFAULT_ERROR_SETTINGS,
+    DEFAULT_SECURITY_HEADERS_CONFIG,
     DEFAULT_TRACKING_CONFIG,
 )
 from ._conf.get_all_error_types import get_all_error_types
@@ -90,12 +92,14 @@ __all__: list[str] = [
     "DEFAULT_CORS_CONFIG",
     "DEFAULT_TRACKING_CONFIG",
     "DEFAULT_DEBUG_CONFIG",
+    "DEFAULT_SECURITY_HEADERS_CONFIG",
     "get_error_config",
     "get_all_error_types",
     "get_cors_config",
     "get_tracking_config",
     "get_debug_config",
     "add_cors_headers",
+    "add_security_headers",
     "capture_error",
     "get_debug_info",
 ]

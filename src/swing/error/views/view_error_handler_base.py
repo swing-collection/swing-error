@@ -25,7 +25,7 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any
+from typing import Any, cast
 
 from django.http import HttpRequest
 from django.views.generic import TemplateView
@@ -76,22 +76,26 @@ class BaseErrorView(TemplateView):
         Returns:
             int: The HTTP status code.
         """
-        return get_error_config(
-            error_type=self.error_type,
-            key="status_code",
-            default=500,
+        return cast(
+            int,
+            get_error_config(
+                error_type=self.error_type,
+                key="status_code",
+                default=500,
+            ),
         )
 
-    @property
-    def template_name(self) -> str:
-        """
-        Retrieve the template name from the configuration.
-        """
-        return get_error_config(
-            error_type=self.error_type,
-            key="template_name",
-            default="errors/default.html",
-        )
+    def get_template_names(self) -> list[str]:
+        return [
+            cast(
+                str,
+                get_error_config(
+                    error_type=self.error_type,
+                    key="template_name",
+                    default="errors/default.html",
+                ),
+            )
+        ]
 
     @property
     def default_message(self) -> str:
@@ -101,10 +105,13 @@ class BaseErrorView(TemplateView):
         Returns:
             str: The default error message.
         """
-        return get_error_config(
-            error_type=self.error_type,
-            key="default_message",
-            default="An error occurred",
+        return cast(
+            str,
+            get_error_config(
+                error_type=self.error_type,
+                key="default_message",
+                default="An error occurred",
+            ),
         )
 
     @property
@@ -115,10 +122,13 @@ class BaseErrorView(TemplateView):
         Returns:
             dict[str, Any]: A dictionary with error details.
         """
-        return get_error_config(
-            error_type=self.error_type,
-            key="default_details",
-            default={},
+        return cast(
+            dict[str, Any],
+            get_error_config(
+                error_type=self.error_type,
+                key="default_details",
+                default={},
+            ),
         )
 
     @property
@@ -126,15 +136,18 @@ class BaseErrorView(TemplateView):
         """
         Retrieve the default context for rendering the template.
         """
-        return get_error_config(
-            error_type=self.error_type,
-            key="default_details",
-            default={
-                "title": "Error",
-                "header": "An Error Occurred",
-                "message": "Something went wrong.",
-                "redirect": "Please return to the homepage.",
-            },
+        return cast(
+            dict[str, Any],
+            get_error_config(
+                error_type=self.error_type,
+                key="default_details",
+                default={
+                    "title": "Error",
+                    "header": "An Error Occurred",
+                    "message": "Something went wrong.",
+                    "redirect": "Please return to the homepage.",
+                },
+            ),
         )
 
     @property
@@ -145,10 +158,13 @@ class BaseErrorView(TemplateView):
         Returns:
             bool: Whether to log the error details.
         """
-        return get_error_config(
-            error_type=self.error_type,
-            key="log_errors",
-            default=True,
+        return cast(
+            bool,
+            get_error_config(
+                error_type=self.error_type,
+                key="log_errors",
+                default=True,
+            ),
         )
 
     def get_context_data(

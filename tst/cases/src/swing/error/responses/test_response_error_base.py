@@ -29,6 +29,9 @@ class TestBaseErrorResponse(SimpleTestCase):
         assert response.status_code == 400
         assert response["X-Error-Code"] == "ERR-1"
         mock_add_cors_headers.assert_called_once()
+        assert response["X-Content-Type-Options"] == "nosniff"
+        assert response["X-Frame-Options"] == "DENY"
+        assert response["Referrer-Policy"] == "same-origin"
 
     def test_response_serializes_to_json(self) -> None:
         request = self.factory.get("/api/test")
@@ -38,3 +41,22 @@ class TestBaseErrorResponse(SimpleTestCase):
         content = json.loads(response.content)
         assert content["error"] == "Bad Request"
         assert "details" in content
+
+    def test_log_error_scrubs_sensitive_request_data(self) -> None:
+        request = self.factory.post(
+            "/api/test",
+            data='{"password": "secret"}',
+            content_type="application/json",
+            HTTP_AUTHORIZATION="Bearer super-secret",
+            HTTP_COOKIE="sessionid=unsafe",
+        )
+
+        response = BaseErrorResponse(
+            status_code=400,
+            message="Bad Request",
+            details={"token": "top-secret"},
+            request=request,
+        )
+
+        content = json.loads(response.content)
+        assert content["error"] == "Bad Request"

@@ -17,7 +17,10 @@ Provides Exception Logger Middleware Class
 # =============================================================================
 
 # Import | Standard Library
+from collections.abc import Callable
 import logging
+
+from django.http import HttpRequest, HttpResponse
 
 
 # Import | Libraries
@@ -39,22 +42,26 @@ logger: logging.Logger = logging.getLogger(name=__name__)
 class ExceptionLoggerMiddleware:
     """ """
 
-    def __init__(self, get_response) -> None:
+    def __init__(
+        self,
+        get_response: Callable[[HttpRequest], HttpResponse],
+    ) -> None:
         """ """
         self.get_response = get_response
         self.logger: logging.Logger = logging.getLogger("django")
 
-    def __call__(self, request):
+    def __call__(self, request: HttpRequest) -> HttpResponse:
         """ """
         response = self.get_response(request)
         return response
 
     def process_exception(
         self,
-        request,
-        exception,
+        request: HttpRequest,
+        exception: Exception,
     ) -> None:
         """ """
+        del request
         self.logger.exception(str(object=exception))
 
 

@@ -43,13 +43,19 @@ Links:
 
 # Import | Standard Library
 import logging
-from typing import Any
+from typing import Any, TypeAlias
 
 from django.http import HttpRequest, JsonResponse
 
 # Import | Local
 # Import | Local Modules
-from ..conf import add_cors_headers, capture_error, get_debug_info
+from .._utils.scrub_sensitive_data import scrub_sensitive_data
+from ..conf import (
+    add_cors_headers,
+    add_security_headers,
+    capture_error,
+    get_debug_info,
+)
 
 # =============================================================================
 # Logger
@@ -57,6 +63,8 @@ from ..conf import add_cors_headers, capture_error, get_debug_info
 
 # Configure logger
 logger: logging.Logger = logging.getLogger(name=__name__)
+
+ErrorDetails: TypeAlias = str | dict[str, Any] | list[Any] | None
 
 
 # =============================================================================
@@ -94,7 +102,7 @@ class BaseErrorResponse(JsonResponse):
         self,
         status_code: int,
         message: str,
-        details: str | dict[str, Any] | list | None = None,
+        details: ErrorDetails = None,
         error_code: str | None = None,
         request: HttpRequest | None = None,
         exception: Exception | None = None,
@@ -141,15 +149,19 @@ class BaseErrorResponse(JsonResponse):
         # Initialize the JsonResponse with the structured content and status
         # code. Additional arguments (`args` and `kwargs`) can be passed to
         # customize the response further (e.g., custom headers).
+        clean_kwargs = {
+            key: value for key, value in kwargs.items() if key != "data"
+        }
         super().__init__(
-            data=content,
+            content,
             status=status_code,
             *args,
-            **kwargs,
+            **clean_kwargs,
         )
 
         # Add CORS headers if enabled
         add_cors_headers(response=self, request=request)
+        add_security_headers(response=self)
 
         # Add error code header if provided
         if error_code:
@@ -181,7 +193,7 @@ class BaseErrorResponse(JsonResponse):
     @staticmethod
     def to_dict(
         message: str,
-        details: str | dict[str, Any] | list | None,
+        details: ErrorDetails,
         error_code: str | None = None,
         debug_info: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
@@ -229,7 +241,7 @@ class BaseErrorResponse(JsonResponse):
         self,
         status_code: int,
         message: str,
-        details: str | dict[str, Any] | list | None,
+        details: ErrorDetails,
         request: HttpRequest | None,
     ) -> None:
         """
@@ -245,8 +257,9 @@ class BaseErrorResponse(JsonResponse):
         # Construct the base log message with the HTTP status code and error
         # message. Includes the error `details` (if provided) to give more
         # context about the issue.
+        safe_details = scrub_sensitive_data(details)
         log_message: str = (
-            f"HTTP {status_code}: {message}\n" f"Details: {details}\n"
+            f"HTTP {status_code}: {message}\n" f"Details: {safe_details}\n"
         )
 
         # If a request object is available, include additional contextual
@@ -258,14 +271,14 @@ class BaseErrorResponse(JsonResponse):
                 # Logs the HTTP method (e.g., GET, POST).
                 f"Method: {request.method}\n"
                 # Logs all request headers as a dictionary.
-                f"Headers: {dict(request.headers)}\n"
+                f"Headers: {scrub_sensitive_data(dict(request.headers))}\n"
             )
             # If the request has a body, decode and log it for debugging
             # purposes. Uses `errors='replace'` to avoid decoding errors for
             # non-UTF-8 content.
             if request.body:
                 log_message += (
-                    f"Body: {request.body.decode(errors='replace')}\n"
+                    f"Body: {scrub_sensitive_data(request.body.decode(errors='replace'))}\n"
                 )
 
         # Log the constructed message as an error, ensuring the stack trace

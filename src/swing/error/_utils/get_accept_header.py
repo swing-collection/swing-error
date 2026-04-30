@@ -5,4 +5,5 @@ from .constants import MIME_ANY
 
 
 def get_accept_header(request: HttpRequest) -> str:
-    return request.META.get("HTTP_ACCEPT", MIME_ANY)
+    value = request.META.get("HTTP_ACCEPT", MIME_ANY)
+    return str(value)

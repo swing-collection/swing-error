@@ -60,7 +60,7 @@ from .views import (
 # URL Patterns
 # =============================================================================
 
-urlpatterns: list = [
+urlpatterns: list[object] = [
     # Add other URL patterns here
 ]
 

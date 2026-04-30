@@ -1,5 +1,6 @@
 # Import | Standard Library
-from typing import Any
+from importlib import import_module
+from typing import Any, cast
 
 from django.http import HttpRequest
 
@@ -37,8 +38,7 @@ def capture_error(
         "capture_messages", True
     ):
         try:
-            # Import | Libraries
-            import sentry_sdk
+            sentry_sdk = cast(Any, import_module("sentry_sdk"))
 
             if exception and config.get("capture_exceptions", True):
                 with sentry_sdk.push_scope() as scope:

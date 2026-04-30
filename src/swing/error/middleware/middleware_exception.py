@@ -51,16 +51,16 @@ Links:
 # =============================================================================
 
 # Import | Standard Library
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
+import inspect
 import logging
-from typing import Any
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
 
 # Import | Local
 # Import | Local Modules
 from ..responses import (
+    BaseErrorResponse,
     Http400Response,
     Http401Response,
     Http403Response,
@@ -93,9 +93,12 @@ class ExceptionMiddleware:
 
     """
 
+    async_capable = True
+    sync_capable = True
+
     def __init__(
         self,
-        get_response: Callable[[HttpRequest], HttpResponse],
+        get_response: Callable[[HttpRequest], HttpResponse | Awaitable[HttpResponse]],
     ) -> None:
         """
         Initialize the ExceptionMiddleware.
@@ -122,10 +125,13 @@ class ExceptionMiddleware:
         """
 
         try:
-            response: HttpResponse = self.get_response(request)
-
+            response = self.get_response(request)
+            if inspect.isawaitable(response):
+                raise RuntimeError(
+                    "Async response returned from sync ExceptionMiddleware path; use __acall__ instead."
+                )
             # Handle specific status codes dynamically
-            status_code_handlers = {
+            status_code_handlers: dict[int, Callable[..., HttpResponse]] = {
                 400: Http400Response,
                 401: Http401Response,
                 403: Http403Response,
@@ -152,9 +158,45 @@ class ExceptionMiddleware:
                 request=request,
             )
 
+    async def __acall__(
+        self,
+        request: HttpRequest,
+    ) -> HttpResponse:
+        try:
+            response = self.get_response(request)
+            resolved_response = (
+                await response if inspect.isawaitable(response) else response
+            )
+
+            status_code_handlers: dict[int, Callable[..., HttpResponse]] = {
+                400: Http400Response,
+                401: Http401Response,
+                403: Http403Response,
+                404: Http404Response,
+                405: Http405Response,
+                408: Http408Response,
+                410: Http410Response,
+                429: Http429Response,
+                500: Http500Response,
+            }
+
+            if resolved_response.status_code in status_code_handlers:
+                return self.handle_custom_response(
+                    response_class=status_code_handlers[resolved_response.status_code],
+                    request=request,
+                )
+
+            return resolved_response
+
+        except Exception as exception:
+            return self.handle_exception(
+                exception=exception,
+                request=request,
+            )
+
     def handle_custom_response(
         self,
-        response_class: type[HttpResponse],
+        response_class: Callable[..., HttpResponse],
         request: HttpRequest,
     ) -> HttpResponse:
         """
@@ -169,9 +211,9 @@ class ExceptionMiddleware:
             HttpResponse: The custom response for the status code.
         """
         logger.warning(
-            msg=f"Custom response for {response_class.status_code}: Path={request.path}"
+            msg=f"Custom response for {getattr(response_class, 'status_code', 'unknown')}: Path={request.path}"
         )
-        return response_class()
+        return response_class(request=request)
 
     def handle_exception(
         self,
