@@ -129,7 +129,7 @@ def some_view(request):
 
 ## Colophon
 
-Made with ❤️ by **[Scape Agency](https://www.scape.agency)**
+Made with ❤️ by **[Scape Press](https://www.scape.press)**
 
 ### Contributing
 
