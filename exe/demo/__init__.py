@@ -17,8 +17,6 @@ project-level components for the demo Django project.
 # Imports
 # =============================================================================
 
-# Import | Standard Library
 
-# Import | Libraries
 
 # Import | Local Modules

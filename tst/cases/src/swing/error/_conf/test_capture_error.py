@@ -1,6 +1,8 @@
-import pytest
 from django.http import HttpRequest
 from django.test import override_settings
+
+# Import | Libraries
+import pytest
 
 from swing.error._conf.capture_error import capture_error
 
@@ -92,10 +94,12 @@ class TestCaptureError:
     @override_settings(
         SWING_ERROR_TRACKING={
             "enabled": True,
-            "callback": "tst.helpers.failing_callback"
+            "callback": "tst.helpers.failing_callback",
         }
     )
-    def test_capture_error_with_failing_callback(self, http_request: HttpRequest) -> None:
+    def test_capture_error_with_failing_callback(
+        self, http_request: HttpRequest
+    ) -> None:
         """Test that errors in callback don't crash the application."""
         exc = ValueError("Test")
         # Should not raise even if callback fails
@@ -105,10 +109,12 @@ class TestCaptureError:
     @override_settings(
         SWING_ERROR_TRACKING={
             "enabled": True,
-            "callback": "tst.helpers.working_callback"
+            "callback": "tst.helpers.working_callback",
         }
     )
-    def test_capture_error_with_working_callback(self, http_request: HttpRequest) -> None:
+    def test_capture_error_with_working_callback(
+        self, http_request: HttpRequest
+    ) -> None:
         """Test that working callbacks are called successfully."""
         exc = ValueError("Test")
         # Should not raise with working callback

@@ -149,9 +149,7 @@ class BaseErrorResponse(JsonResponse):
         # Initialize the JsonResponse with the structured content and status
         # code. Additional arguments (`args` and `kwargs`) can be passed to
         # customize the response further (e.g., custom headers).
-        clean_kwargs = {
-            key: value for key, value in kwargs.items() if key != "data"
-        }
+        clean_kwargs = {key: value for key, value in kwargs.items() if key != "data"}
         super().__init__(
             content,
             status=status_code,
@@ -277,9 +275,7 @@ class BaseErrorResponse(JsonResponse):
             # purposes. Uses `errors='replace'` to avoid decoding errors for
             # non-UTF-8 content.
             if request.body:
-                log_message += (
-                    f"Body: {scrub_sensitive_data(request.body.decode(errors='replace'))}\n"
-                )
+                log_message += f"Body: {scrub_sensitive_data(request.body.decode(errors='replace'))}\n"
 
         # Log the constructed message as an error, ensuring the stack trace
         # and details are captured in the application's logs for debugging.

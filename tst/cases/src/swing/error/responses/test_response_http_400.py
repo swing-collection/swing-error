@@ -15,17 +15,14 @@ class TestHttp400Response(SimpleTestCase):
 
     def test_custom_message(self) -> None:
         assert (
-            json.loads(
-                Http400Response(message="Custom error message").content
-            )["error"]
+            json.loads(Http400Response(message="Custom error message").content)["error"]
             == "Custom error message"
         )
 
     def test_with_details(self) -> None:
         details = {"field": "email", "error": "Invalid format"}
         assert (
-            json.loads(Http400Response(details=details).content)["details"]
-            == details
+            json.loads(Http400Response(details=details).content)["details"] == details
         )
 
     def test_json_content_type(self) -> None:

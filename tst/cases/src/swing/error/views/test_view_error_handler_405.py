@@ -9,9 +9,7 @@ class TestHandler405View(SimpleTestCase):
         self.factory = RequestFactory()
 
     def test_view_returns_405_status(self) -> None:
-        assert (
-            Handler405View.as_view()(self.factory.get("/")).status_code == 405
-        )
+        assert Handler405View.as_view()(self.factory.get("/")).status_code == 405
 
     def test_view_uses_http405_response(self) -> None:
         assert Handler405View.response_class is Http405Response

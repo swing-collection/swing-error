@@ -4,7 +4,9 @@ import json
 from django.test import RequestFactory, SimpleTestCase
 
 from swing.error.middleware import ExceptionMiddleware
-from swing.error.middleware.middleware_exception_logger import ExceptionLoggerMiddleware
+from swing.error.middleware.middleware_exception_logger import (
+    ExceptionLoggerMiddleware,
+)
 from swing.error.responses import (
     Http401Response,
     Http403Response,
@@ -80,7 +82,9 @@ class TestExceptionMiddleware(SimpleTestCase):
         assert response.status_code == 410
 
     def test_middleware_with_429_response(self) -> None:
-        middleware = ExceptionMiddleware(lambda request: Http429Response(retry_after=60))
+        middleware = ExceptionMiddleware(
+            lambda request: Http429Response(retry_after=60)
+        )
         response = middleware(self.factory.get("/"))
         assert response.status_code == 429
         # When middleware calls handle_custom_response, it creates a fresh response
@@ -122,20 +126,24 @@ class TestExceptionMiddleware(SimpleTestCase):
 
     def test_middleware_handles_response_status_code_200(self) -> None:
         """Test that 200 responses pass through unchanged."""
+
         def get_response(request):
             from django.http import HttpResponse
+
             return HttpResponse("OK", status=200)
-        
+
         middleware = ExceptionMiddleware(get_response)
         response = middleware(self.factory.get("/"))
         assert response.status_code == 200
 
     def test_middleware_handles_response_status_code_302(self) -> None:
         """Test that non-error status codes pass through unchanged."""
+
         def get_response(request):
             from django.http import HttpResponseRedirect
+
             return HttpResponseRedirect("/redirect-target")
-        
+
         middleware = ExceptionMiddleware(get_response)
         response = middleware(self.factory.get("/"))
         assert response.status_code == 302
@@ -148,8 +156,9 @@ class TestExceptionLoggerMiddleware(SimpleTestCase):
     def test_logger_middleware_init(self) -> None:
         def get_response(request):
             from django.http import HttpResponse
+
             return HttpResponse("OK")
-        
+
         middleware = ExceptionLoggerMiddleware(get_response)
         assert middleware.get_response == get_response
         assert middleware.logger is not None
@@ -157,21 +166,23 @@ class TestExceptionLoggerMiddleware(SimpleTestCase):
     def test_logger_middleware_call_returns_response(self) -> None:
         def get_response(request):
             from django.http import HttpResponse
+
             return HttpResponse("OK", status=200)
-        
+
         middleware = ExceptionLoggerMiddleware(get_response)
         response = middleware(self.factory.get("/"))
         assert response.status_code == 200
 
     def test_logger_middleware_call_passes_request(self) -> None:
         request_received = None
-        
+
         def get_response(request):
             nonlocal request_received
             request_received = request
             from django.http import HttpResponse
+
             return HttpResponse("OK")
-        
+
         middleware = ExceptionLoggerMiddleware(get_response)
         request = self.factory.get("/test/path")
         middleware(request)

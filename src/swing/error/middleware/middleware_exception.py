@@ -60,7 +60,6 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 # Import | Local
 # Import | Local Modules
 from ..responses import (
-    BaseErrorResponse,
     Http400Response,
     Http401Response,
     Http403Response,
@@ -98,9 +97,7 @@ class ExceptionMiddleware:
 
     def __init__(
         self,
-        get_response: Callable[
-            [HttpRequest], HttpResponse | Awaitable[HttpResponse]
-        ],
+        get_response: Callable[[HttpRequest], HttpResponse | Awaitable[HttpResponse]],
     ) -> None:
         """
         Initialize the ExceptionMiddleware.
@@ -184,9 +181,7 @@ class ExceptionMiddleware:
 
             if resolved_response.status_code in status_code_handlers:
                 return self.handle_custom_response(
-                    response_class=status_code_handlers[
-                        resolved_response.status_code
-                    ],
+                    response_class=status_code_handlers[resolved_response.status_code],
                     request=request,
                 )
 

@@ -11,7 +11,4 @@ class TestHttp405Response(SimpleTestCase):
         assert Http405Response().status_code == 405
 
     def test_default_message(self) -> None:
-        assert (
-            json.loads(Http405Response().content)["error"]
-            == "Method Not Allowed"
-        )
+        assert json.loads(Http405Response().content)["error"] == "Method Not Allowed"

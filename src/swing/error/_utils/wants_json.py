@@ -16,9 +16,7 @@ def wants_json(request: HttpRequest) -> bool:
         return True
 
     content_type = request.content_type
-    if content_type and any(
-        content in content_type for content in JSON_CONTENT_TYPES
-    ):
+    if content_type and any(content in content_type for content in JSON_CONTENT_TYPES):
         return True
 
     return False

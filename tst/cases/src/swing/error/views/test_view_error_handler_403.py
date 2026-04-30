@@ -9,9 +9,7 @@ class TestHandler403View(SimpleTestCase):
         self.factory = RequestFactory()
 
     def test_view_returns_403_status(self) -> None:
-        assert (
-            Handler403View.as_view()(self.factory.get("/")).status_code == 403
-        )
+        assert Handler403View.as_view()(self.factory.get("/")).status_code == 403
 
     def test_view_uses_http403_response(self) -> None:
         assert Handler403View.response_class is Http403Response

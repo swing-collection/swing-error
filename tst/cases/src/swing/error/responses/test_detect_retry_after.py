@@ -1,5 +1,8 @@
-import pytest
+# Import | Standard Library
 from types import SimpleNamespace
+
+# Import | Libraries
+import pytest
 
 from swing.error.responses.detect_retry_after import detect_retry_after
 
@@ -19,17 +22,19 @@ class TestDetectRetryAfter:
         exc = SimpleNamespace(detail=detail)
         assert detect_retry_after(exception=exc) == 90
 
-    def test_detect_retry_after_from_request_rate_limit_info_dict(self) -> None:
-        request = SimpleNamespace(
-            rate_limit=None,
-            rate_limit_info={"retry_after": 300}
-        )
+    def test_detect_retry_after_from_request_rate_limit_info_dict(
+        self,
+    ) -> None:
+        request = SimpleNamespace(rate_limit=None, rate_limit_info={"retry_after": 300})
         assert detect_retry_after(request=request) == 300
 
     def test_detect_retry_after_from_dict_candidate(self) -> None:
         exc = SimpleNamespace(retry_after=None)
         exc.some_dict = {"retry_after": 75}
-        request = SimpleNamespace(rate_limit=None, rate_limit_info={"remaining": 0, "retry_after": 150})
+        request = SimpleNamespace(
+            rate_limit=None,
+            rate_limit_info={"remaining": 0, "retry_after": 150},
+        )
         assert detect_retry_after(exception=exc, request=request) == 150
 
     def test_detect_retry_after_prefers_first_valid_value(self) -> None:

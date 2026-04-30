@@ -12,10 +12,7 @@ class TestHttp429Response(SimpleTestCase):
         assert Http429Response().status_code == 429
 
     def test_default_message(self) -> None:
-        assert (
-            json.loads(Http429Response().content)["error"]
-            == "Too Many Requests"
-        )
+        assert json.loads(Http429Response().content)["error"] == "Too Many Requests"
 
     def test_retry_after_header(self) -> None:
         assert Http429Response(retry_after=60)["Retry-After"] == "60"

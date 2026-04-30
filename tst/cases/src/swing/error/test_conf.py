@@ -28,15 +28,10 @@ class TestConf(SimpleTestCase):
         assert get_error_config("404", "default_message") == "Page Not Found"
 
     def test_get_error_config_falls_back_to_base(self) -> None:
-        assert (
-            get_error_config("999", "default_message") == "An error occurred"
-        )
+        assert get_error_config("999", "default_message") == "An error occurred"
 
     def test_get_error_config_returns_explicit_default(self) -> None:
-        assert (
-            get_error_config("404", "missing_key", default="fallback")
-            == "fallback"
-        )
+        assert get_error_config("404", "missing_key", default="fallback") == "fallback"
 
     def test_get_all_error_types_excludes_base(self) -> None:
         error_types = get_all_error_types()
@@ -46,11 +41,6 @@ class TestConf(SimpleTestCase):
 
     def test_get_error_config_uses_user_settings_override(self) -> None:
         with self.settings(
-            ERROR_HANDLER_CONFIG={
-                "404": {"default_message": "Custom Not Found"}
-            }
+            ERROR_HANDLER_CONFIG={"404": {"default_message": "Custom Not Found"}}
         ):
-            assert (
-                get_error_config("404", "default_message")
-                == "Custom Not Found"
-            )
+            assert get_error_config("404", "default_message") == "Custom Not Found"

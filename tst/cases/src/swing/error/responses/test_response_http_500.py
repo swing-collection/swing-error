@@ -11,7 +11,4 @@ class TestHttp500Response(SimpleTestCase):
         assert Http500Response().status_code == 500
 
     def test_default_message(self) -> None:
-        assert (
-            json.loads(Http500Response().content)["error"]
-            == "Internal Server Error"
-        )
+        assert json.loads(Http500Response().content)["error"] == "Internal Server Error"

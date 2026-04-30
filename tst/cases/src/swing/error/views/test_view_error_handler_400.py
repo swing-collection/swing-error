@@ -9,9 +9,7 @@ class TestHandler400View(SimpleTestCase):
         self.factory = RequestFactory()
 
     def test_view_returns_400_status(self) -> None:
-        assert (
-            Handler400View.as_view()(self.factory.get("/")).status_code == 400
-        )
+        assert Handler400View.as_view()(self.factory.get("/")).status_code == 400
 
     def test_view_uses_http400_response(self) -> None:
         assert Handler400View.response_class is Http400Response

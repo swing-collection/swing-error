@@ -24,7 +24,6 @@ and `ALLOWED_HOSTS` appropriately for deployment.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -32,8 +31,6 @@ and `ALLOWED_HOSTS` appropriately for deployment.
 # Import | Standard Library
 from pathlib import Path
 from typing import Dict, List
-
-# Import | Libraries
 
 # Import | Local Modules
 
@@ -85,6 +82,7 @@ MIDDLEWARE: List[str] = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "swing.error.middleware.ExceptionMiddleware",  # Error handling middleware
 ]
 
 
@@ -179,3 +177,29 @@ STATICFILES_DIRS: List[Path] = [BASE_DIR / "static"]  # Additional static files
 # =============================================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# =============================================================================
+# Swing Error Configuration
+# =============================================================================
+
+# Enable error tracking and custom error responses
+SWING_ERROR_CORS = {
+    "enabled": True,
+    "allow_origins": ["*"],
+    "allow_credentials": True,
+    "allow_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}
+
+SWING_ERROR_DEBUG = {
+    "show_stack_trace": DEBUG,
+    "show_request_info": DEBUG,
+    "show_environment": DEBUG,
+    "include_sql_queries": DEBUG,
+}
+
+SWING_ERROR_TRACKING = {
+    "enabled": True,
+    "capture_exceptions": True,
+    "capture_messages": True,
+}

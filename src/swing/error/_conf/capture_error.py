@@ -34,9 +34,7 @@ def capture_error(
             }
         )
 
-    if config.get("capture_exceptions", True) or config.get(
-        "capture_messages", True
-    ):
+    if config.get("capture_exceptions", True) or config.get("capture_messages", True):
         try:
             sentry_sdk = cast(Any, import_module("sentry_sdk"))
 

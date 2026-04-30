@@ -1,4 +1,4 @@
-from django.test import RequestFactory, SimpleTestCase, override_settings
+from django.test import override_settings, RequestFactory, SimpleTestCase
 
 from swing.error.responses import Http400Response
 from swing.error.views.view_error_handler_base import BaseErrorView
@@ -22,10 +22,21 @@ class TestBaseErrorView(SimpleTestCase):
         assert self.view_class().default_message == "Bad Request"
 
     def test_status_code_property_for_multiple_types(self) -> None:
-        for status_code_str in ["400", "401", "403", "404", "405", "408", "410", "429", "500"]:
+        for status_code_str in [
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "408",
+            "410",
+            "429",
+            "500",
+        ]:
+
             class TestView(BaseErrorView):
                 error_type = status_code_str
-            
+
             view = TestView()
             assert view.status_code == int(status_code_str)
 
@@ -73,7 +84,18 @@ class TestBaseErrorView(SimpleTestCase):
         # Just verify it doesn't raise
 
     def test_view_all_status_codes(self) -> None:
-        for status in ["400", "401", "403", "404", "405", "408", "410", "429", "500"]:
+        for status in [
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "408",
+            "410",
+            "429",
+            "500",
+        ]:
+
             class StatusView(BaseErrorView):
                 error_type = status
                 response_class = Http400Response

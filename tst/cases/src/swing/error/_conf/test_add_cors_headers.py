@@ -1,6 +1,8 @@
-import pytest
 from django.http import HttpRequest, HttpResponse
 from django.test import override_settings
+
+# Import | Libraries
+import pytest
 
 from swing.error._conf.add_cors_headers import add_cors_headers
 
@@ -37,7 +39,9 @@ class TestAddCorsHeaders:
             "allow_origins": ["https://example.com"],
         }
     )
-    def test_cors_specific_origin_allowed(self, response: HttpResponse, http_request: HttpRequest) -> None:
+    def test_cors_specific_origin_allowed(
+        self, response: HttpResponse, http_request: HttpRequest
+    ) -> None:
         result = add_cors_headers(response, http_request)
         assert result["Access-Control-Allow-Origin"] == "https://example.com"
         assert result["Vary"] == "Origin"
@@ -48,7 +52,9 @@ class TestAddCorsHeaders:
             "allow_origins": ["https://other.com"],
         }
     )
-    def test_cors_specific_origin_not_allowed(self, response: HttpResponse, http_request: HttpRequest) -> None:
+    def test_cors_specific_origin_not_allowed(
+        self, response: HttpResponse, http_request: HttpRequest
+    ) -> None:
         result = add_cors_headers(response, http_request)
         assert "Access-Control-Allow-Origin" not in result
 
@@ -112,23 +118,47 @@ class TestAddCorsHeaders:
         result = add_cors_headers(response, None)
         assert result["Access-Control-Allow-Origin"] == "*"
 
-    @override_settings(SWING_ERROR_CORS={"enabled": True, "allow_origins": ["https://example.com", "https://other.com"]})
-    def test_cors_multiple_origins_first_match(self, response: HttpResponse, http_request: HttpRequest) -> None:
+    @override_settings(
+        SWING_ERROR_CORS={
+            "enabled": True,
+            "allow_origins": ["https://example.com", "https://other.com"],
+        }
+    )
+    def test_cors_multiple_origins_first_match(
+        self, response: HttpResponse, http_request: HttpRequest
+    ) -> None:
         """Test that first matching origin in list is returned."""
         result = add_cors_headers(response, http_request)
         assert result["Access-Control-Allow-Origin"] == "https://example.com"
 
-    @override_settings(SWING_ERROR_CORS={"enabled": True, "allow_origins": ["https://example.com"]})
+    @override_settings(
+        SWING_ERROR_CORS={
+            "enabled": True,
+            "allow_origins": ["https://example.com"],
+        }
+    )
     def test_cors_with_request_no_origin_header(self, response: HttpResponse) -> None:
         """Test CORS when request has no Origin header."""
         factory = HttpRequest()
         # No HTTP_ORIGIN in META
         result = add_cors_headers(response, factory)
         # Should not set Access-Control-Allow-Origin without matching origin
-        assert "Access-Control-Allow-Origin" not in result or "Access-Control-Allow-Origin" in result
+        assert (
+            "Access-Control-Allow-Origin" not in result
+            or "Access-Control-Allow-Origin" in result
+        )
 
-    @override_settings(SWING_ERROR_CORS={"enabled": True, "allow_origins": ["*"], "allow_credentials": False})
+    @override_settings(
+        SWING_ERROR_CORS={
+            "enabled": True,
+            "allow_origins": ["*"],
+            "allow_credentials": False,
+        }
+    )
     def test_cors_credentials_false(self, response: HttpResponse) -> None:
         result = add_cors_headers(response)
         # Credentials should not be set when False
-        assert "Access-Control-Allow-Credentials" not in result or result.get("Access-Control-Allow-Credentials") != "true"
+        assert (
+            "Access-Control-Allow-Credentials" not in result
+            or result.get("Access-Control-Allow-Credentials") != "true"
+        )

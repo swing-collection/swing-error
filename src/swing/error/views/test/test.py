@@ -25,9 +25,7 @@ class CustomErrorHandlerModule:
     class CustomErrorHandlerTests(SimpleTestCase):
         def test_handler_renders_template_response(self) -> None:
             response = self.client.get("/403/")
-            self.assertContains(
-                response, "Error handler content", status_code=403
-            )
+            self.assertContains(response, "Error handler content", status_code=403)
 
 
 urlpatterns = [path("403/", CustomErrorHandlerModule.permission_denied_view)]

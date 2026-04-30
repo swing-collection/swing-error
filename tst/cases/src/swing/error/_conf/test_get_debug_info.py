@@ -1,5 +1,7 @@
-import pytest
 from django.test import override_settings
+
+# Import | Libraries
+import pytest
 
 from swing.error._conf.get_debug_config import get_debug_config
 from swing.error._conf.get_debug_info import get_debug_info
@@ -63,6 +65,7 @@ class TestGetDebugInfo:
 
     @override_settings(DEBUG=True, SWING_ERROR_DEBUG={"show_environment": True})
     def test_get_debug_info_with_environment(self) -> None:
+        # Import | Standard Library
         import os
 
         os.environ["DJANGO_SETTINGS_MODULE"] = "test_settings"
@@ -82,18 +85,19 @@ class TestGetDebugInfo:
         """Test SQL queries are collected during get_debug_info."""
         from django.db import connection, reset_queries
         from django.test.utils import override_settings as override
-        
+
         # Enable query logging
         with override(DEBUG=True):
             reset_queries()
             # Trigger a database query
             from django.contrib.auth.models import User
+
             try:
                 list(User.objects.all()[:1])
             except Exception:
                 # User table might not exist in test environment
                 pass
-            
+
             info = get_debug_info()
             # Just verify no exception is raised
             assert isinstance(info, dict)

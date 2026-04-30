@@ -22,9 +22,6 @@ import logging
 
 from django.http import HttpRequest, HttpResponse
 
-
-# Import | Libraries
-
 # Import | Local Modules
 
 
@@ -40,13 +37,13 @@ logger: logging.Logger = logging.getLogger(name=__name__)
 
 
 class ExceptionLoggerMiddleware:
-    """ """
+    """Middleware for logging exceptions."""
 
     def __init__(
         self,
         get_response: Callable[[HttpRequest], HttpResponse],
     ) -> None:
-        """ """
+        """Initialize the middleware."""
         self.get_response = get_response
         self.logger: logging.Logger = logging.getLogger("django")
 
@@ -60,7 +57,7 @@ class ExceptionLoggerMiddleware:
         request: HttpRequest,
         exception: Exception,
     ) -> None:
-        """ """
+        """Log the exception that occurred during request processing."""
         del request
         self.logger.exception(str(object=exception))
 

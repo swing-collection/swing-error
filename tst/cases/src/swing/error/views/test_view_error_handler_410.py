@@ -9,9 +9,7 @@ class TestHandler410View(SimpleTestCase):
         self.factory = RequestFactory()
 
     def test_view_returns_410_status(self) -> None:
-        assert (
-            Handler410View.as_view()(self.factory.get("/")).status_code == 410
-        )
+        assert Handler410View.as_view()(self.factory.get("/")).status_code == 410
 
     def test_view_uses_http410_response(self) -> None:
         assert Handler410View.response_class is Http410Response

@@ -28,8 +28,10 @@ Links:
 # Imports
 # =============================================================================
 
+# Import | Standard Library
 from typing import Any
 
+# Import | Local
 from .detect_retry_after import detect_retry_after
 from .response_error_base import BaseErrorResponse
 

@@ -2,7 +2,7 @@
 import json
 from unittest.mock import patch
 
-from django.test import RequestFactory, SimpleTestCase, override_settings
+from django.test import override_settings, RequestFactory, SimpleTestCase
 
 from swing.error.responses.response_error_base import BaseErrorResponse
 
@@ -20,9 +20,7 @@ class TestBaseErrorResponse(SimpleTestCase):
         assert payload["code"] == "E001"
 
     @patch("swing.error.responses.response_error_base.add_cors_headers")
-    def test_response_sets_error_code_header(
-        self, mock_add_cors_headers
-    ) -> None:
+    def test_response_sets_error_code_header(self, mock_add_cors_headers) -> None:
         response = BaseErrorResponse(
             status_code=400, message="Bad Request", error_code="ERR-1"
         )

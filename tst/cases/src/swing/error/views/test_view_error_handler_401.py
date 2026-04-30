@@ -9,9 +9,7 @@ class TestHandler401View(SimpleTestCase):
         self.factory = RequestFactory()
 
     def test_view_returns_401_status(self) -> None:
-        assert (
-            Handler401View.as_view()(self.factory.get("/")).status_code == 401
-        )
+        assert Handler401View.as_view()(self.factory.get("/")).status_code == 401
 
     def test_view_returns_json_for_json_accept_header(self) -> None:
         response = Handler401View.as_view()(

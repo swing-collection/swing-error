@@ -28,7 +28,10 @@ Links:
 # Imports
 # =============================================================================
 
+# Import | Standard Library
 from typing import Any
+
+# Import | Local
 from .response_error_base import BaseErrorResponse
 
 # =============================================================================
@@ -73,7 +76,7 @@ class Http401Response(BaseErrorResponse):
             request (Any | None): The HTTP request object.
             exception (Exception | None): The exception that caused this error.
             **kwargs: Additional arguments for BaseErrorResponse.
-        """ 
+        """
         super().__init__(
             status_code=status_code or self.status_code,
             message=message or self.default_message,
