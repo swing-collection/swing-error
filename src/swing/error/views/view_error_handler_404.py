@@ -32,22 +32,18 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler404
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseNotFound
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
-from typing import Any, Dict, List
+import logging
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
 # Import | Local Modules
@@ -70,7 +66,7 @@ def handler_404_view(
     request: HttpRequest,
     exception: Any,
     template_name: str = "errors/404.html",
-) -> HttpResponseNotFound:
+) -> HttpResponse:
     """
     404 Error Handler View Function
     ===============================
@@ -123,7 +119,7 @@ class Handler404View(TemplateView):
     template_name: str = "errors/404.html"
     logger: logging.Logger = logging.getLogger(name=__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -131,9 +127,9 @@ class Handler404View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": "Not Found",
@@ -148,7 +144,7 @@ class Handler404View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponseNotFound:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -156,13 +152,13 @@ class Handler404View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseNotFound: The HTTP response with status code 404.
         """
         self.log_error(request=request)
-        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        context: dict[str, Any] = self.get_context_data(**kwargs)
         return HttpResponseNotFound(content=self.render_to_string(context))
 
     def log_error(self, request: HttpRequest) -> None:
@@ -179,9 +175,9 @@ class Handler404View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER404 = "myapp.views.Handler404View.as_view()"
+HANDLER404 = "swing.error.views.view_error_handler_404.handler_404_view"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "handler_404_view",
     "Handler404View",
     "HANDLER404",

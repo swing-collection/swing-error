@@ -32,21 +32,19 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler403
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseForbidden
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
 import logging
+from typing import Any
 
-# Import | Libraries
-from django.views.generic import TemplateView
-from django.http import HttpRequest, HttpResponseForbidden
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 # Import | Local Modules
 # None
@@ -63,11 +61,12 @@ GENERIC: str = "Please return to our home page"
 # Functions
 # =============================================================================
 
+
 def handler_403_view(
     request: HttpRequest,
-    exception: Any, 
-    template_name: str = "errors/403.html"
-) -> HttpResponseForbidden:
+    exception: Any,
+    template_name: str = "errors/403.html",
+) -> HttpResponse:
     """
     403 Error Handler View Function
     ===============================
@@ -82,12 +81,16 @@ def handler_403_view(
     Returns:
         HttpResponseForbidden: The HTTP response with status code 403.
     """
-    response = render(request, template_name, {
-        "title": "Forbidden",
-        "header": "403 Error",
-        "message": "You do not have permission to access this page.",
-        "redirect": GENERIC,
-    })
+    response = render(
+        request,
+        template_name,
+        {
+            "title": "Forbidden",
+            "header": "403 Error",
+            "message": "You do not have permission to access this page.",
+            "redirect": GENERIC,
+        },
+    )
     response.status_code = 403
     return response
 
@@ -96,6 +99,7 @@ def handler_403_view(
 # Classes
 # =============================================================================
 
+
 class Handler403View(TemplateView):
     """
     403 Error Handler View Class
@@ -103,8 +107,8 @@ class Handler403View(TemplateView):
 
     A class-based view to handle HTTP 403 Forbidden errors.
 
-    This view renders a custom template with error details and sets the 
-    appropriate 403 status code in the response. Additionally, it logs 
+    This view renders a custom template with error details and sets the
+    appropriate 403 status code in the response. Additionally, it logs
     error details for debugging purposes.
 
     Attributes:
@@ -115,7 +119,7 @@ class Handler403View(TemplateView):
     template_name: str = "errors/403.html"
     logger: logging.Logger = logging.getLogger(__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -123,22 +127,21 @@ class Handler403View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
         context = super().get_context_data(**kwargs)
-        context.update({
-            "title": "Forbidden",
-            "header": "403 Error",
-            "message": "You do not have permission to access this page.",
-            "redirect": GENERIC,
-        })
+        context.update(
+            {
+                "title": "Forbidden",
+                "header": "403 Error",
+                "message": "You do not have permission to access this page.",
+                "redirect": GENERIC,
+            }
+        )
         return context
 
     def get(
-        self,
-        request: HttpRequest,
-        *args: Any,
-        **kwargs: Dict[str, Any]
+        self, request: HttpRequest, *args: Any, **kwargs: dict[str, Any]
     ) -> HttpResponseForbidden:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -146,7 +149,7 @@ class Handler403View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseForbidden: The HTTP response with status code 403.
@@ -169,7 +172,7 @@ class Handler403View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER403 = "myapp.views.Handler403View.as_view()"
+HANDLER403 = "swing.error.views.view_error_handler_403.handler_403_view"
 
 __all__ = [
     "handler_403_view",

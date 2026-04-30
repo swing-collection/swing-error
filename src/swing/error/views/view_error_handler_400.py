@@ -32,22 +32,16 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseBadRequest
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-from typing import List
-
+# Import | Local
 # Import | Local Modules
 from ..responses.response_http_400 import Http400Response
 from ..views.view_error_handler_base import BaseErrorView
-
-# Import | Libraries
-
 
 # =============================================================================
 # Classes
@@ -71,11 +65,9 @@ class Handler400View(BaseErrorView):
 # Exports
 # =============================================================================
 
-HANDLER400 = (
-    "swing_error.views.view_error_handler_400.Handler400View.as_view()"
-)
+HANDLER400 = "swing.error.views.view_error_handler_400.Handler400View"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "Handler400View",
     "HANDLER400",
 ]

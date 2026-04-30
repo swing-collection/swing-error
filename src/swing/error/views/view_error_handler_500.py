@@ -32,22 +32,18 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler500
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseServerError
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
-from typing import Any, Dict, List
+import logging
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse, HttpResponseServerError
 from django.shortcuts import render
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
 # Import | Local Modules
@@ -69,7 +65,7 @@ GENERIC: str = "Please return to our home page"
 def handler_500_view(
     request: HttpRequest,
     template_name: str = "errors/500.html",
-) -> HttpResponseServerError:
+) -> HttpResponse:
     """
     500 Error Handler View Function
     ===============================
@@ -124,7 +120,7 @@ class Handler500View(TemplateView):
     def get_context_data(
         self,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -132,9 +128,9 @@ class Handler500View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": "Internal Server Error",
@@ -149,7 +145,7 @@ class Handler500View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponseServerError:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -157,13 +153,13 @@ class Handler500View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseServerError: The HTTP response with status code 500.
         """
         self.log_error(request=request)
-        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        context: dict[str, Any] = self.get_context_data(**kwargs)
         return HttpResponseServerError(content=self.render_to_string(context))
 
     def log_error(self, request: HttpRequest) -> None:
@@ -180,9 +176,9 @@ class Handler500View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER500 = "myapp.views.Handler500View.as_view()"
+HANDLER500 = "swing.error.views.view_error_handler_500.handler_500_view"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "handler_500_view",
     "Handler500View",
     "HANDLER500",

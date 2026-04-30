@@ -31,22 +31,18 @@ Links:
 ------
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseGone
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
-from typing import Any, Dict, List
+import logging
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
 # Import | Local Modules
@@ -78,7 +74,7 @@ def handler_410_view(
     request: HttpRequest,
     exception: Any,
     template_name: str = "errors/410.html",
-) -> HttpResponseGone:
+) -> HttpResponse:
     """
     410 Error Handler View Function
     ===============================
@@ -134,7 +130,7 @@ class Handler410View(TemplateView):
     def get_context_data(
         self,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -142,9 +138,9 @@ class Handler410View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": "Gone",
@@ -159,7 +155,7 @@ class Handler410View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponseGone:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -167,13 +163,13 @@ class Handler410View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseGone: The HTTP response with status code 410.
         """
         self.log_error(request=request)
-        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        context: dict[str, Any] = self.get_context_data(**kwargs)
         return HttpResponseGone(content=self.render_to_string(context))
 
     def log_error(
@@ -193,9 +189,9 @@ class Handler410View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER410 = "myapp.views.Handler410View.as_view()"
+HANDLER410 = "swing.error.views.view_error_handler_410.handler_410_view"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "handler_410_view",
     "Handler410View",
     "HANDLER410",

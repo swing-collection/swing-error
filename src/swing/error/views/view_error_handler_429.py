@@ -1,153 +1,188 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 
-# # =============================================================================
-# # Docstring
-# # =============================================================================
+# =============================================================================
+# Docstring
+# =============================================================================
 
-# """
-# Provides 429 Error Handler View Module
-# ======================================
+"""
+Provides 429 Error Handler View Module
+======================================
 
-# This module contains a function-based and a class-based view for handling
-# HTTP 429 Too Many Requests errors in a Django application. It renders a custom
-# template with error details and sets the appropriate 429 status code in the
-# response. Additionally, it logs error details for debugging purposes and
-# integrates with Django Ratelimit for rate limiting.
+This module contains a function-based and a class-based view for handling
+HTTP 429 Too Many Requests errors in a Django application. It renders a custom
+template with error details and sets the appropriate 429 status code in the
+response. Additionally, it logs error details for debugging purposes.
 
-# Usage:
-# ------
-# Include the `Handler429View` in your project's URL configuration for handling
-# 429 errors. Add the following to your project's settings:
+Usage:
+------
+Include the `Handler429View` in your project's URL configuration for handling
+429 errors. Add the following to your project's settings:
 
-#     HANDLER429 = 'myapp.views.Handler429View.as_view()'
+    HANDLER429 = 'swing.error.views.Handler429View.as_view()'
 
-# Ensure you have a template at the specified `template_name` location.
+Ensure you have a template at the specified `template_name` location.
 
-# Links:
-# ------
-# - https://django-ratelimit.readthedocs.io/en/latest/cookbook/429.html
+Links:
+------
+- https://django-ratelimit.readthedocs.io/en/latest/cookbook/429.html
 
-# """  # noqa E501
-
-
-# # =============================================================================
-# # Imports
-# # =============================================================================
-
-# import logging
-
-# # Import | Standard Library
-# from typing import Any, Dict, List
-
-# from django.http import HttpRequest, HttpResponse
-# from django.shortcuts import render
-
-# # Import | Libraries
-# from django.views.generic import TemplateView
-# from django_ratelimit.decorators import ratelimit
-
-# # Import | Local Modules
-# # None
+"""
 
 
-# # =============================================================================
-# # Variables
-# # =============================================================================
+# =============================================================================
+# Imports
+# =============================================================================
 
-# GENERIC: str = "Please return to our home page"
+import logging
 
+# Import | Standard Library
+from typing import Any
 
-# # =============================================================================
-# # Functions
-# # =============================================================================
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 
+# Import | Libraries
+from django.views.generic import TemplateView
 
-# @ratelimit(
-#     key="ip",
-#     rate="5/m",
-#     method="GET",
-#     block=True,
-# )
-# def handler_429_view(
-#     request: HttpRequest,
-#     exception: Any,
-#     template_name: str = "errors/429.html",
-# ) -> HttpResponseTooManyRequests:
-#     """
-#     429 Error Handler View Function
-#     ===============================
-
-#     A callable view to handle HTTP 429 Too Many Requests errors.
-
-#     Args:
-#         request (HttpRequest): The request object.
-#         exception (Any): The exception raised.
-#         template_name (str): The path to the template to be rendered.
-
-#     Returns:
-#         HttpResponseTooManyRequests: The HTTP response with status code 429.
-#     """
-#     response: HttpResponse = render(
-#         request=request,
-#         template_name=template_name,
-#         context={
-#             "title": "Too Many Requests",
-#             "header": "429 Error",
-#             "message": "You have sent too many requests in a given amount of time.",
-#             "redirect": GENERIC,
-#         },
-#     )
-#     response.status_code = 429
-#     return response
+# Import | Local Modules
+# None
 
 
-# # =============================================================================
-# # Classes
-# # =============================================================================
+# =============================================================================
+# Variables
+# =============================================================================
+
+GENERIC: str = "Please return to our home page"
 
 
-# class Handler429View(TemplateView):
-#     """
-#     429 Error Handler View Class
-#     ============================
+# =============================================================================
+# Functions
+# =============================================================================
 
-#     A class-based view to handle HTTP 429 Too Many Requests errors.
 
-#     This view renders a custom template with error details and sets the
-#     appropriate 429 status code in the response. Additionally, it logs
-#     error details for debugging purposes.
+def handler_429_view(
+    request: HttpRequest,
+    exception: Any = None,
+    template_name: str = "swing_error/error.html",
+) -> HttpResponse:
+    """
+    429 Error Handler View Function
+    ===============================
 
-#     Attributes:
-#         template_name (str): The path to the template to be rendered.
-#         logger (logging.Logger): Logger instance for logging errors.
-#     """
+    A callable view to handle HTTP 429 Too Many Requests errors.
 
-#     template_name: str = "errors/429.html"
-#     logger: logging.Logger = logging.getLogger(name=__name__)
+    Args:
+        request (HttpRequest): The request object.
+        exception (Any): The exception raised (optional).
+        template_name (str): The path to the template to be rendered.
 
-#     @ratelimit(
-#         key="ip",
-#         rate="5/m",
-#         method="GET",
-#         block=True,
-#     )
-#     def get_context_data(
-#         self,
-#         **kwargs: Any,
-#     ) -> Dict[str, Any]:
-#         """
-#         Extend the base context data with custom error information.
+    Returns:
+        HttpResponse: The HTTP response with status code 429.
+    """
+    response: HttpResponse = render(
+        request=request,
+        template_name=template_name,
+        context={
+            "title": "Too Many Requests",
+            "header": "429 Error",
+            "message": "You have sent too many requests in a given amount of time.",
+            "redirect": GENERIC,
+        },
+    )
+    response.status_code = 429
+    return response
 
-#         Args:
-#             **kwargs (Any): Additional keyword arguments.
 
-#         Returns:
-#             Dict[str, Any]: Context data for the template.
-#         """
-#         context: Dict[str, Any] = super().get_context_data(**kwargs)
-#         context.update(
-#             {
+# =============================================================================
+# Classes
+# =============================================================================
+
+
+class Handler429View(TemplateView):
+    """
+    429 Error Handler View Class
+    ============================
+
+    A class-based view to handle HTTP 429 Too Many Requests errors.
+
+    This view renders a custom template with error details and sets the
+    appropriate 429 status code in the response. Additionally, it logs
+    error details for debugging purposes.
+
+    Attributes:
+        template_name (str): The path to the template to be rendered.
+        logger (logging.Logger): Logger instance for logging errors.
+    """
+
+    template_name: str = "swing_error/error.html"
+    logger: logging.Logger = logging.getLogger(name=__name__)
+
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """
+        Extend the base context data with custom error information.
+
+        Args:
+            **kwargs (Any): Additional keyword arguments.
+
+        Returns:
+            dict[str, Any]: Context data for the template.
+        """
+        context: dict[str, Any] = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Too Many Requests",
+                "header": "429 Error",
+                "message": "You have sent too many requests in a given amount of time.",
+                "redirect": GENERIC,
+            }
+        )
+        return context
+
+    def render_to_response(
+        self,
+        context: dict[str, Any],
+        **response_kwargs: Any,
+    ) -> HttpResponse:
+        """
+        Return a response with HTTP 429 status code.
+
+        Args:
+            context (dict[str, Any]): The context for rendering.
+            **response_kwargs (Any): Additional response keyword arguments.
+
+        Returns:
+            HttpResponse: The HTTP response with status code 429.
+        """
+        self.logger.warning(
+            msg=f"429 Too Many Requests: Path={self.request.path}"
+        )
+        response_kwargs["status"] = 429
+        return super().render_to_response(
+            context=context,
+            **response_kwargs,
+        )
+
+
+# =============================================================================
+# Handler Export
+# =============================================================================
+
+HANDLER429 = "swing.error.views.view_error_handler_429.handler_429_view"
+
+
+# =============================================================================
+# Exports
+# =============================================================================
+
+__all__: list[str] = [
+    "handler_429_view",
+    "Handler429View",
+    "HANDLER429",
+]
 #                 "title": "Too Many Requests",
 #                 "header": "429 Error",
 #                 "message": "You have sent too many requests in a given amount of time.",
@@ -161,7 +196,7 @@
 #         self,
 #         request: HttpRequest,
 #         *args: Any,
-#         **kwargs: Dict[str, Any],
+#         **kwargs: dict[str, Any],
 #     ) -> HttpResponseTooManyRequests:
 #         """
 #         Handle GET requests by logging the error and rendering the response.
@@ -169,13 +204,13 @@
 #         Args:
 #             request (HttpRequest): The request object.
 #             *args (Any): Additional positional arguments.
-#             **kwargs (Dict[str, Any]): Additional keyword arguments.
+#             **kwargs (dict[str, Any]): Additional keyword arguments.
 
 #         Returns:
 #             HttpResponseTooManyRequests: The HTTP response with status code 429.
 #         """
 #         self.log_error(request=request)
-#         context: Dict[str, Any] = self.get_context_data(**kwargs)
+#         context: dict[str, Any] = self.get_context_data(**kwargs)
 #         return HttpResponseTooManyRequests(self.render_to_string(context))
 
 #     def log_error(self, request: HttpRequest) -> None:
@@ -194,7 +229,7 @@
 
 # HANDLER429 = "myapp.views.Handler429View.as_view()"
 
-# __all__: List[str] = [
+# __all__: list[str] = [
 #     "handler_429_view",
 #     "Handler429View",
 #     "HANDLER429",

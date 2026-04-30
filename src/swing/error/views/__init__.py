@@ -37,11 +37,11 @@ handler.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
 
+# Import | Local
 # Import | Local Modules
 from .view_error_handler_400 import HANDLER400
 from .view_error_handler_401 import HANDLER401
@@ -50,8 +50,7 @@ from .view_error_handler_404 import HANDLER404
 from .view_error_handler_405 import HANDLER405
 from .view_error_handler_408 import HANDLER408
 from .view_error_handler_410 import HANDLER410
-
-# from .view_error_handler_429 import HANDLER429
+from .view_error_handler_429 import HANDLER429
 from .view_error_handler_500 import HANDLER500
 
 __all__ = [

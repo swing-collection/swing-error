@@ -32,22 +32,18 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseNotAllowed
 - https://stackoverflow.com/questions/49162214/why-django-doesnt-have-error-page-handler-for-405-method-not-allowed
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
-from typing import Any, Dict, List
+import logging
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
 # Import | Local Modules
@@ -70,7 +66,7 @@ def handler_405_view(
     request: HttpRequest,
     exception: Any,
     template_name: str = "errors/405.html",
-) -> HttpResponseNotAllowed:
+) -> HttpResponse:
     """
     405 Error Handler View Function
     ===============================
@@ -123,7 +119,7 @@ class Handler405View(TemplateView):
     template_name: str = "errors/405.html"
     logger: logging.Logger = logging.getLogger(name=__name__)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -131,9 +127,9 @@ class Handler405View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": "Method Not Allowed",
@@ -148,7 +144,7 @@ class Handler405View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponseNotAllowed:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -156,13 +152,13 @@ class Handler405View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseNotAllowed: The HTTP response with status code 405.
         """
         self.log_error(request=request)
-        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        context: dict[str, Any] = self.get_context_data(**kwargs)
         return HttpResponseNotAllowed(
             permitted_methods=self.render_to_string(context)
         )
@@ -184,9 +180,9 @@ class Handler405View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER405 = "myapp.views.Handler405View.as_view()"
+HANDLER405 = "swing.error.views.view_error_handler_405.handler_405_view"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "handler_405_view",
     "Handler405View",
     "HANDLER405",

@@ -17,7 +17,7 @@ Links:
 - https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler400
 - https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseBadRequest
 
-"""  # noqa E501
+"""
 
 
 # =============================================================================
@@ -27,7 +27,7 @@ Links:
 import logging
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any
 
 from django.http import HttpRequest
 
@@ -60,7 +60,7 @@ class BaseErrorView(TemplateView):
         status_code (int): The HTTP status code for the error response.
         logger (logging.Logger): Logger instance for logging errors.
         default_message (str): Default error message for the view.
-        default_details (Dict[str, Any]): Default structured details for
+        default_details (dict[str, Any]): Default structured details for
             the response.
 
     """
@@ -108,12 +108,12 @@ class BaseErrorView(TemplateView):
         )
 
     @property
-    def default_details(self) -> Dict[str, Any]:
+    def default_details(self) -> dict[str, Any]:
         """
         Retrieve the default error details from the configuration.
 
         Returns:
-            Dict[str, Any]: A dictionary with error details.
+            dict[str, Any]: A dictionary with error details.
         """
         return get_error_config(
             error_type=self.error_type,
@@ -122,7 +122,7 @@ class BaseErrorView(TemplateView):
         )
 
     @property
-    def default_context(self) -> Dict[str, Any]:
+    def default_context(self) -> dict[str, Any]:
         """
         Retrieve the default context for rendering the template.
         """
@@ -154,7 +154,7 @@ class BaseErrorView(TemplateView):
     def get_context_data(
         self,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -162,9 +162,9 @@ class BaseErrorView(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(self.default_context)
         return context
 
@@ -172,7 +172,7 @@ class BaseErrorView(TemplateView):
         self,
         request: HttpRequest,
         # *args: Any,
-        # **kwargs: Dict[str, Any]
+        # **kwargs: dict[str, Any]
     ) -> Http400Response:
         """
         Handle GET requests by logging the error and returning a structured

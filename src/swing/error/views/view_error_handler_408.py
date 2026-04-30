@@ -30,22 +30,18 @@ Ensure you have a template at the specified `template_name` location.
 Links:
 ------
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
-from typing import Any, Dict, List
+import logging
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
 # Import | Local Modules
@@ -77,7 +73,7 @@ def handler_408_view(
     request: HttpRequest,
     exception: Any,
     template_name: str = "errors/408.html",
-) -> HttpResponseRequestTimeout:
+) -> HttpResponse:
     """
     408 Error Handler View Function
     ===============================
@@ -133,7 +129,7 @@ class Handler408View(TemplateView):
     def get_context_data(
         self,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Extend the base context data with custom error information.
 
@@ -141,9 +137,9 @@ class Handler408View(TemplateView):
             **kwargs (Any): Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: Context data for the template.
+            dict[str, Any]: Context data for the template.
         """
-        context: Dict[str, Any] = super().get_context_data(**kwargs)
+        context: dict[str, Any] = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": "Request Timeout",
@@ -158,7 +154,7 @@ class Handler408View(TemplateView):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponseRequestTimeout:
         """
         Handle GET requests by logging the error and rendering the response.
@@ -166,13 +162,13 @@ class Handler408View(TemplateView):
         Args:
             request (HttpRequest): The request object.
             *args (Any): Additional positional arguments.
-            **kwargs (Dict[str, Any]): Additional keyword arguments.
+            **kwargs (dict[str, Any]): Additional keyword arguments.
 
         Returns:
             HttpResponseRequestTimeout: The HTTP response with status code 408.
         """
         self.log_error(request=request)
-        context: Dict[str, Any] = self.get_context_data(**kwargs)
+        context: dict[str, Any] = self.get_context_data(**kwargs)
         return HttpResponseRequestTimeout(
             content=self.render_to_string(context)
         )
@@ -194,9 +190,9 @@ class Handler408View(TemplateView):
 # Exports
 # =============================================================================
 
-HANDLER408 = "myapp.views.Handler408View.as_view()"
+HANDLER408 = "swing.error.views.view_error_handler_408.handler_408_view"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "handler_408_view",
     "Handler408View",
     "HANDLER408",
