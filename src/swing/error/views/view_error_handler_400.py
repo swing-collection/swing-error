@@ -57,8 +57,8 @@ class Handler400View(BaseErrorView):
     and using the Http400Response class.
     """
 
-    error_type: str = "400"
-    response_class: Http400Response
+    error_type = "400"
+    response_class = Http400Response
 
 
 # =============================================================================

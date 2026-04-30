@@ -1,0 +1,9 @@
+# Import | Standard Library
+from collections.abc import Callable
+from importlib import import_module
+
+
+def import_callback(callback_path: str) -> Callable:
+    module_path, func_name = callback_path.rsplit(".", 1)
+    module = import_module(module_path)
+    return getattr(module, func_name)

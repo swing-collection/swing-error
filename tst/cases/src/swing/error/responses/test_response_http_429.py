@@ -1,0 +1,23 @@
+# Import | Standard Library
+import json
+
+from django.test import SimpleTestCase
+
+from swing.error.responses import Http429Response
+
+
+class TestHttp429Response(SimpleTestCase):
+    def test_default_status_code(self) -> None:
+        assert Http429Response().status_code == 429
+
+    def test_default_message(self) -> None:
+        assert (
+            json.loads(Http429Response().content)["error"]
+            == "Too Many Requests"
+        )
+
+    def test_retry_after_header(self) -> None:
+        assert Http429Response(retry_after=60)["Retry-After"] == "60"
+
+    def test_no_retry_after_header_by_default(self) -> None:
+        assert "Retry-After" not in Http429Response()
