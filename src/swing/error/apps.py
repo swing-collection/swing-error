@@ -12,15 +12,13 @@ Provides Swing Error Config Class
 
 """
 
-
 # =============================================================================
 # Import
 # =============================================================================
 
 # Import | Standard Library
-from typing import Dict, List, Union
 
-# Import | Libraries
+
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
@@ -45,7 +43,7 @@ class SwingErrorConfig(AppConfig):
     label = "swing_error"
 
     # Human-readable name for the application
-    verbose_name: str = _("Swing Errors")
+    verbose_name = _("Swing Errors")
 
     # Filesystem path to the application directory,
     # path = "/usr/lib/pythonX.Y/dist-packages/django/contrib/admin"

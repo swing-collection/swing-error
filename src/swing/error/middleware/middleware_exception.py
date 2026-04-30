@@ -23,27 +23,31 @@ MIDDLEWARE = [
 ]
 
 
-"""  # noqa E501
-
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
 # Import | Standard Library
+from collections.abc import Callable
 import logging
-from typing import Any, Callable, List
+from typing import Any
 
-# Import | Libraries
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 
+# Import | Local
 # Import | Local Modules
 from ..responses import (
     Http400Response,
     Http401Response,
     Http403Response,
     Http404Response,
+    Http405Response,
+    Http408Response,
+    Http410Response,
+    Http429Response,
     Http500Response,
 )
 
@@ -100,32 +104,23 @@ class ExceptionMiddleware:
             response: HttpResponse = self.get_response(request)
 
             # Handle specific status codes dynamically
-            if response.status_code == 400:
+            status_code_handlers = {
+                400: Http400Response,
+                401: Http401Response,
+                403: Http403Response,
+                404: Http404Response,
+                405: Http405Response,
+                408: Http408Response,
+                410: Http410Response,
+                429: Http429Response,
+                500: Http500Response,
+            }
+
+            if response.status_code in status_code_handlers:
                 return self.handle_custom_response(
-                    response_class=Http400Response,
+                    response_class=status_code_handlers[response.status_code],
                     request=request,
                 )
-            elif response.status_code == 401:
-                return self.handle_custom_response(
-                    response_class=Http401Response,
-                    request=request,
-                )
-            elif response.status_code == 403:
-                return self.handle_custom_response(
-                    response_class=Http403Response,
-                    request=request,
-                )
-            elif response.status_code == 404:
-                return self.handle_custom_response(
-                    response_class=Http404Response,
-                    request=request,
-                )
-            elif response.status_code == 500:
-                return self.handle_custom_response(
-                    response_class=Http500Response,
-                    request=request,
-                )
-            # Add additional status codes (405, 408, 410, 429) here
 
             return response
 
@@ -138,7 +133,7 @@ class ExceptionMiddleware:
 
     def handle_custom_response(
         self,
-        response_class: Callable[[HttpRequest], HttpResponse],
+        response_class: type[HttpResponse],
         request: HttpRequest,
     ) -> HttpResponse:
         """
@@ -155,7 +150,7 @@ class ExceptionMiddleware:
         logger.warning(
             msg=f"Custom response for {response_class.status_code}: Path={request.path}"
         )
-        return response_class(request=request)
+        return response_class()
 
     def handle_exception(
         self,
@@ -197,6 +192,6 @@ class ExceptionMiddleware:
 # Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "ExceptionMiddleware",
 ]

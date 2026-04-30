@@ -9,7 +9,7 @@ Provides Exception Logger Middleware Class
 ==========================================
 
 
-"""  # noqa E501
+"""
 
 
 # =============================================================================
@@ -18,7 +18,7 @@ Provides Exception Logger Middleware Class
 
 # Import | Standard Library
 import logging
-from typing import List
+
 
 # Import | Libraries
 
@@ -62,6 +62,6 @@ class ExceptionLoggerMiddleware:
 # Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "ExceptionLoggerMiddleware",
 ]

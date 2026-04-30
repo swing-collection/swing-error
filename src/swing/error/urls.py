@@ -16,44 +16,51 @@ Usage:
 Include the custom error handlers in your project's URL configuration to
 handle specific errors with custom responses.
 
+To use these handlers, add to your project's root urls.py:
+
+    from swing.error.urls import (
+        handler400, handler403, handler404, handler500
+    )
+
+Or configure in settings.py:
+
+    HANDLER400 = 'swing.error.views.view_error_handler_400.handler_400_view'
+    HANDLER403 = 'swing.error.views.view_error_handler_403.handler_403_view'
+    HANDLER404 = 'swing.error.views.view_error_handler_404.handler_404_view'
+    HANDLER500 = 'swing.error.views.view_error_handler_500.handler_500_view'
+
 Links:
 ------
 - https://docs.djangoproject.com/en/stable/topics/http/urls/
 - https://docs.djangoproject.com/en/stable/topics/http/views/#customizing-error-views
 
-"""  # noqa E501
+"""
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-# None
-
-from django.conf.urls import handler400, handler403, handler404, handler500
-
 # Import | Libraries
 from django.urls import path
 
-from .responses import (
-    Http400Response,
-    Http401Response,
-    Http403Response,
-    Http404Response,
-    Http405Response,
-    Http408Response,
-    Http410Response,
-    Http429Response,
-    Http500Response,
-)
-
 # Import | Local Modules
+from .views import (
+    HANDLER400,
+    HANDLER401,
+    HANDLER403,
+    HANDLER404,
+    HANDLER405,
+    HANDLER408,
+    HANDLER410,
+    HANDLER429,
+    HANDLER500,
+)
 
 # =============================================================================
 # URL Patterns
 # =============================================================================
 
-urlpatterns = [
+urlpatterns: list = [
     # Add other URL patterns here
 ]
 
@@ -61,43 +68,34 @@ urlpatterns = [
 # Error Handlers
 # =============================================================================
 
-handler400 = lambda request, exception=None: Http400Response(
-    "Bad Request: Invalid request."
-)
-handler401 = lambda request, exception=None: Http401Response(
-    "Unauthorized: Authentication is required."
-)
-handler403 = lambda request, exception=None: Http403Response(
-    "Forbidden: You do not have permission to access this page."
-)
-handler404 = lambda request, exception=None: Http404Response(
-    "Not Found: The requested resource was not found."
-)
-handler405 = lambda request, exception=None: Http405Response(
-    "Method Not Allowed: This endpoint only supports certain methods."
-)
-handler408 = lambda request, exception=None: Http408Response(
-    "Request Timeout: The server timed out waiting for the request."
-)
-handler410 = lambda request, exception=None: Http410Response(
-    "Gone: The requested resource is no longer available."
-)
-handler429 = lambda request, exception=None: Http429Response(
-    "Too Many Requests: You have exceeded your request limit."
-)
-handler500 = lambda request: Http500Response(
-    "Internal Server Error: An unexpected error occurred."
-)
-
-# Error Handlers
-
-handler400 = "..views.handler400"  # Error Handler - Bad Request
-handler403 = "..views.handler403"  # Error Handler - HTTP Forbidden
-handler404 = "..views.handler404"  # Error Handler - Page not Found
-handler500 = "..views.handler500"  # Error Handler - Server Error
+# These can be imported in your project's root urls.py
+handler400 = HANDLER400
+handler401 = HANDLER401
+handler403 = HANDLER403
+handler404 = HANDLER404
+handler405 = HANDLER405
+handler408 = HANDLER408
+handler410 = HANDLER410
+handler429 = HANDLER429
+handler500 = HANDLER500
 
 
-# from django.conf.urls import handler400, handler403, handler404, handler500
+# =============================================================================
+# Exports
+# =============================================================================
+
+__all__: list[str] = [
+    "urlpatterns",
+    "handler400",
+    "handler401",
+    "handler403",
+    "handler404",
+    "handler405",
+    "handler408",
+    "handler410",
+    "handler429",
+    "handler500",
+]
 # from error_handler.handlers import (
 #     handle_404,
 #     handle_500,
