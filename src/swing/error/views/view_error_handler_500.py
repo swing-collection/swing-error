@@ -9,28 +9,20 @@
 Provides 500 Error Handler View Module
 ======================================
 
-This module contains a function-based and a class-based view for handling
-HTTP 500 Internal Server Error errors in a Django application. It renders a
-custom template with error details and sets the appropriate 500 status code
-in the response. Additionally, it logs error details for debugging purposes.
-
-By default, this is handled by `django.views.defaults.server_error()`. If you
-implement a custom view, be sure it accepts `request` arguments
-and returns an `HttpResponseServerError`.
+This module contains a class-based view for handling HTTP 500 Internal Server Error
+errors in a Django application. It renders a custom template with error
+details and sets the appropriate 500 status code in the response.
+Additionally, it logs error details for debugging purposes.
 
 Usage:
 ------
 Include the `Handler500View` in your project's URL configuration for handling
 500 errors. Add the following to your project's settings:
 
-    HANDLER500 = 'myapp.views.Handler500View.as_view()'
-
-Ensure you have a template at the specified `template_name` location.
+    HANDLER500 = 'swing.error.views.view_error_handler_500.Handler500View.as_view()'
 
 Links:
 ------
-- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler500
-- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseServerError
 
 """
 
@@ -38,148 +30,35 @@ Links:
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-import logging
-from typing import Any
-
-from django.http import HttpRequest, HttpResponse, HttpResponseServerError
-from django.shortcuts import render
-from django.views.generic import TemplateView
-
 # Import | Local Modules
-# None
-
-
-# =============================================================================
-# Variables
-# =============================================================================
-
-GENERIC: str = "Please return to our home page"
-
-
-# =============================================================================
-# Functions
-# =============================================================================
-
-
-def handler_500_view(
-    request: HttpRequest,
-    template_name: str = "errors/500.html",
-) -> HttpResponse:
-    """
-    500 Error Handler View Function
-    ===============================
-
-    A callable view to handle HTTP 500 Internal Server Error errors.
-
-    Args:
-        request (HttpRequest): The request object.
-        template_name (str): The path to the template to be rendered.
-
-    Returns:
-        HttpResponseServerError: The HTTP response with status code 500.
-    """
-    response: HttpResponse = render(
-        request=request,
-        template_name=template_name,
-        context={
-            "title": "Internal Server Error",
-            "header": "500 Error",
-            "message": "An unexpected error occurred on the server.",
-            "redirect": GENERIC,
-        },
-    )
-    response.status_code = 500
-    return response
-
+from ..responses.response_http_500 import Http500Response
+from ..views.view_error_handler_base import BaseErrorView
 
 # =============================================================================
 # Classes
 # =============================================================================
 
 
-class Handler500View(TemplateView):
+class Handler500View(BaseErrorView):
     """
-    500 Error Handler View Class
-    ============================
+    500 Error Handler View
+    ======================
 
-    A class-based view to handle HTTP 500 Internal Server Error errors.
-
-    This view renders a custom template with error details and sets the
-    appropriate 500 status code in the response. Additionally, it logs
-    error details for debugging purposes.
-
-    Attributes:
-        template_name (str): The path to the template to be rendered.
-        logger (logging.Logger): Logger instance for logging errors.
+    Handles HTTP 500 Internal Server Error errors by rendering a custom template
+    and using the Http500Response class.
     """
 
-    template_name: str = "errors/500.html"
-    logger: logging.Logger = logging.getLogger(__name__)
-
-    def get_context_data(
-        self,
-        **kwargs: Any,
-    ) -> dict[str, Any]:
-        """
-        Extend the base context data with custom error information.
-
-        Args:
-            **kwargs (Any): Additional keyword arguments.
-
-        Returns:
-            dict[str, Any]: Context data for the template.
-        """
-        context: dict[str, Any] = super().get_context_data(**kwargs)
-        context.update(
-            {
-                "title": "Internal Server Error",
-                "header": "500 Error",
-                "message": "An unexpected error occurred on the server.",
-                "redirect": GENERIC,
-            }
-        )
-        return context
-
-    def get(
-        self,
-        request: HttpRequest,
-        *args: Any,
-        **kwargs: dict[str, Any],
-    ) -> HttpResponseServerError:
-        """
-        Handle GET requests by logging the error and rendering the response.
-
-        Args:
-            request (HttpRequest): The request object.
-            *args (Any): Additional positional arguments.
-            **kwargs (dict[str, Any]): Additional keyword arguments.
-
-        Returns:
-            HttpResponseServerError: The HTTP response with status code 500.
-        """
-        self.log_error(request=request)
-        context: dict[str, Any] = self.get_context_data(**kwargs)
-        return HttpResponseServerError(content=self.render_to_string(context))
-
-    def log_error(self, request: HttpRequest) -> None:
-        """
-        Log the error details for debugging purposes.
-
-        Args:
-            request (HttpRequest): The request object.
-        """
-        self.logger.error(f"500 Internal Server Error at {request.path}")
+    error_type = "500"
+    response_class = Http500Response
 
 
 # =============================================================================
 # Exports
 # =============================================================================
 
-HANDLER500 = "swing.error.views.view_error_handler_500.handler_500_view"
+HANDLER500 = "swing.error.views.view_error_handler_500.Handler500View"
 
 __all__: list[str] = [
-    "handler_500_view",
     "Handler500View",
     "HANDLER500",
 ]

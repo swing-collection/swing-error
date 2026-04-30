@@ -8,20 +8,41 @@
 Provides Exception Middleware Class
 ===================================
 
-This module provides middleware for global exception handling in a Django
-application. The middleware captures unhandled exceptions and generates
-structured error responses. It also handles specific HTTP status codes like
-404 (Not Found) and can be extended for additional error handling as needed.
+This module provides a unified, comprehensive middleware for global exception
+handling in a Django application. The middleware:
+
+1. **Captures all unhandled exceptions** and generates structured error responses
+2. **Logs all exceptions** with full context (path, method, exception details)
+3. **Handles specific HTTP status codes** (400, 401, 403, 404, 405, 408, 410, 429, 500)
+4. **Provides debugging information** in DEBUG mode
+5. **Supports Sentry integration** for error tracking (via conf.py)
+6. **Supports CORS headers** on error responses (via conf.py)
 
 Usage:
 ------
-Add the middleware to the `MIDDLEWARE` list in your `settings.py`:
+Add the middleware to the `MIDDLEWARE` list in your `settings.py` **after**
+any authentication middleware:
 
-MIDDLEWARE = [
-    # other middleware
-    'error_handler.middleware.ExceptionMiddleware',
-]
+    MIDDLEWARE = [
+        # ... other middleware ...
+        'django.middleware.security.SecurityMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        # Add ExceptionMiddleware here
+        'swing.error.middleware.ExceptionMiddleware',
+    ]
 
+Notes:
+------
+- This is the recommended and unified middleware for error handling
+- It replaces the need for separate logging-only middleware
+- Configure error handling via SWING_ERROR settings in settings.py
+- See conf.py for available configuration options
+
+Links:
+------
+- https://docs.djangoproject.com/en/stable/topics/http/middleware/
 
 """
 

@@ -19,25 +19,22 @@ Links:
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
 
-import logging
-
 # Import | Standard Library
+import logging
 from typing import Any
 
 from django.http import HttpRequest
-
-# Import | Libraries
 from django.views.generic import TemplateView
 
+# Import | Local
 from ..conf import get_error_config
 
 # Import | Local Modules
-from ..responses.response_http_400 import Http400Response
+from ..responses.response_error_base import BaseErrorResponse
 
 # =============================================================================
 # Class
@@ -57,6 +54,8 @@ class BaseErrorView(TemplateView):
     in their project.
 
     Attributes:
+        error_type (str): The error type code (e.g., "400", "404", "500").
+        response_class (type[BaseErrorResponse]): The response class to use.
         status_code (int): The HTTP status code for the error response.
         logger (logging.Logger): Logger instance for logging errors.
         default_message (str): Default error message for the view.
@@ -66,6 +65,7 @@ class BaseErrorView(TemplateView):
     """
 
     error_type: str = "base"  # Override in subclasses for specific errors
+    response_class: type[BaseErrorResponse] = BaseErrorResponse
     logger: logging.Logger = logging.getLogger(name=__name__)
 
     @property
@@ -173,7 +173,7 @@ class BaseErrorView(TemplateView):
         request: HttpRequest,
         # *args: Any,
         # **kwargs: dict[str, Any]
-    ) -> Http400Response:
+    ) -> BaseErrorResponse:
         """
         Handle GET requests by logging the error and returning a structured
         response.
@@ -182,12 +182,13 @@ class BaseErrorView(TemplateView):
             request (HttpRequest): The request object.
 
         Returns:
-            Http400Response: A structured error response.
+            BaseErrorResponse: A structured error response.
         """
         if self.log_errors:
             self.log_error(request=request)
 
-        return Http400Response(
+        return self.response_class(
+            status_code=self.status_code,
             message=self.default_message,
             details=self.default_details,
             request=request,

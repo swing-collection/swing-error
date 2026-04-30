@@ -388,6 +388,336 @@ class TestClientIP(TestCase):
 
 
 # =============================================================================
+# Test View Handlers
+# =============================================================================
+
+
+class TestViewHandlers(TestCase):
+    """Tests for error handler views."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.factory = RequestFactory()
+
+    def test_handler_401_view_returns_401_status(self):
+        """Test Handler401View returns 401 status code."""
+        from ..views.view_error_handler_401 import Handler401View
+
+        view = Handler401View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 401)
+
+    def test_handler_401_view_returns_json(self):
+        """Test Handler401View returns JSON when Accept header is application/json."""
+        from ..views.view_error_handler_401 import Handler401View
+
+        view = Handler401View.as_view()
+        request = self.factory.get("/", HTTP_ACCEPT="application/json")
+        response = view(request)
+        self.assertIn("application/json", response.get("Content-Type", ""))
+
+    def test_handler_403_view_returns_403_status(self):
+        """Test Handler403View returns 403 status code."""
+        from ..views.view_error_handler_403 import Handler403View
+
+        view = Handler403View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 403)
+
+    def test_handler_404_view_returns_404_status(self):
+        """Test Handler404View returns 404 status code."""
+        from ..views.view_error_handler_404 import Handler404View
+
+        view = Handler404View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 404)
+
+    def test_handler_405_view_returns_405_status(self):
+        """Test Handler405View returns 405 status code."""
+        from ..views.view_error_handler_405 import Handler405View
+
+        view = Handler405View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 405)
+
+    def test_handler_408_view_returns_408_status(self):
+        """Test Handler408View returns 408 status code."""
+        from ..views.view_error_handler_408 import Handler408View
+
+        view = Handler408View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 408)
+
+    def test_handler_410_view_returns_410_status(self):
+        """Test Handler410View returns 410 status code."""
+        from ..views.view_error_handler_410 import Handler410View
+
+        view = Handler410View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 410)
+
+    def test_handler_429_view_returns_429_status(self):
+        """Test Handler429View returns 429 status code."""
+        from ..views.view_error_handler_429 import Handler429View
+
+        view = Handler429View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 429)
+
+    def test_handler_500_view_returns_500_status(self):
+        """Test Handler500View returns 500 status code."""
+        from ..views.view_error_handler_500 import Handler500View
+
+        view = Handler500View.as_view()
+        request = self.factory.get("/")
+        response = view(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_all_handlers_extend_base_error_view(self):
+        """Test all handlers are instances of BaseErrorView."""
+        from ..views.view_error_handler_base import BaseErrorView
+        from ..views.view_error_handler_401 import Handler401View
+        from ..views.view_error_handler_403 import Handler403View
+        from ..views.view_error_handler_404 import Handler404View
+        from ..views.view_error_handler_405 import Handler405View
+        from ..views.view_error_handler_408 import Handler408View
+        from ..views.view_error_handler_410 import Handler410View
+        from ..views.view_error_handler_429 import Handler429View
+        from ..views.view_error_handler_500 import Handler500View
+
+        for ViewClass in [
+            Handler401View,
+            Handler403View,
+            Handler404View,
+            Handler405View,
+            Handler408View,
+            Handler410View,
+            Handler429View,
+            Handler500View,
+        ]:
+            self.assertTrue(issubclass(ViewClass, BaseErrorView))
+
+    def test_handler_401_uses_http401_response(self):
+        """Test Handler401View uses Http401Response class."""
+        from ..views.view_error_handler_401 import Handler401View
+
+        self.assertEqual(Handler401View.response_class, Http401Response)
+
+    def test_handler_403_uses_http403_response(self):
+        """Test Handler403View uses Http403Response class."""
+        from ..views.view_error_handler_403 import Handler403View
+        from ..responses.response_http_403 import Http403Response
+
+        self.assertEqual(Handler403View.response_class, Http403Response)
+
+    def test_handler_404_uses_http404_response(self):
+        """Test Handler404View uses Http404Response class."""
+        from ..views.view_error_handler_404 import Handler404View
+        from ..responses.response_http_404 import Http404Response
+
+        self.assertEqual(Handler404View.response_class, Http404Response)
+
+    def test_handler_error_types_set_correctly(self):
+        """Test all handlers have error_type attribute set correctly."""
+        from ..views.view_error_handler_401 import Handler401View
+        from ..views.view_error_handler_403 import Handler403View
+        from ..views.view_error_handler_404 import Handler404View
+        from ..views.view_error_handler_405 import Handler405View
+        from ..views.view_error_handler_408 import Handler408View
+        from ..views.view_error_handler_410 import Handler410View
+        from ..views.view_error_handler_429 import Handler429View
+        from ..views.view_error_handler_500 import Handler500View
+
+        handlers = {
+            Handler401View: "401",
+            Handler403View: "403",
+            Handler404View: "404",
+            Handler405View: "405",
+            Handler408View: "408",
+            Handler410View: "410",
+            Handler429View: "429",
+            Handler500View: "500",
+        }
+
+        for ViewClass, expected_code in handlers.items():
+            self.assertEqual(ViewClass.error_type, expected_code)
+
+
+# =============================================================================
+# Test Middleware
+# =============================================================================
+
+
+class TestExceptionMiddleware(TestCase):
+    """Tests for ExceptionMiddleware."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.factory = RequestFactory()
+        from ..middleware import ExceptionMiddleware
+
+        # Create a mock get_response that doesn't raise
+        def get_response_ok(request):
+            from django.http import HttpResponse
+            return HttpResponse("OK", status=200)
+
+        self.middleware = ExceptionMiddleware(get_response_ok)
+
+        # Create a mock get_response that raises
+        def get_response_error(request):
+            raise ValueError("Test exception")
+
+        self.middleware_error = ExceptionMiddleware(get_response_error)
+
+    def test_middleware_returns_200_for_ok_response(self):
+        """Test middleware passes through OK responses."""
+        request = self.factory.get("/")
+        response = self.middleware(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_middleware_handles_unhandled_exception(self):
+        """Test middleware catches unhandled exceptions and returns 500."""
+        request = self.factory.get("/")
+        response = self.middleware_error(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_middleware_returns_json_for_exception(self):
+        """Test middleware returns JSON response for exceptions."""
+        request = self.factory.get("/", HTTP_ACCEPT="application/json")
+        response = self.middleware_error(request)
+        self.assertIn("application/json", response.get("Content-Type", ""))
+        content = json.loads(response.content)
+        self.assertIn("error", content)
+
+    def test_middleware_with_401_response(self):
+        """Test middleware handles 401 responses."""
+        from ..middleware import ExceptionMiddleware
+
+        def get_401_response(request):
+            return Http401Response()
+
+        middleware = ExceptionMiddleware(get_401_response)
+        request = self.factory.get("/")
+        response = middleware(request)
+        # The middleware should handle the 401 response
+        self.assertEqual(response.status_code, 401)
+
+    def test_middleware_with_404_response(self):
+        """Test middleware handles 404 responses."""
+        from ..middleware import ExceptionMiddleware
+
+        def get_404_response(request):
+            return Http404Response()
+
+        middleware = ExceptionMiddleware(get_404_response)
+        request = self.factory.get("/")
+        response = middleware(request)
+        self.assertEqual(response.status_code, 404)
+
+    def test_middleware_with_500_response(self):
+        """Test middleware handles 500 responses."""
+        from ..middleware import ExceptionMiddleware
+
+        def get_500_response(request):
+            return Http500Response()
+
+        middleware = ExceptionMiddleware(get_500_response)
+        request = self.factory.get("/")
+        response = middleware(request)
+        self.assertEqual(response.status_code, 500)
+
+
+# =============================================================================
+# Test Integration
+# =============================================================================
+
+
+class TestIntegration(TestCase):
+    """Integration tests for CORS, error tracking, and debug mode."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.factory = RequestFactory()
+
+    @patch("swing.error.conf.get_cors_config")
+    def test_cors_headers_on_error_response(self, mock_cors_config):
+        """Test CORS headers are added to error responses."""
+        # Mock CORS configuration
+        mock_cors_config.return_value = {
+            "enabled": True,
+            "allowed_origins": "*",
+            "allowed_methods": ["GET", "POST", "OPTIONS"],
+            "allowed_headers": ["Content-Type", "Authorization"],
+        }
+
+        # Create a response with CORS
+        request = self.factory.options(
+            "/api/endpoint",
+            HTTP_ORIGIN="http://example.com",
+        )
+        response = Http401Response(request=request)
+
+        # Verify response has CORS headers
+        self.assertIn("Access-Control-Allow-Origin", response)
+
+    def test_error_response_with_request_context(self):
+        """Test error response includes request context when provided."""
+        request = self.factory.get("/api/test", HTTP_ACCEPT="application/json")
+        response = Http400Response(request=request)
+        content = json.loads(response.content)
+
+        # Should have error structure
+        self.assertIn("error", content)
+        self.assertIn("details", content)
+
+    def test_multiple_error_codes_in_middleware_chain(self):
+        """Test middleware handles multiple different error codes."""
+        from ..middleware import ExceptionMiddleware
+
+        error_codes = [400, 401, 403, 404, 405, 408, 410, 429, 500]
+
+        for code in error_codes:
+            # Create a response with the specific code
+            def get_response_with_code(status_code):
+                def inner(request):
+                    from django.http import HttpResponse
+
+                    resp = HttpResponse(f"Error {status_code}", status=status_code)
+                    return resp
+
+                return inner
+
+            middleware = ExceptionMiddleware(get_response_with_code(code))
+            request = self.factory.get("/")
+            response = middleware(request)
+
+            # Middleware should handle all status codes
+            self.assertIsNotNone(response)
+
+    def test_view_handler_chain_integration(self):
+        """Test all view handlers work in succession."""
+        from ..views.view_error_handler_401 import Handler401View
+        from ..views.view_error_handler_403 import Handler403View
+        from ..views.view_error_handler_404 import Handler404View
+
+        views = [Handler401View, Handler403View, Handler404View]
+        expected_codes = [401, 403, 404]
+
+        for view_class, expected_code in zip(views, expected_codes):
+            view = view_class.as_view()
+            request = self.factory.get("/")
+            response = view(request)
+            self.assertEqual(response.status_code, expected_code)
+
+
+# =============================================================================
 # Exports
 # =============================================================================
 
@@ -405,4 +735,7 @@ __all__: list[str] = [
     "TestContentNegotiation",
     "TestRequestTracking",
     "TestClientIP",
+    "TestViewHandlers",
+    "TestExceptionMiddleware",
+    "TestIntegration",
 ]

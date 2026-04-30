@@ -9,28 +9,20 @@
 Provides 403 Error Handler View Module
 ======================================
 
-This module contains a function-based and a class-based view for handling
-HTTP 403 Forbidden errors in a Django application. It renders a custom
-template with error details and sets the appropriate 403 status code in the
-response. Additionally, it logs error details for debugging purposes.
-
-By default, this is handled by `django.views.defaults.permission_denied()`. If
-you implement a custom view, be sure it accepts `request` and `exception`
-arguments and returns an `HttpResponseForbidden`.
+This module contains a class-based view for handling HTTP 403 Forbidden
+errors in a Django application. It renders a custom template with error
+details and sets the appropriate 403 status code in the response.
+Additionally, it logs error details for debugging purposes.
 
 Usage:
 ------
 Include the `Handler403View` in your project's URL configuration for handling
 403 errors. Add the following to your project's settings:
 
-    HANDLER403 = 'myapp.views.Handler403View.as_view()'
-
-Ensure you have a template at the specified `template_name` location.
+    HANDLER403 = 'swing.error.views.view_error_handler_403.Handler403View.as_view()'
 
 Links:
 ------
-- https://docs.djangoproject.com/en/stable/ref/urls/#django.conf.urls.handler403
-- https://docs.djangoproject.com/en/stable/ref/request-response/#django.http.HttpResponseForbidden
 
 """
 
@@ -38,144 +30,35 @@ Links:
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-import logging
-from typing import Any
-
-from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
-from django.shortcuts import render
-from django.views.generic import TemplateView
-
 # Import | Local Modules
-# None
-
-
-# =============================================================================
-# Variables
-# =============================================================================
-
-GENERIC: str = "Please return to our home page"
-
-
-# =============================================================================
-# Functions
-# =============================================================================
-
-
-def handler_403_view(
-    request: HttpRequest,
-    exception: Any,
-    template_name: str = "errors/403.html",
-) -> HttpResponse:
-    """
-    403 Error Handler View Function
-    ===============================
-
-    A callable view to handle HTTP 403 Forbidden errors.
-
-    Args:
-        request (HttpRequest): The request object.
-        exception (Any): The exception raised.
-        template_name (str): The path to the template to be rendered.
-
-    Returns:
-        HttpResponseForbidden: The HTTP response with status code 403.
-    """
-    response = render(
-        request,
-        template_name,
-        {
-            "title": "Forbidden",
-            "header": "403 Error",
-            "message": "You do not have permission to access this page.",
-            "redirect": GENERIC,
-        },
-    )
-    response.status_code = 403
-    return response
-
+from ..responses.response_http_403 import Http403Response
+from ..views.view_error_handler_base import BaseErrorView
 
 # =============================================================================
 # Classes
 # =============================================================================
 
 
-class Handler403View(TemplateView):
+class Handler403View(BaseErrorView):
     """
-    403 Error Handler View Class
-    ============================
+    403 Error Handler View
+    ======================
 
-    A class-based view to handle HTTP 403 Forbidden errors.
-
-    This view renders a custom template with error details and sets the
-    appropriate 403 status code in the response. Additionally, it logs
-    error details for debugging purposes.
-
-    Attributes:
-        template_name (str): The path to the template to be rendered.
-        logger (logging.Logger): Logger instance for logging errors.
+    Handles HTTP 403 Forbidden errors by rendering a custom template
+    and using the Http403Response class.
     """
 
-    template_name: str = "errors/403.html"
-    logger: logging.Logger = logging.getLogger(__name__)
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        """
-        Extend the base context data with custom error information.
-
-        Args:
-            **kwargs (Any): Additional keyword arguments.
-
-        Returns:
-            dict[str, Any]: Context data for the template.
-        """
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {
-                "title": "Forbidden",
-                "header": "403 Error",
-                "message": "You do not have permission to access this page.",
-                "redirect": GENERIC,
-            }
-        )
-        return context
-
-    def get(
-        self, request: HttpRequest, *args: Any, **kwargs: dict[str, Any]
-    ) -> HttpResponseForbidden:
-        """
-        Handle GET requests by logging the error and rendering the response.
-
-        Args:
-            request (HttpRequest): The request object.
-            *args (Any): Additional positional arguments.
-            **kwargs (dict[str, Any]): Additional keyword arguments.
-
-        Returns:
-            HttpResponseForbidden: The HTTP response with status code 403.
-        """
-        self.log_error(request)
-        context = self.get_context_data(**kwargs)
-        return HttpResponseForbidden(self.render_to_string(context))
-
-    def log_error(self, request: HttpRequest) -> None:
-        """
-        Log the error details for debugging purposes.
-
-        Args:
-            request (HttpRequest): The request object.
-        """
-        self.logger.error(f"403 Forbidden at {request.path}")
+    error_type = "403"
+    response_class = Http403Response
 
 
 # =============================================================================
 # Exports
 # =============================================================================
 
-HANDLER403 = "swing.error.views.view_error_handler_403.handler_403_view"
+HANDLER403 = "swing.error.views.view_error_handler_403.Handler403View"
 
-__all__ = [
-    "handler_403_view",
+__all__: list[str] = [
     "Handler403View",
     "HANDLER403",
 ]
