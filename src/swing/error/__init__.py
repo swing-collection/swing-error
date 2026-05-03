@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """
+Public exports for the swing.error reusable Django application.
 
+This package exposes the app config, exception middleware, and the HTTP
+response classes that can be imported directly by consuming projects.
 """
+
 # Import | Local
 from .apps import SwingErrorConfig
 from .middleware import ExceptionMiddleware

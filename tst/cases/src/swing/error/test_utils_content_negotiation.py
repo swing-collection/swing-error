@@ -42,3 +42,18 @@ class TestContentNegotiation(SimpleTestCase):
     def test_get_preferred_content_type_html(self) -> None:
         request = self.factory.get("/", HTTP_ACCEPT="text/html")
         assert get_preferred_content_type(request) == "html"
+
+    def test_get_preferred_content_type_problem_json(self) -> None:
+        request = self.factory.get(
+            "/",
+            HTTP_ACCEPT="application/problem+json",
+        )
+        assert get_preferred_content_type(request) == "problem+json"
+
+    def test_get_preferred_content_type_xml(self) -> None:
+        request = self.factory.get("/", HTTP_ACCEPT="application/xml")
+        assert get_preferred_content_type(request) == "xml"
+
+    def test_get_preferred_content_type_yaml(self) -> None:
+        request = self.factory.get("/", HTTP_ACCEPT="application/yaml")
+        assert get_preferred_content_type(request) == "yaml"

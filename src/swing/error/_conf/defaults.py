@@ -57,6 +57,7 @@ DEFAULT_SECURITY_HEADERS_CONFIG: dict[str, str] = {
 DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     "base": {
         "status_code": 500,
+        "template": "swing_error/error.html",
         "default_message": "An error occurred",
         "default_details": {
             "title": "Error",
@@ -68,6 +69,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "400": {
         "status_code": 400,
+        "template": "swing_error/400.html",
         "default_message": "Bad Request",
         "default_details": {
             "title": "Bad Request",
@@ -79,6 +81,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "401": {
         "status_code": 401,
+        "template": "swing_error/401.html",
         "default_message": "Unauthorized",
         "default_details": {
             "title": "Unauthorized",
@@ -90,6 +93,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "403": {
         "status_code": 403,
+        "template": "swing_error/403.html",
         "default_message": "Forbidden",
         "default_details": {
             "title": "Forbidden",
@@ -101,6 +105,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "404": {
         "status_code": 404,
+        "template": "swing_error/404.html",
         "default_message": "Page Not Found",
         "default_details": {
             "title": "404 Error",
@@ -112,6 +117,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "405": {
         "status_code": 405,
+        "template": "swing_error/405.html",
         "default_message": "Method Not Allowed",
         "default_details": {
             "title": "Method Not Allowed",
@@ -123,6 +129,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "408": {
         "status_code": 408,
+        "template": "swing_error/408.html",
         "default_message": "Request Timeout",
         "default_details": {
             "title": "Request Timeout",
@@ -134,6 +141,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "410": {
         "status_code": 410,
+        "template": "swing_error/410.html",
         "default_message": "Gone",
         "default_details": {
             "title": "Gone",
@@ -145,6 +153,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "429": {
         "status_code": 429,
+        "template": "swing_error/429.html",
         "default_message": "Too Many Requests",
         "default_details": {
             "title": "Too Many Requests",
@@ -157,6 +166,7 @@ DEFAULT_ERROR_SETTINGS: dict[str, dict[str, Any]] = {
     },
     "500": {
         "status_code": 500,
+        "template": "swing_error/500.html",
         "default_message": "Internal Server Error",
         "default_details": {
             "title": "Internal Server Error",

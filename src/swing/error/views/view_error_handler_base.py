@@ -91,8 +91,8 @@ class BaseErrorView(TemplateView):
                 str,
                 get_error_config(
                     error_type=self.error_type,
-                    key="template_name",
-                    default="errors/default.html",
+                    key="template",
+                    default="swing_error/error.html",
                 ),
             )
         ]

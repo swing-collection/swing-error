@@ -18,9 +18,8 @@ handling in a Django application. The middleware:
 5. **Supports Sentry integration** for error tracking (via conf.py)
 6. **Supports CORS headers** on error responses (via conf.py)
 
-Usage:
-------
-Add the middleware to the `MIDDLEWARE` list in your `settings.py` **after**
+**Recommended Middleware Chain:**
+Add this middleware to the `MIDDLEWARE` list in your `settings.py` **after**
 any authentication middleware:
 
     MIDDLEWARE = [
@@ -29,14 +28,26 @@ any authentication middleware:
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
-        # Add ExceptionMiddleware here
+        # Add ExceptionMiddleware here (primary error handler)
         'swing.error.middleware.ExceptionMiddleware',
+        # Optional: ExceptionLoggerMiddleware for additional audit logging
+        # 'swing.error.middleware.ExceptionLoggerMiddleware',
     ]
+
+**Key Features:**
+- Synchronous and async-capable (`__call__` and `__acall__`)
+- Automatic logging is built-in; separate `ExceptionLoggerMiddleware` is optional
+- All configuration via `SWING_ERROR` settings (see conf.py)
+- Single point of control for error handling, debugging, tracking, CORS
+
+**Optional Companion:**
+- `ExceptionLoggerMiddleware`: Lightweight opt-in for redundant logging or
+  specialized logging backends (rarely needed with this middleware)
 
 Notes:
 ------
 - This is the recommended and unified middleware for error handling
-- It replaces the need for separate logging-only middleware
+- Logging is built-in; you do NOT need ExceptionLoggerMiddleware for typical use
 - Configure error handling via SWING_ERROR settings in settings.py
 - See conf.py for available configuration options
 
@@ -55,7 +66,7 @@ from collections.abc import Awaitable, Callable
 import inspect
 import logging
 
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse
 
 # Import | Local
 # Import | Local Modules
@@ -69,6 +80,7 @@ from ..responses import (
     Http410Response,
     Http429Response,
     Http500Response,
+    BaseErrorResponse,
 )
 
 # =============================================================================
@@ -97,7 +109,9 @@ class ExceptionMiddleware:
 
     def __init__(
         self,
-        get_response: Callable[[HttpRequest], HttpResponse | Awaitable[HttpResponse]],
+        get_response: Callable[
+            [HttpRequest], HttpResponse | Awaitable[HttpResponse]
+        ],
     ) -> None:
         """
         Initialize the ExceptionMiddleware.
@@ -181,7 +195,9 @@ class ExceptionMiddleware:
 
             if resolved_response.status_code in status_code_handlers:
                 return self.handle_custom_response(
-                    response_class=status_code_handlers[resolved_response.status_code],
+                    response_class=status_code_handlers[
+                        resolved_response.status_code
+                    ],
                     request=request,
                 )
 
@@ -218,7 +234,7 @@ class ExceptionMiddleware:
         self,
         exception: Exception,
         request: HttpRequest,
-    ) -> JsonResponse:
+    ) -> BaseErrorResponse:
         """
         Handle unhandled exceptions and return a structured JSON response.
 
@@ -240,13 +256,11 @@ class ExceptionMiddleware:
             exc_info=True,
         )
 
-        # Return a JSON response with error details
-        return JsonResponse(
-            data={
-                "error": "Server Error",
-                "message": "An unexpected error occurred. Please try again later.",
-            },
-            status=500,
+        return Http500Response(
+            message="Server Error",
+            details="An unexpected error occurred. Please try again later.",
+            request=request,
+            exception=exception,
         )
 
 

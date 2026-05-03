@@ -6,10 +6,10 @@
 # =============================================================================
 
 """
-Provides Swing Error Config Class
-=================================
+Register the swing.error Django application.
 
-
+This module declares the reusable app config that Django uses when the
+package is installed in a project.
 """
 
 # =============================================================================
@@ -28,10 +28,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class SwingErrorConfig(AppConfig):
-    """
-    Swing Error Config Class
-    ========================
-    """
+    """Configure the reusable swing.error Django application."""
 
     # Full Python path to the application
     name = "swing.error"

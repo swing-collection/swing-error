@@ -12,6 +12,7 @@ def get_debug_info(
     exception: Exception | None = None,
     request: HttpRequest | None = None,
 ) -> dict[str, Any]:
+    """Collect configured debug details for an exception response payload."""
     config = get_debug_config()
     debug_info: dict[str, Any] = {}
 

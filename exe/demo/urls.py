@@ -22,7 +22,7 @@ Defines URL patterns for the demo project. This includes:
 
 from django.contrib import admin
 from django.urls import include, path
-from django.urls.resolvers import URLResolver
+from django.urls.resolvers import URLPattern, URLResolver
 
 # Import | Local
 # Import | Local Modules
@@ -32,7 +32,7 @@ from . import views
 # URL Patterns
 # =============================================================================
 
-urlpatterns: list[URLResolver] = [
+urlpatterns: list[URLResolver | URLPattern] = [
     # Admin
     path(
         route="admin/",

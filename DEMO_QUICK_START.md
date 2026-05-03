@@ -1,30 +1,35 @@
-# 🚀 Swing Error Demo - Quick Reference Card
+<!-- cspell:ignore runserver wsgi WSGI venv -->
 
-## ⚡ Start Demo in 10 Seconds
+# Swing Error Demo Quick Reference
+
+## Start Demo in 10 Seconds
 
 ### macOS/Linux
+
 ```bash
 cd exe && bash run_demo.sh
 ```
 
 ### Windows
+
 ```cmd
 cd exe && run_demo.bat
 ```
 
 ### Manual (Any OS)
+
 ```bash
 cd exe && python manage.py runserver
 ```
 
-Then open: **http://localhost:8000**
+Then open: <http://localhost:8000>
 
 ---
 
-## 🎯 Available Test Endpoints
+## Available Test Endpoints
 
 | URL | Status | Description |
-|-----|--------|-------------|
+| --- | --- | --- |
 | `/` | 200 | Home page with all links |
 | `/test/400/` | 400 | Bad Request demo |
 | `/test/401/` | 401 | Unauthorized demo |
@@ -33,16 +38,16 @@ Then open: **http://localhost:8000**
 | `/test/405/` | 405 | Method Not Allowed demo |
 | `/test/408/` | 408 | Request Timeout demo |
 | `/test/410/` | 410 | Gone demo |
-| `/test/429/` | 429 | Rate Limit demo (with Retry-After) |
-| `/test/500/` | 500 | Server Error demo |
-| `/test/exception/` | 500 | Unhandled Exception demo |
-| `/api/json-error/` | 400 | JSON API Error demo |
-| `/api/success/` | 200 | JSON API Success demo |
-| `/admin/` | 200 | Django Admin |
+| `/test/429/` | 429 | Rate limit demo with `Retry-After` |
+| `/test/500/` | 500 | Server error demo |
+| `/test/exception/` | 500 | Unhandled exception demo |
+| `/api/json-error/` | 400 | JSON API error demo |
+| `/api/success/` | 200 | JSON API success demo |
+| `/admin/` | 200 | Django admin |
 
 ---
 
-## 🧪 Test with cURL
+## Test with cURL
 
 ```bash
 # Test 400 error
@@ -60,14 +65,16 @@ curl http://localhost:8000/test/exception/
 
 ---
 
-## 🔍 What to Check in Browser DevTools (F12)
+## What to Check in Browser DevTools (F12)
 
 ### Network Tab
-- ✅ Status code (400, 401, 404, 429, 500, etc.)
-- ✅ Content-Type: application/json
-- ✅ Response time
+
+- Status code (`400`, `401`, `404`, `429`, `500`)
+- `Content-Type: application/json`
+- Response time
 
 ### Response Tab
+
 ```json
 {
   "error": "Error message",
@@ -78,19 +85,20 @@ curl http://localhost:8000/test/exception/
 ```
 
 ### Headers Tab
-- ✅ `Access-Control-Allow-Origin`
-- ✅ `X-Content-Type-Options`
-- ✅ `X-Frame-Options`
-- ✅ `Referrer-Policy`
-- ✅ `Retry-After` (for 429 responses)
+
+- `Access-Control-Allow-Origin`
+- `X-Content-Type-Options`
+- `X-Frame-Options`
+- `Referrer-Policy`
+- `Retry-After` for `429` responses
 
 ---
 
-## 📋 Configuration Files
+## Configuration Files
 
 | File | Purpose |
-|------|---------|
-| `exe/demo/settings.py` | Django settings + swing-error config |
+| --- | --- |
+| `exe/demo/settings.py` | Django settings and swing-error config |
 | `exe/demo/urls.py` | URL routing for test endpoints |
 | `exe/demo/views.py` | Test view functions |
 | `exe/demo/wsgi.py` | WSGI application |
@@ -98,12 +106,12 @@ curl http://localhost:8000/test/exception/
 
 ---
 
-## 🔧 Modify Settings
+## Modify Settings
 
 Edit `exe/demo/settings.py` to test different configurations:
 
 ```python
-# Enable/disable CORS
+# Enable or disable CORS
 SWING_ERROR_CORS = {"enabled": True, ...}
 
 # Show debug info
@@ -117,10 +125,10 @@ Then restart the server to see changes.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 | Problem | Solution |
-|---------|----------|
+| --- | --- |
 | Port 8000 in use | `python manage.py runserver 8001` |
 | Virtual env not activated | `source ../.venv/bin/activate` |
 | Import errors | Check virtual environment activation |
@@ -129,49 +137,49 @@ Then restart the server to see changes.
 
 ---
 
-## 📚 Documentation
+## Documentation
 
-- **DEMO_SETUP.md** - Complete setup guide
-- **exe/README_DEMO.md** - Detailed demo documentation
-- **exe/README.md** - Original README
-
----
-
-## ✨ Key Features Demonstrated
-
-✅ JSON error response formatting
-✅ CORS header handling
-✅ Security headers (X-Content-Type-Options, X-Frame-Options, etc.)
-✅ Error code and message formatting
-✅ Debug information display
-✅ Exception middleware handling
-✅ Retry-After header for 429 responses
-✅ Request tracking and logging
+- `DEMO_SETUP.md`: Complete setup guide
+- `exe/README_DEMO.md`: Detailed demo documentation
+- `exe/README.md`: Original README
 
 ---
 
-## 🎓 Learning Path
+## Key Features Demonstrated
 
-1. Start the demo
-2. Click through all error endpoints
-3. Open DevTools (F12) to inspect responses
-4. Check response headers and JSON format
-5. Modify settings and restart to see changes
-6. Test with cURL for different scenarios
-7. Review the view code in `demo/views.py`
-
----
-
-## 💡 Pro Tips
-
-- Use **F12 DevTools** to see full response details
-- Use **cURL with `-v`** for detailed request/response info
-- Check **Browser Console** for any JavaScript errors
-- Monitor **Network tab** for response headers
-- Use **`curl -i`** to see status line and headers
+- JSON error response formatting
+- CORS header handling
+- Security headers such as `X-Content-Type-Options` and `X-Frame-Options`
+- Error code and message formatting
+- Debug information display
+- Exception middleware handling
+- `Retry-After` header support for `429` responses
+- Request tracking and logging
 
 ---
 
-**Happy Testing! 🎉**
+## Learning Path
 
-For more details, see: **DEMO_SETUP.md** or **exe/README_DEMO.md**
+1. Start the demo.
+2. Click through all error endpoints.
+3. Open DevTools (`F12`) to inspect responses.
+4. Check response headers and JSON format.
+5. Modify settings and restart to see changes.
+6. Test with cURL for different scenarios.
+7. Review the view code in `demo/views.py`.
+
+---
+
+## Pro Tips
+
+- Use `F12` DevTools to see full response details.
+- Use cURL with `-v` for detailed request and response info.
+- Check the browser console for JavaScript errors.
+- Monitor the Network tab for response headers.
+- Use `curl -i` to see the status line and headers.
+
+---
+
+## Next Reference
+
+For more details, see `DEMO_SETUP.md` or `exe/README_DEMO.md`.

@@ -2,6 +2,7 @@ from django.http import HttpRequest
 
 
 def get_client_ip(request: HttpRequest) -> str:
+    """Resolve the client IP using forwarded headers before REMOTE_ADDR."""
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
     if x_forwarded_for:
         return str(x_forwarded_for).split(",")[0].strip()

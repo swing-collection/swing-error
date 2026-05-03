@@ -45,6 +45,12 @@ class TestBaseErrorView(SimpleTestCase):
         templates = view.get_template_names()
         assert isinstance(templates, list)
         assert len(templates) > 0
+        assert templates == ["swing_error/400.html"]
+
+    @override_settings(ERROR_HANDLER_CONFIG={"400": {"template": "custom/400.html"}})
+    def test_get_template_names_uses_template_override(self) -> None:
+        view = self.view_class()
+        assert view.get_template_names() == ["custom/400.html"]
 
     def test_default_details_property(self) -> None:
         view = self.view_class()

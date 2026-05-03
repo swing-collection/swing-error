@@ -55,6 +55,7 @@ from .response_http_408 import Http408Response
 from .response_http_410 import Http410Response
 from .response_http_429 import Http429Response
 from .response_http_500 import Http500Response
+from .renderers import get_renderer, register_renderer
 
 __all__ = [
     "BaseErrorResponse",
@@ -67,4 +68,6 @@ __all__ = [
     "Http410Response",
     "Http429Response",
     "Http500Response",
+    "get_renderer",
+    "register_renderer",
 ]

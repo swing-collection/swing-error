@@ -24,6 +24,7 @@ SENSITIVE_MARKERS = (
 
 
 def scrub_sensitive_data(value: Any, key: str | None = None) -> Any:
+    """Recursively redact secrets from mappings, sequences, and strings."""
     lowered_key = key.lower() if key is not None else ""
     if any(marker in lowered_key for marker in SENSITIVE_KEYS):
         return REDACTED

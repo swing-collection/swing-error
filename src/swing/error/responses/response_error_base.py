@@ -45,7 +45,7 @@ Links:
 import logging
 from typing import Any, TypeAlias
 
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest, HttpResponse
 
 # Import | Local
 # Import | Local Modules
@@ -56,6 +56,9 @@ from ..conf import (
     capture_error,
     get_debug_info,
 )
+from .._utils.get_accept_header import get_accept_header
+from .._utils.get_preferred_content_type import get_preferred_content_type
+from .renderers import get_renderer
 
 # =============================================================================
 # Logger
@@ -72,7 +75,7 @@ ErrorDetails: TypeAlias = str | dict[str, Any] | list[Any] | None
 # =============================================================================
 
 
-class BaseErrorResponse(JsonResponse):
+class BaseErrorResponse(HttpResponse):
     """
     Base Error Response Class
     =========================
@@ -107,6 +110,7 @@ class BaseErrorResponse(JsonResponse):
         request: HttpRequest | None = None,
         exception: Exception | None = None,
         include_debug: bool = True,
+        renderer: str | None = None,
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -144,15 +148,25 @@ class BaseErrorResponse(JsonResponse):
             details=details,
             error_code=error_code,
             debug_info=debug_info,
+            request=request,
+            status_code=status_code,
         )
 
-        # Initialize the JsonResponse with the structured content and status
-        # code. Additional arguments (`args` and `kwargs`) can be passed to
-        # customize the response further (e.g., custom headers).
-        clean_kwargs = {key: value for key, value in kwargs.items() if key != "data"}
-        super().__init__(
+        renderer_name = renderer or self.get_renderer_name(request=request)
+        rendered_content, content_type = get_renderer(renderer_name)(
             content,
+            status_code,
+        )
+
+        clean_kwargs = {
+            key: value
+            for key, value in kwargs.items()
+            if key not in {"data", "content_type"}
+        }
+        super().__init__(
+            content=rendered_content,
             status=status_code,
+            content_type=content_type,
             *args,
             **clean_kwargs,
         )
@@ -194,6 +208,8 @@ class BaseErrorResponse(JsonResponse):
         details: ErrorDetails,
         error_code: str | None = None,
         debug_info: dict[str, Any] | None = None,
+        request: HttpRequest | None = None,
+        status_code: int | None = None,
     ) -> dict[str, Any]:
         """
         Convert the error response into a structured dictionary.
@@ -227,6 +243,12 @@ class BaseErrorResponse(JsonResponse):
         if error_code:
             response["code"] = error_code
 
+        if request is not None:
+            response["instance"] = request.path
+
+        if status_code is not None:
+            response["status"] = status_code
+
         # Include debug information if provided (only in DEBUG mode)
         if debug_info:
             response["debug"] = debug_info
@@ -234,6 +256,20 @@ class BaseErrorResponse(JsonResponse):
         # Return the structured dictionary, which will be used as the content
         # for the JSON response.
         return response
+
+    @staticmethod
+    def get_renderer_name(request: HttpRequest | None) -> str:
+        """Resolve the response renderer for the incoming request."""
+        if request is None:
+            return "json"
+
+        preferred_type = get_preferred_content_type(request)
+        if preferred_type == "html":
+            accept_header = get_accept_header(request).lower()
+            if "application/problem+json" in accept_header:
+                return "problem+json"
+            return "json"
+        return preferred_type
 
     def log_error(
         self,

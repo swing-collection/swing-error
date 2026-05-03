@@ -44,3 +44,15 @@ class TestConf(SimpleTestCase):
             ERROR_HANDLER_CONFIG={"404": {"default_message": "Custom Not Found"}}
         ):
             assert get_error_config("404", "default_message") == "Custom Not Found"
+
+    def test_get_error_config_supports_template_override_key(self) -> None:
+        with self.settings(
+            ERROR_HANDLER_CONFIG={"404": {"template": "custom/404.html"}}
+        ):
+            assert get_error_config("404", "template") == "custom/404.html"
+
+    def test_get_error_config_supports_legacy_template_name_key(self) -> None:
+        with self.settings(
+            ERROR_HANDLER_CONFIG={"404": {"template_name": "legacy/404.html"}}
+        ):
+            assert get_error_config("404", "template") == "legacy/404.html"
