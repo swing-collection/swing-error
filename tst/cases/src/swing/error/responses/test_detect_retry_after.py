@@ -2,7 +2,6 @@
 from types import SimpleNamespace
 
 # Import | Libraries
-import pytest
 
 from swing.error.responses.detect_retry_after import detect_retry_after
 

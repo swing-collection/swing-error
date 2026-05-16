@@ -1,7 +1,6 @@
 from django.test import RequestFactory
 
 # Import | Libraries
-import pytest
 
 from swing.error._utils.wants_html import wants_html
 from swing.error._utils.wants_json import wants_json

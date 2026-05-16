@@ -57,7 +57,8 @@ class Handler410View(BaseErrorView):
 # Exports
 # =============================================================================
 
-HANDLER410 = "swing.error.views.view_error_handler_410.Handler410View"
+# Callable handler for use in Django's handler settings
+HANDLER410 = Handler410View.as_view()
 
 __all__: list[str] = [
     "Handler410View",

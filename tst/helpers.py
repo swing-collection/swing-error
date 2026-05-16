@@ -8,4 +8,4 @@ def failing_callback(**kwargs):
 
 def working_callback(**kwargs):
     """A callback that works."""
-    pass
+    pass  # pylint: disable=unnecessary-pass

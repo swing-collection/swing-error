@@ -231,7 +231,7 @@ class TestExceptionMiddlewareEdgeCases(SimpleTestCase):
         """Test middleware handles various exception types."""
 
         class CustomException(Exception):
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
         def get_response_custom_error(request):
             raise CustomException("Custom error")
@@ -354,7 +354,7 @@ class TestExceptionMiddlewareEdgeCases(SimpleTestCase):
             # Should have some error information
             assert len(data) > 0
         except json.JSONDecodeError:
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
     def test_middleware_handles_post_request_error(self) -> None:
         """Test middleware handles errors from POST requests."""

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Integration Tests for Swing Error Error Handling
 =================================================
@@ -18,12 +23,10 @@ Tests cross-module interactions including:
 
 # Import | Standard Library
 import json
-from unittest.mock import MagicMock, patch
 
 from django.test import override_settings, RequestFactory, SimpleTestCase
 
 from swing.error.middleware import ExceptionMiddleware
-from swing.error.responses import Http500Response
 
 # =============================================================================
 # Test Classes
@@ -99,7 +102,7 @@ class TestRequestIDGeneration(SimpleTestCase):
             # Should have error code/id
             assert data is not None
         except (json.JSONDecodeError, TypeError):
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
 
 class TestDebugInformationInjection(SimpleTestCase):
@@ -139,7 +142,7 @@ class TestDebugInformationInjection(SimpleTestCase):
                 # These fields should ideally not be in the response
                 assert field not in data or True
         except (json.JSONDecodeError, TypeError):
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
 
 class TestContentNegotiation(SimpleTestCase):

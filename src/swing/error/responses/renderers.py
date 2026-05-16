@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Renderer registry for structured error responses."""
 
 from __future__ import annotations

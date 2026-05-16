@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 End-to-End Tests Against Demo Application
 ==========================================
@@ -19,7 +24,7 @@ available in the test environment.
 # Import | Standard Library
 import json
 
-from django.test import Client, override_settings, SimpleTestCase
+from django.test import Client, SimpleTestCase
 
 # =============================================================================
 # Test Classes
@@ -95,7 +100,7 @@ class TestDemoAppErrorEndpoints(SimpleTestCase):
                 assert 200 <= response.status_code < 600
             except Exception:
                 # Endpoint may not exist
-                pass
+                pass  # pylint: disable=unnecessary-pass
 
 
 class TestDemoAppErrorHandling(SimpleTestCase):
@@ -174,7 +179,7 @@ class TestDemoAppResponseValidation(SimpleTestCase):
                 assert isinstance(data, (dict, list))
             except json.JSONDecodeError:
                 # Response might be HTML
-                pass
+                pass  # pylint: disable=unnecessary-pass
 
     def test_error_response_includes_status_code(self) -> None:
         """Verify error response includes status code."""

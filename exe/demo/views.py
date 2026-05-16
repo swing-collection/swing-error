@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Demo Views
 ==========
@@ -8,11 +13,9 @@ This module provides demo views to test various error responses and
 the swing.error functionality.
 """
 
-from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import (
     HttpRequest,
     HttpResponse,
-    HttpResponseForbidden,
     JsonResponse,
 )
 from django.views.decorators.http import require_http_methods

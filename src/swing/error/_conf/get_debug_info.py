@@ -60,6 +60,6 @@ def get_debug_info(
                 for query in connection.queries[-10:]
             ]
         except Exception:
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
     return debug_info

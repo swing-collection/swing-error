@@ -49,7 +49,7 @@ def capture_error(
                         scope.set_extra(key, value)
                     sentry_sdk.capture_message(message)
         except ImportError:
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
     callback_path = config.get("callback")
     if callback_path:

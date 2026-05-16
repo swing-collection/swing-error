@@ -40,7 +40,6 @@ Links:
 # Imports
 # =============================================================================
 
-from django.urls import path
 
 # Import | Local
 # Import | Local Modules

@@ -31,7 +31,7 @@ def detect_retry_after(
                 try:
                     return int(header_value)
                 except (TypeError, ValueError):
-                    pass
+                    pass  # pylint: disable=unnecessary-pass
 
         for attr_name in ("retry_after", "wait", "remaining", "time_left"):
             attr_value = getattr(candidate, attr_name, None)
@@ -39,7 +39,7 @@ def detect_retry_after(
                 try:
                     return int(attr_value)
                 except (TypeError, ValueError):
-                    pass
+                    pass  # pylint: disable=unnecessary-pass
 
         if isinstance(candidate, dict):
             for key in ("retry_after", "wait", "remaining", "time_left"):
@@ -47,6 +47,6 @@ def detect_retry_after(
                     try:
                         return int(candidate[key])
                     except (TypeError, ValueError):
-                        pass
+                        pass  # pylint: disable=unnecessary-pass
 
     return None
