@@ -111,7 +111,6 @@ class BaseErrorResponse(HttpResponse):
         exception: Exception | None = None,
         include_debug: bool = True,
         renderer: str | None = None,
-        *args: Any,
         **kwargs: Any,
     ) -> None:
         """
@@ -130,8 +129,11 @@ class BaseErrorResponse(HttpResponse):
                 error (default: None). Used for error tracking and debug info.
             include_debug (bool): Whether to include debug info when in
                 DEBUG mode (default: True).
-            *args: Additional positional arguments for JsonResponse.
-            **kwargs: Additional keyword arguments for JsonResponse.
+            **kwargs: Additional keyword arguments forwarded to
+                ``HttpResponse.__init__`` (e.g. ``reason``, ``charset``,
+                ``headers``). ``content``, ``status``, ``content_type`` and
+                ``data`` are reserved and dropped if present, since they are
+                always set explicitly below.
 
         """
 
@@ -161,13 +163,12 @@ class BaseErrorResponse(HttpResponse):
         clean_kwargs = {
             key: value
             for key, value in kwargs.items()
-            if key not in {"data", "content_type"}
+            if key not in {"data", "content", "status", "content_type"}
         }
         super().__init__(
             content=rendered_content,
             status=status_code,
             content_type=content_type,
-            *args,
             **clean_kwargs,
         )
 
